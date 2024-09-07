@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:shiplan_service/view/home_view/home_view.dart';
+import 'package:shiplan_service/view/home_view/nav_bar_view.dart';
 
 import '../../constants.dart';
 import 'sign_up_view.dart';
@@ -271,6 +273,7 @@ class _SignInState extends State<SignIn> {
                                 ),
                                 ElevatedButton(
                                     onPressed: () {
+                                      Get.off(const NavBarView());
                                     //  Get.to(HomeView());
                                       // setState(() {
                                       //   isloading = true;
