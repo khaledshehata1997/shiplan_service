@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shiplan_service/constants.dart';
 import 'package:shiplan_service/view/profile_view/profile_view.dart';
+import 'package:shiplan_service/view/profile_view/settings.dart';
 
 import '../home_view/order_data_view.dart';
 class MainProfileView extends StatefulWidget {
@@ -53,7 +54,10 @@ class _MainProfileViewState extends State<MainProfileView> {
                         SizedBox(
                           width: 15,
                         ),
-                        IconButton(onPressed: (){}, icon: Icon(Icons.settings,color: Colors.black,))
+                        IconButton(onPressed: (){
+                          Get.to(Settings());
+
+                        }, icon: Icon(Icons.settings,color: Colors.black,))
                       ],
                     ),
                     SizedBox(
@@ -121,7 +125,7 @@ class _MainProfileViewState extends State<MainProfileView> {
                         width: Get.width * 0.6,
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.to(const ProfileView());
+                            Get.to( Profile());
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: buttonColor),

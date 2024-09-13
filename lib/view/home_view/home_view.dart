@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,9 @@ import 'package:shiplan_service/view/home_view/buy_offers_view.dart';
 import 'package:shiplan_service/view/home_view/offers_view.dart';
 import 'package:shiplan_service/view/home_view/orders_managment_view.dart';
 import 'package:shiplan_service/view/home_view/rent_offers_view.dart';
+
+import '../drawer_screen/our_location_page.dart';
+import '../drawer_screen/technical_support.dart';
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
@@ -44,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 onTap: () {
-                  // Get.to(const TechnicalSupport());
+                  Get.to(const TechnicalSupport());
                 },
               ),
               ListTile(
@@ -199,11 +203,11 @@ class _HomeViewState extends State<HomeView> {
       ),
       appBar: AppBar(
         leading: Padding(
-          padding: const EdgeInsets.all(2.0),
+          padding: const EdgeInsets.all(4.0),
           child: Container(
             decoration: BoxDecoration(
               color:buttonColor ,
-              borderRadius: BorderRadius.circular(17),
+              borderRadius: BorderRadius.circular(12),
             ),
             height: Get.height * 0.1,
             width: Get.width * 0.1,
@@ -211,17 +215,21 @@ class _HomeViewState extends State<HomeView> {
           ),
         ),
         centerTitle: true,
-        title: const Text("الرئيسيه",textDirection: TextDirection.rtl,style: TextStyle(color: Colors.black),),
+       title: Container(
+           height: Get.height*.075,
+           width: Get.width*.4,
+           child: Image.asset('images/splash.png')),
+       // title: const Text("الرئيسيه",textDirection: TextDirection.rtl,style: TextStyle(color: Colors.black),),
         actions: [
           Padding(
-            padding: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(4.0),
             child: Container(
               decoration: BoxDecoration(
                 color:buttonColor ,
-                borderRadius: BorderRadius.circular(17),
+                borderRadius: BorderRadius.circular(10),
               ),
               height: Get.height * 0.1,
-              width: Get.width * 0.1,
+              width: Get.width * 0.135,
               child: IconButton(onPressed: () {_key.currentState!.openEndDrawer();
               }, icon: const Icon(Icons.list_outlined,color: Colors.white,)),
             ),
@@ -231,16 +239,59 @@ class _HomeViewState extends State<HomeView> {
       body:SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 20,),
-            SizedBox(
-              child: Image.asset('images/Frame 174.png',
-                width: Get.width,
-                height: Get.height*.27,
-              ),
+            const SizedBox(height: 5,),
+            CarouselSlider(
+                items: [
+                  Container(
+                    height: Get.height*.2,
+                    width: Get.width*.8,
+                    child: Image.asset('images/Frame 174.png',
+                      width: Get.width,
+                      // height: Get.height*.27,
+                      scale: 1.2,
+                    ),
+                  ),
+                  Container(
+                    height: Get.height*.2,
+                    width: Get.width*.8,
+                    child: Image.asset('images/Frame 174.png',
+                      width: Get.width,
+                      // height: Get.height*.27,
+                      scale: 1.2,
+                    ),
+                  ),
+                  Container(
+                    height: Get.height*.2,
+                    width: Get.width*.8,
+                    child: Image.asset('images/Frame 174.png',
+                      width: Get.width,
+                      // height: Get.height*.27,
+                      scale: 1.2,
+                    ),
+                  ),
+                ],
+                options: CarouselOptions(
+                  height: 175,
+                  aspectRatio: 16/10,
+                  viewportFraction: .7,
+                  initialPage: 0,
+                  enableInfiniteScroll: true,
+                  reverse: false,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 4),
+                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enlargeCenterPage: true,
+                  enlargeFactor: 0.3,
+                  scrollDirection: Axis.horizontal,
+
+                ),
+
             ),
+
             Container(
                 alignment: Alignment.topRight,
-                margin: const EdgeInsets.only(top: 20,right: 15),
+                margin: const EdgeInsets.only(top: 10,right: 15),
                 child:const  Text('الخدمات',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)),
                  const SizedBox(height: 20,),
         Padding(
@@ -335,7 +386,7 @@ class _HomeViewState extends State<HomeView> {
                   shrinkWrap: true,
                   gridDelegate:
                   const SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 1.25,
+                      childAspectRatio: 1.2,
                       mainAxisSpacing: 15,
                       crossAxisCount: 1),
                   itemBuilder: (BuildContext context, int index) {

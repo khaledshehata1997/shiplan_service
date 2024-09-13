@@ -97,7 +97,7 @@ class _BuyOffersViewState extends State<BuyOffersView> with SingleTickerProvider
                     shrinkWrap: true,
                     gridDelegate:
                     const SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 1.9,
+                        childAspectRatio: 1.65,
                         mainAxisSpacing: 15,
                         crossAxisCount: 1),
                     itemBuilder: (BuildContext context, int index) {
@@ -115,7 +115,7 @@ class _BuyOffersViewState extends State<BuyOffersView> with SingleTickerProvider
                             // width: Get.width * 0.4,
                             decoration: BoxDecoration(
                                 image:  DecorationImage(
-                                  scale: 0.9,
+                                  scale: 1,
                                   alignment: Alignment.centerLeft,
                                   image: AssetImage(index.isOdd ? 'images/cleaning service.png' : 'images/man carrying son in baby sling.png',),),
                                 boxShadow:  const  [
@@ -129,17 +129,17 @@ class _BuyOffersViewState extends State<BuyOffersView> with SingleTickerProvider
                                 borderRadius:
                                 BorderRadius.circular(10)),
                             child:  const Padding(
-                              padding:  EdgeInsets.all(8.0),
+                              padding:  EdgeInsets.all(6.0),
                               child:   Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text('باقة 1 عامله + 1 مباشرة 8 ساعات 540 \n ريال بعد الضريبة 585 ريال ',textDirection:TextDirection.rtl,style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Colors.white),),
                                   SizedBox(height: 10,),
-                                  Text('عدد الساعات: 8 ساعات',textDirection:TextDirection.rtl,style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
+                                  Text('عدد الساعات: 8 ساعات',textDirection:TextDirection.rtl,style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
                                   SizedBox(height: 10,),
-                                  Text('السعر الأصلي: 540 ريال',textDirection:TextDirection.rtl,style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
+                                  Text('السعر الأصلي: 540 ريال',textDirection:TextDirection.rtl,style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
                                   SizedBox(height: 10,),
-                                  Text('السعر بعد الضريبة: 585 ريال',textDirection:TextDirection.rtl,style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
+                                  Text('السعر بعد الضريبة: 585 ريال',textDirection:TextDirection.rtl,style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
                                 ],
                               ),
                             ),
@@ -157,7 +157,7 @@ class _BuyOffersViewState extends State<BuyOffersView> with SingleTickerProvider
                     shrinkWrap: true,
                     gridDelegate:
                     const SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 1.9,
+                        childAspectRatio: 1.65,
                         mainAxisSpacing: 15,
                         crossAxisCount: 1),
                     itemBuilder: (BuildContext context, int index) {
@@ -175,7 +175,7 @@ class _BuyOffersViewState extends State<BuyOffersView> with SingleTickerProvider
                             // width: Get.width * 0.4,
                             decoration: BoxDecoration(
                                 image:  DecorationImage(
-                                  scale: 0.9,
+                                  scale: 1,
                                   alignment: Alignment.centerLeft,
                                   image: AssetImage(index.isOdd ? 'images/cleaning service.png' : 'images/man carrying son in baby sling.png',),),
                                 boxShadow:  const  [

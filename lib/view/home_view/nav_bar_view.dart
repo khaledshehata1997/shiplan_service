@@ -34,7 +34,7 @@ class _NavBarViewState extends State<NavBarView> {
           type : BottomNavigationBarType.fixed,
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home_outlined,size: 30,),label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.favorite_outline,size: 30),label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.location_on_outlined,size: 30),label: ''),
             BottomNavigationBarItem(icon: Icon(Icons.person_outline_outlined,size: 30),label: ''),
           ],
 

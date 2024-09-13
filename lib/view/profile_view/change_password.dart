@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:shiplan_service/view/profile_view/reset_password.dart';
 
 import '../../../../constants.dart';
 import '../widgets/custom_text_form.dart';
+import 'reset_password.dart';
 class ChangePass extends StatefulWidget {
   const ChangePass({super.key});
 
