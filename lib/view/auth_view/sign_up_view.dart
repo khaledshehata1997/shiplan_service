@@ -6,6 +6,8 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../constants.dart';
+import '../../view_model/auth_view_model.dart';
+import '../home_view/home_view.dart';
 import 'sign_in_view.dart';
 import 'sign_up_view.dart';
 import 'verification_view.dart';
@@ -18,82 +20,14 @@ class SignUpView extends StatefulWidget {
 
 class _SignUpViewState extends State<SignUpView> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  // var controller = Get.put(AuthViewModel());
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
-  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  // User? user;
-  // // late VideoPlayerController _controller;
-  // Future<void> _signInWithGoogle() async {
-  //   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-  //   final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-  //   final AuthCredential credential = GoogleAuthProvider.credential(
-  //     accessToken: googleAuth?.accessToken,
-  //     idToken: googleAuth?.idToken,
-  //   );
-  //
-  //   user = (await _auth.signInWithCredential(credential)).user;
-  //
-  //   if (user != null) {
-  //     _checkUserProfile();
-  //   }
-  // }
-  //
-  // Future<void> _checkUserProfile() async {
-  //   DocumentSnapshot userDoc = await _firestore.collection('users').doc(user!.uid).get();
-  //
-  //   if (userDoc.exists) {
-  //     // User data exists
-  //     Map<String, dynamic>? data = userDoc.data() as Map<String, dynamic>?;
-  //     if (data != null && data.containsKey('name') && data.containsKey('phone')) {
-  //       // User profile information is available
-  //       Get.offAll(const HomeView());
-  //     } else {
-  //       // User profile information is incomplete
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => CompleteProfilePage(user: user)),
-  //       );
-  //     }
-  //   } else {
-  //     // User document does not exist
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => CompleteProfilePage(user: user)),
-  //     );
-  //   }
-  // }
-  // Future<UserCredential> signInWithFacebook() async {
-  //   // Trigger the sign-in flow
-  //   final LoginResult loginResult = await FacebookAuth.instance.login();
-  //
-  //   if (loginResult.status == LoginStatus.success) {
-  //     // Get the AccessToken
-  //     final AccessToken accessToken = loginResult.accessToken!;
-  //
-  //     // Create a credential from the access token
-  //     final OAuthCredential facebookAuthCredential =
-  //     FacebookAuthProvider.credential(accessToken.tokenString);
-  //
-  //     // Once signed in, return the UserCredential
-  //     return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-  //   } else {
-  //     throw FirebaseAuthException(
-  //       code: loginResult.status.toString(),
-  //       message: loginResult.message,
-  //     );
-  //   }
-  // }
-
-
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController password2 = TextEditingController();
+  var controller = Get.put(AuthViewModel());
   @override
   void initState() {
     super.initState();
-    // _controller = VideoPlayerController.asset('videos/vid.mp4')
-    //   ..initialize().then((value) {
-    //     _controller.play();
-    //     _controller.setLooping(false);
-    //     setState(() {});
-    //   });
   }
 
 
@@ -101,37 +35,28 @@ class _SignUpViewState extends State<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
-    ValueNotifier userCredential = ValueNotifier('');
     return Scaffold(
       body:Stack(
         children: [
-          // BackdropFilter(
-          //   filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-          //   child: SizedBox.expand(
-          //     child: FittedBox(
-          //       fit: BoxFit.cover,
-          //       child: SizedBox(
-          //         width: MediaQuery.of(context).size.width,
-          //         height: MediaQuery.of(context).size.height,
-          //         child: VideoPlayer(_controller),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          Container(
-            height: Get.height,
-            width: double.maxFinite,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: ExactAssetImage("images/background.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Container(
-              alignment: Alignment.center,
-              color: Colors.white.withOpacity(.00001),
+          GetBuilder<AuthViewModel>(
+            init: AuthViewModel(),
+            builder: (context) {
+              return Container(
+                height: Get.height,
+                width: double.maxFinite,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: ExactAssetImage("images/background.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Container(
+                  alignment: Alignment.center,
+                  color: Colors.white.withOpacity(.00001),
 
-            ),
+                ),
+              );
+            }
           ),
           SizedBox(
             width: Get.width,
@@ -178,8 +103,9 @@ class _SignUpViewState extends State<SignUpView> {
                               height: Get.height * .03,
                             ),
                             TextFormField(
+                              controller: name,
                               onChanged: (value) {
-
+                                controller.name = value;
                               },
                               decoration:  InputDecoration(
                                 filled: true,
@@ -201,15 +127,16 @@ class _SignUpViewState extends State<SignUpView> {
                                 if (value!.isEmpty) {
                                   return 'Please enter your name';
                                 }
-                                // regx
+                                return null;
                               }
                             ),
                             const SizedBox(
                               height: 13,
                             ),
                             TextFormField(
+                              controller: email,
                               onChanged: (value) {
-                                //  controller.email = value;
+                                 controller.email = value;
                               },
                               decoration:  InputDecoration(
                                 filled: true,
@@ -231,7 +158,6 @@ class _SignUpViewState extends State<SignUpView> {
                                 if (value!.isEmpty) {
                                   return 'Please enter email';
                                 }
-                                // regx
                                 const pattern =
                                     r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
                                 final regExp = RegExp(pattern);
@@ -245,8 +171,9 @@ class _SignUpViewState extends State<SignUpView> {
                               height: 13,
                             ),
                             TextFormField(
+                              controller: password,
                               onChanged: (value) {
-                                //   controller.password = value;
+                                controller.password = value;
                               },
                               decoration:  InputDecoration(
                                 suffixIcon:Icon(Icons.remove_red_eye_outlined),
@@ -284,8 +211,9 @@ class _SignUpViewState extends State<SignUpView> {
                               height: 13,
                             ),
                             TextFormField(
+                              controller: password2,
                               onChanged: (value) {
-                                //   controller.password = value;
+                                  controller.password2 = value;
                               },
                               decoration:  InputDecoration(
                                 suffixIcon:Icon(Icons.remove_red_eye_outlined),
@@ -306,15 +234,10 @@ class _SignUpViewState extends State<SignUpView> {
                               ),
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'Please enter password';
+                                  return 'Please enter confirm your password';
                                 }
-                                // if have white space
-                                if (value.contains(' ')) {
-                                  return 'password must not contain white space';
-                                }
-                                // have to be more than 8 char
-                                if (value.length < 8) {
-                                  return 'Password must be more than 8 char';
+                                if (value != password.text) {
+                                  return 'confirm password must match password';
                                 }
                                 return null;
                               },
@@ -325,16 +248,17 @@ class _SignUpViewState extends State<SignUpView> {
                             ),
                             ElevatedButton(
                                 onPressed: () {
-                                  //  Get.to(HomeView());
-                                  // setState(() {
-                                  //   isloading = true;
-                                  //   formKey.currentState!.save();
-                                  //   if (formKey.currentState!.validate()) {
-                                  //     controller.signIn();
-                                  //     isloading = false;
-                                  //   }
-                                  //   isloading = false;
-                                  // });
+
+                                  setState(() {
+                                    isloading = true;
+                                    formKey.currentState!.save();
+                                    if (formKey.currentState!.validate()) {
+                                      controller.signUp();
+                                      isloading = false;
+
+                                    }
+                                    isloading = false;
+                                  });
                                 },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: buttonColor,

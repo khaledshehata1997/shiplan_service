@@ -1,15 +1,42 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:shiplan_service/view/auth_view/sign_in_view.dart';
 
 
 import '../../constants.dart';
 import 'sign_up_view.dart';
-
+String formatFirebaseError(FirebaseAuthException exception) {
+  String message = '';
+  switch (exception.code) {
+    case 'invalid-email':
+      message = 'Invalid email address';
+      break;
+    case 'user-not-found':
+      message = 'User not found';
+      break;
+    case 'wrong-password':
+      message = 'Wrong password';
+      break;
+    case 'email-already-in-use':
+      message = 'Email already in use';
+      break;
+    case 'weak-password':
+      message = 'Password is too weak';
+      break;
+    case 'too-many-requests':
+      message = 'Too many requests, please try again later';
+      break;
+    default:
+      message = 'Something went wrong';
+  }
+  return message;
+}
 class VerificationView extends StatefulWidget {
   const VerificationView({Key? key}) : super(key: key);
 
@@ -19,82 +46,80 @@ class VerificationView extends StatefulWidget {
 
 class _SignInState extends State<VerificationView> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  // var controller = Get.put(AuthViewModel());
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
-  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  // User? user;
-  // // late VideoPlayerController _controller;
-  // Future<void> _signInWithGoogle() async {
-  //   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-  //   final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-  //   final AuthCredential credential = GoogleAuthProvider.credential(
-  //     accessToken: googleAuth?.accessToken,
-  //     idToken: googleAuth?.idToken,
-  //   );
-  //
-  //   user = (await _auth.signInWithCredential(credential)).user;
-  //
-  //   if (user != null) {
-  //     _checkUserProfile();
-  //   }
-  // }
-  //
-  // Future<void> _checkUserProfile() async {
-  //   DocumentSnapshot userDoc = await _firestore.collection('users').doc(user!.uid).get();
-  //
-  //   if (userDoc.exists) {
-  //     // User data exists
-  //     Map<String, dynamic>? data = userDoc.data() as Map<String, dynamic>?;
-  //     if (data != null && data.containsKey('name') && data.containsKey('phone')) {
-  //       // User profile information is available
-  //       Get.offAll(const HomeView());
-  //     } else {
-  //       // User profile information is incomplete
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => CompleteProfilePage(user: user)),
-  //       );
-  //     }
-  //   } else {
-  //     // User document does not exist
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => CompleteProfilePage(user: user)),
-  //     );
-  //   }
-  // }
-  // Future<UserCredential> signInWithFacebook() async {
-  //   // Trigger the sign-in flow
-  //   final LoginResult loginResult = await FacebookAuth.instance.login();
-  //
-  //   if (loginResult.status == LoginStatus.success) {
-  //     // Get the AccessToken
-  //     final AccessToken accessToken = loginResult.accessToken!;
-  //
-  //     // Create a credential from the access token
-  //     final OAuthCredential facebookAuthCredential =
-  //     FacebookAuthProvider.credential(accessToken.tokenString);
-  //
-  //     // Once signed in, return the UserCredential
-  //     return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-  //   } else {
-  //     throw FirebaseAuthException(
-  //       code: loginResult.status.toString(),
-  //       message: loginResult.message,
-  //     );
-  //   }
-  // }
+  final emailController = TextEditingController();
+  bool isLoading = false;
+  String error = '';
+  Future sendResetLink() async {
+    if (formKey.currentState!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+      try {
+        await FirebaseAuth.instance
+            .sendPasswordResetEmail(email: emailController.text.trim());
+        setState(() {
+          isLoading = false;
+        });
+        Get.defaultDialog(
+            backgroundColor: Colors.black45,
+            content: Container(
+              width: Get.width*.7,
+              height: Get.height*.3,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Icon(Icons.done_outline,color: Colors.white,size: 40,),
+                  const Text(
+                    textDirection: TextDirection.rtl,
+                    'تم ارسال رساله اعاده تعيين كلمه السر الي بريدك الألكتروني',
+                    style: TextStyle(
+                        fontSize: 22,
 
+                        color: Colors.white),
+                  ),
+                  // SizedBox(height: 40,),
+                  ElevatedButton(
+                      onPressed: () {
+                        Get.to(SignIn());
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: buttonColor,
+                          fixedSize:
+                          Size.fromWidth(Get.width * .8)),
+                      child: const Text('عودة',style: TextStyle(color: Colors.white,fontSize: 18
+                          ,fontWeight: FontWeight.bold
+                      ),)),
+                ],
+              ),
+              //  color: Colors.black45,
+            )
+        );
+      } on FirebaseAuthException catch (e) {
+        setState(() {
+          isLoading = false;
+          error = e.toString();
+        });
+        // show error message
+        Get.snackbar('Error', formatFirebaseError(e),
+            duration: const Duration(seconds: 5),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red);
+      } catch (e) {
+        setState(() {
+          isLoading = false;
+          error = e.toString();
+        });
+        Get.snackbar('Error', error,
+            duration: const Duration(seconds: 5),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red);
+      }
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    // _controller = VideoPlayerController.asset('videos/vid.mp4')
-    //   ..initialize().then((value) {
-    //     _controller.play();
-    //     _controller.setLooping(false);
-    //     setState(() {});
-    //   });
   }
 
 
@@ -102,23 +127,9 @@ class _SignInState extends State<VerificationView> {
 
   @override
   Widget build(BuildContext context) {
-    ValueNotifier userCredential = ValueNotifier('');
     return Scaffold(
       body:Stack(
         children: [
-          // BackdropFilter(
-          //   filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-          //   child: SizedBox.expand(
-          //     child: FittedBox(
-          //       fit: BoxFit.cover,
-          //       child: SizedBox(
-          //         width: MediaQuery.of(context).size.width,
-          //         height: MediaQuery.of(context).size.height,
-          //         child: VideoPlayer(_controller),
-          //       ),
-          //     ),
-          //   ),
-          // ),
           Container(
             height: Get.height,
             width: double.maxFinite,
@@ -190,6 +201,7 @@ class _SignInState extends State<VerificationView> {
                               height: Get.height * .03,
                             ),
                             TextFormField(
+                              controller: emailController,
                               onChanged: (value) {
                                 //  controller.email = value;
                               },
@@ -229,59 +241,7 @@ class _SignInState extends State<VerificationView> {
                             ),
                             ElevatedButton(
                                 onPressed: () {
-                                  Get.defaultDialog(
-                                    backgroundColor: Colors.black45,
-                                    content: Container(
-                                      width: Get.width*.7,
-                                      height: Get.height*.3,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Icon(Icons.done_outline,color: Colors.white,size: 40,),
-                                        const Text(
-                                          textDirection: TextDirection.rtl,
-                                          'تم تحديث كلمة المرور الخاصه بك بنجاح',
-                                          style: TextStyle(
-                                              fontSize: 22,
-
-                                              color: Colors.white),
-                                        ),
-                                       // SizedBox(height: 40,),
-                                        ElevatedButton(
-                                            onPressed: () {
-                                         Get.to(SignIn());
-                                                 }
-                                              // setState(() {
-                                              //   isloading = true;
-                                              //   formKey.currentState!.save();
-                                              //   if (formKey.currentState!.validate()) {
-                                              //     controller.signIn();
-                                              //     isloading = false;
-                                              //   }
-                                              //   isloading = false;
-                                              // });
-                                            ,
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor: buttonColor,
-                                                fixedSize:
-                                                Size.fromWidth(Get.width * .8)),
-                                            child: const Text('عودة',style: TextStyle(color: Colors.white,fontSize: 18
-                                                ,fontWeight: FontWeight.bold
-                                            ),)),
-                                      ],
-                                    ),
-                                    //  color: Colors.black45,
-                                    )
-                                  );
-                                  // setState(() {
-                                  //   isloading = true;
-                                  //   formKey.currentState!.save();
-                                  //   if (formKey.currentState!.validate()) {
-                                  //     controller.signIn();
-                                  //     isloading = false;
-                                  //   }
-                                  //   isloading = false;
-                                  // });
+                                  sendResetLink();
                                 },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: buttonColor,

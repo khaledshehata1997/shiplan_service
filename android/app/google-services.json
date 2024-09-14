@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "639757077046",
+    "project_id": "shiplan-dad96",
+    "storage_bucket": "shiplan-dad96.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639757077046:android:948a90173ba55e0bc66697",
+        "android_client_info": {
+          "package_name": "com.example.shiplan_service"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQMnQ8hmthIY5W8mgeJhxkC0_Gt_aUg34"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

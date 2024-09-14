@@ -9,9 +9,8 @@ import 'package:shiplan_service/view/home_view/buy_offers_view.dart';
 import 'package:shiplan_service/view/home_view/offers_view.dart';
 import 'package:shiplan_service/view/home_view/orders_managment_view.dart';
 import 'package:shiplan_service/view/home_view/rent_offers_view.dart';
-
-import '../drawer_screen/our_location_page.dart';
-import '../drawer_screen/technical_support.dart';
+// import '../drawer_screen/our_location_page.dart';
+// import '../drawer_screen/technical_support.dart';
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
@@ -48,7 +47,7 @@ class _HomeViewState extends State<HomeView> {
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 onTap: () {
-                  Get.to(const TechnicalSupport());
+                  // Get.to(const TechnicalSupport());
                 },
               ),
               ListTile(
