@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shiplan_service/view/home_view/nav_bar_view.dart';
 
-import '../constants.dart';
-import '../view/home_view/home_view.dart';
+import '../../constants.dart';
+import '../../view/home_view/home_view.dart';
 import 'auth_service.dart';
 
 class AuthViewModel extends GetxController {

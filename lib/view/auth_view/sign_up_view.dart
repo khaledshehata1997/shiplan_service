@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../constants.dart';
-import '../../view_model/auth_view_model.dart';
+import '../../view_model/auth_model/auth_view_model.dart';
 import '../home_view/home_view.dart';
 import 'sign_in_view.dart';
 import 'sign_up_view.dart';

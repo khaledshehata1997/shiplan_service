@@ -10,7 +10,7 @@ import 'package:shiplan_service/view/home_view/home_view.dart';
 import 'package:shiplan_service/view/home_view/nav_bar_view.dart';
 
 import '../../constants.dart';
-import '../../view_model/auth_view_model.dart';
+import '../../view_model/auth_model/auth_view_model.dart';
 import 'sign_up_view.dart';
 import 'verification_view.dart';
 
