@@ -27,8 +27,16 @@ if (flutterVersionName == null) {
 }
 android {
     namespace = "com.example.shiplan_service"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 34 // Replace with the actual SDK version you're using
+    ndkVersion = '21.4.7075529' // Use the correct NDK version or remove if not using NDK
+    
+    defaultConfig {
+        applicationId "com.example.shiplan_service"
+        minSdk = 23
+        targetSdk = 34  // Replace with your target SDK version
+        versionCode = flutterVersionCode.toInteger() // Use the `flutterVersionCode` you've already defined
+        versionName = flutterVersionName // Use the `flutterVersionName` you've already defined
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -36,28 +44,16 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
-    }
-
-    defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.shiplan_service"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 23
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        jvmTarget = '1.8'
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            signingConfig = signingConfigs.debug // Replace with release signingConfig if necessary
         }
     }
 }
+
 
 flutter {
     source = "../.."

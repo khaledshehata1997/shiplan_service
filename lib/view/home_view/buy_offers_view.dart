@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shiplan_service/constants.dart';
 import 'package:shiplan_service/view/home_view/order_details.dart';
+import 'package:shiplan_service/view_model/service_model/service_model.dart';
+
 class BuyOffersView extends StatefulWidget {
   const BuyOffersView({super.key});
 
@@ -10,7 +13,8 @@ class BuyOffersView extends StatefulWidget {
   State<BuyOffersView> createState() => _BuyOffersViewState();
 }
 
-class _BuyOffersViewState extends State<BuyOffersView> with SingleTickerProviderStateMixin{
+class _BuyOffersViewState extends State<BuyOffersView>
+    with SingleTickerProviderStateMixin {
   late TabController tabController;
   @override
   void initState() {
@@ -20,11 +24,43 @@ class _BuyOffersViewState extends State<BuyOffersView> with SingleTickerProvider
     // });
     super.initState();
   }
+
   @override
   void dispose() {
     super.dispose();
     tabController.dispose();
   }
+
+  Future<List<ServiceModel>> fetchDayServices() async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('services')
+        .doc('day')
+        .get();
+
+    if (snapshot.exists) {
+      List<dynamic> servicesData =
+          (snapshot.data() as Map<String, dynamic>)['services'] ?? [];
+      return servicesData.map((data) => ServiceModel.fromMap(data)).toList();
+    } else {
+      return [];
+    }
+  }
+
+  Future<List<ServiceModel>> fetchNightServices() async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('services')
+        .doc('night')
+        .get();
+
+    if (snapshot.exists) {
+      List<dynamic> servicesData =
+          (snapshot.data() as Map<String, dynamic>)['services'] ?? [];
+      return servicesData.map((data) => ServiceModel.fromMap(data)).toList();
+    } else {
+      return [];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +69,11 @@ class _BuyOffersViewState extends State<BuyOffersView> with SingleTickerProvider
         backgroundColor: Colors.white,
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text("خدمات الأستقدام",textDirection: TextDirection.rtl,style: TextStyle(color: Colors.black),),
+        title: const Text(
+          "خدمات الأستقدام",
+          textDirection: TextDirection.rtl,
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -54,7 +94,7 @@ class _BuyOffersViewState extends State<BuyOffersView> with SingleTickerProvider
                 controller: tabController,
                 // give the indicator a decoration (color and border radius)
                 indicator: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  borderRadius: const BorderRadius.all(Radius.circular(15)),
                   color: buttonColor,
                 ),
                 dividerColor: Colors.white,
@@ -86,130 +126,209 @@ class _BuyOffersViewState extends State<BuyOffersView> with SingleTickerProvider
             ),
             // tab bar view here
             Expanded(
-              child: TabBarView(
-                controller: tabController,
-                children: [
-                  // first tab bar view widget
-                  GridView.builder(
-                    // scrollDirection: Axis.horizontal,
-                    //  physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 10,
-                    shrinkWrap: true,
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 1.65,
-                        mainAxisSpacing: 15,
-                        crossAxisCount: 1),
-                    itemBuilder: (BuildContext context, int index) {
-                      //  final product = products[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: GestureDetector(
-                          onTap: (){
-                            Get.to(const OrderDetails());
-                            // Get.to(const ProductDetails());
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            // height: Get.height * 0.09,
-                            // width: Get.width * 0.4,
-                            decoration: BoxDecoration(
-                                image:  DecorationImage(
-                                  scale: 1,
-                                  alignment: Alignment.centerLeft,
-                                  image: AssetImage(index.isOdd ? 'images/cleaning service.png' : 'images/man carrying son in baby sling.png',),),
-                                boxShadow:  const  [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    offset: Offset(0.0, 1.0), //(x,y)
-                                    blurRadius: 3.0,
-                                  ),
-                                ],
-                                color: index.isEven ?  buttonColor : mainColor,
-                                borderRadius:
-                                BorderRadius.circular(10)),
-                            child:  const Padding(
-                              padding:  EdgeInsets.all(6.0),
-                              child:   Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text('باقة 1 عامله + 1 مباشرة 8 ساعات 540 \n ريال بعد الضريبة 585 ريال ',textDirection:TextDirection.rtl,style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Colors.white),),
-                                  SizedBox(height: 10,),
-                                  Text('عدد الساعات: 8 ساعات',textDirection:TextDirection.rtl,style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-                                  SizedBox(height: 10,),
-                                  Text('السعر الأصلي: 540 ريال',textDirection:TextDirection.rtl,style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-                                  SizedBox(height: 10,),
-                                  Text('السعر بعد الضريبة: 585 ريال',textDirection:TextDirection.rtl,style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+              child: TabBarView(controller: tabController, children: [
+                // first tab bar view widget
 
-                  // second tab bar view widget
-                  GridView.builder(
-                    // scrollDirection: Axis.horizontal,
-                    //  physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 10,
-                    shrinkWrap: true,
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 1.65,
-                        mainAxisSpacing: 15,
-                        crossAxisCount: 1),
-                    itemBuilder: (BuildContext context, int index) {
-                      //  final product = products[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: GestureDetector(
-                          onTap: (){
-                            Get.to(const OrderDetails());
-                            // Get.to(const ProductDetails());
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            // height: Get.height * 0.09,
-                            // width: Get.width * 0.4,
-                            decoration: BoxDecoration(
-                                image:  DecorationImage(
-                                  scale: 1,
-                                  alignment: Alignment.centerLeft,
-                                  image: AssetImage(index.isOdd ? 'images/cleaning service.png' : 'images/man carrying son in baby sling.png',),),
-                                boxShadow:  const  [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    offset: Offset(0.0, 1.0), //(x,y)
-                                    blurRadius: 3.0,
+                // second tab bar view widget
+                FutureBuilder<List<ServiceModel>>(
+                  future: fetchNightServices(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('No services found'));
+                    } else {
+                      List<ServiceModel> services = snapshot.data!;
+                      return ListView.builder(
+                        itemCount: services.length,
+                        itemBuilder: (context, index) {
+                          ServiceModel service = services[index];
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              onTap: () {
+                                Get.to(OrderDetails(serviceModel: service));
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                // height: Get.height * 0.09,
+                                // width: Get.width * 0.4,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      scale: 1,
+                                      alignment: Alignment.centerLeft,
+                                      image: AssetImage(
+                                        index.isOdd
+                                            ? 'images/cleaning service.png'
+                                            : 'images/man carrying son in baby sling.png',
+                                      ),
+                                    ),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        offset: Offset(0.0, 1.0), //(x,y)
+                                        blurRadius: 3.0,
+                                      ),
+                                    ],
+                                    color:
+                                        index.isEven ? buttonColor : mainColor,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        '${service.title}',
+                                        textDirection: TextDirection.rtl,
+                                        style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        'عدد الساعات: ${service.hours} ساعات',
+                                        textDirection: TextDirection.rtl,
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        'السعر الأصلي: ${service.priceAfterTax} ريال',
+                                        textDirection: TextDirection.rtl,
+                                        style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        'السعر بعد الضريبة: ${service.priceAfterTax} ريال',
+                                        textDirection: TextDirection.rtl,
+                                        style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                                color: index.isEven ?  buttonColor : mainColor,
-                                borderRadius:
-                                BorderRadius.circular(10)),
-                            child:  const Padding(
-                              padding:  EdgeInsets.all(8.0),
-                              child:   Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text('باقة 1 عامله + 1 مباشرة 8 ساعات 540 \n ريال بعد الضريبة 585 ريال ',textDirection:TextDirection.rtl,style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Colors.white),),
-                                  SizedBox(height: 10,),
-                                  Text('عدد الساعات: 8 ساعات',textDirection:TextDirection.rtl,style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-                                  SizedBox(height: 10,),
-                                  Text('السعر الأصلي: 540 ريال',textDirection:TextDirection.rtl,style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-                                  SizedBox(height: 10,),
-                                  Text('السعر بعد الضريبة: 585 ريال',textDirection:TextDirection.rtl,style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       );
-                    },
-                  ),
-                ],
-              ),
+                    }
+                  },
+                ),
+                FutureBuilder<List<ServiceModel>>(
+                  future: fetchDayServices(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('No services found'));
+                    } else {
+                      List<ServiceModel> services = snapshot.data!;
+                      return ListView.builder(
+                        itemCount: services.length,
+                        itemBuilder: (context, index) {
+                          ServiceModel service = services[index];
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              onTap: () {
+                                Get.to(OrderDetails(serviceModel: service));
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                // height: Get.height * 0.09,
+                                // width: Get.width * 0.4,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      scale: 1,
+                                      alignment: Alignment.centerLeft,
+                                      image: AssetImage(
+                                        index.isOdd
+                                            ? 'images/cleaning service.png'
+                                            : 'images/man carrying son in baby sling.png',
+                                      ),
+                                    ),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        offset: Offset(0.0, 1.0), //(x,y)
+                                        blurRadius: 3.0,
+                                      ),
+                                    ],
+                                    color:
+                                        index.isEven ? buttonColor : mainColor,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        '${service.title}',
+                                        textDirection: TextDirection.rtl,
+                                        style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        'عدد الساعات: ${service.hours} ساعات',
+                                        textDirection: TextDirection.rtl,
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        'السعر الأصلي: ${service.priceAfterTax} ريال',
+                                        textDirection: TextDirection.rtl,
+                                        style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        'السعر بعد الضريبة: ${service.priceAfterTax} ريال',
+                                        textDirection: TextDirection.rtl,
+                                        style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
+              ]),
             ),
           ],
         ),

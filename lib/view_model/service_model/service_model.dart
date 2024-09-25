@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Service {
+class ServiceModel {
   final String id;
   final String serviceSummary;
+  final int hours;
+  final int vistCount;
   final String serviceType;
   final String maidId;
   final String maidCountry;
@@ -11,184 +13,187 @@ class Service {
   final String description;
   final double priceAfterTax;
   final String title;
-  final Map<String,String> freeDays;
-  final bool dayOrNight;
-  Service(
-      {
-        required this.dayOrNight,
-        required this.maidId,
-        required this.serviceSummary,
-        required this.maidCountry,
-        required this.serviceType,
-        required this.description,
-        required this.freeDays,
-        required this.title,
-        required this.id,
-        required this.regularPrice,
-        required this.priceAfterTax});
+  final bool isDay;
+  final Map<String, bool> freeDays;
 
-  factory Service.fromSnapshot(DocumentSnapshot snapshot) {
-    final data = snapshot.data() as Map<String, dynamic>;
-    double parseDouble(dynamic value) {
-      if (value is num) {
-        return value.toDouble();
-      } else if (value is String) {
-        return double.tryParse(value) ?? 0.0;
-      } else {
-        return 0.0;
-      }
-    }
-    return Service(
-      id: snapshot.id,
-      regularPrice: parseDouble(data['regularPrice']),
-      description: data['description'],
-      title: data['title'],
-      dayOrNight: data['dayOrNight'],
-      maidId: data['maidId'],
-      maidCountry: data['maidCountry'],
-      serviceType: data['serviceType'],
-      freeDays: data['freeDays'],
-      priceAfterTax: data['priceAfterTax'],
-      serviceSummary: data["serviceSummary"],
+  ServiceModel(
+      {required this.maidId,
+      required this.vistCount,
+      required this.isDay,
+      required this.hours,
+      required this.serviceSummary,
+      required this.maidCountry,
+      required this.serviceType,
+      required this.description,
+      required this.freeDays,
+      required this.title,
+      required this.id,
+      required this.regularPrice,
+      required this.priceAfterTax});
+
+  factory ServiceModel.fromMap(Map<String, dynamic> data) {
+    return ServiceModel(
+      id: data['id'] ?? '',
+      hours: data['hours'] ?? 0,
+      vistCount: data['vistCount'] ?? 0,
+      isDay: data['isDay'] ?? false,
+      serviceSummary: data['serviceSummary'] ?? '',
+      serviceType: data['serviceType'] ?? '',
+      maidId: data['maidId'] ?? '',
+      maidCountry: data['maidCountry'] ?? '',
+      regularPrice: data['regularPrice'].toDouble() ?? 0.0,
+      description: data['description'] ?? '',
+      priceAfterTax: data['priceAfterTax'].toDouble() ?? 0.0,
+      title: data['title'] ?? '',
+      freeDays: Map<String, bool>.from(data['freeDays'] ?? {}),
     );
   }
-
   Map<String, dynamic> toMap() {
     return {
       'regularPrice': regularPrice,
       'description': description,
-      'title' : title,
-      'dayOrNight' : dayOrNight,
-      'maidId' : maidId,
-      'maidCountry' : maidCountry,
-      'serviceType' : serviceType,
-      'freeDays' : freeDays,
-      'priceAfterTax' : priceAfterTax,
-      'serviceSummary' :serviceSummary,
+      'hours': hours,
+      'id': id,
+      'vistCount': vistCount,
+      'isDay': isDay,
+      'title': title,
+      'maidId': maidId,
+      'maidCountry': maidCountry,
+      'serviceType': serviceType,
+      'freeDays': freeDays,
+      'priceAfterTax': priceAfterTax,
+      'serviceSummary': serviceSummary,
     };
-  }
-
-  Service copyWith({
-    String? serviceSummary,
-    double? regularPrice,
-    String? description,
-    String? title,
-    bool? dayOrNight,
-    String? maidId,
-    String? maidCountry,
-    String? serviceType,
-    Map<String,String>? freeDays,
-    double? priceAfterTax,
-
-  }) {
-    return Service(
-      id: id,
-      regularPrice: regularPrice ?? this.regularPrice,
-      description: description ?? this.description,
-      title: title ?? this.title,
-      dayOrNight: dayOrNight ?? this.dayOrNight,
-      maidId: maidId ?? this.maidId,
-      maidCountry:  maidCountry ?? this.maidCountry,
-      serviceType: serviceType ?? this.serviceType,
-      freeDays: freeDays ?? this.freeDays,
-      priceAfterTax: priceAfterTax ?? this.priceAfterTax,
-      serviceSummary: serviceSummary ?? this.serviceSummary,
-
-    );
   }
 }
 
 class ServicesService {
-  Future<void> addService(
-      {required String serviceSummary,
-        required String title,
-        required bool dayOrNight,
-        required String serviceType,
-        required String maidId,
-        required String maidCountry,
-        required Map<String,String> freeDays,
-        required String description,
-        required double regularPrice,
-        required double priceAfterTax,
-      }) async {
-    final collection = FirebaseFirestore.instance.collection('services');
-    await collection.add({
-      "description" : description,
-      'title': title,
-      'regularPrice': regularPrice,
-      'serviceSummary':serviceSummary,
-      'dayOrNight' : dayOrNight,
-      'serviceType' :serviceType,
-      'maidId' : maidId,
-      'maidCountry' : maidCountry,
-      'freeDays' :freeDays,
-      'priceAfterTax' : priceAfterTax,
+//day services
+  static void addDayService(ServiceModel newService) async {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('services').doc('day');
+
+    // First, get the current list of services
+    DocumentSnapshot docSnapshot = await documentReference.get();
+
+    // If the document exists, retrieve the current list of services
+    List<dynamic> servicesList = [];
+    if (docSnapshot.exists && docSnapshot.data() != null) {
+      servicesList =
+          (docSnapshot.data() as Map<String, dynamic>)['services'] ?? [];
+    }
+
+    // Add the new service to the list
+    servicesList.add(newService.toMap());
+
+    // Update the document with the new list of services
+    await documentReference.set({
+      'services': servicesList,
+    }, SetOptions(merge: true)).then((value) {
+      print("Service successfully added!");
+    }).catchError((error) {
+      print("Failed to add service: $error");
     });
   }
 
-  Stream<List<Service>> getProducts() {
+  static void addRentDayService(ServiceModel newService) async {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('rent').doc('day');
+
+    // First, get the current list of services
+    DocumentSnapshot docSnapshot = await documentReference.get();
+
+    // If the document exists, retrieve the current list of services
+    List<dynamic> servicesList = [];
+    if (docSnapshot.exists && docSnapshot.data() != null) {
+      servicesList =
+          (docSnapshot.data() as Map<String, dynamic>)['rentService'] ?? [];
+    }
+
+    // Add the new service to the list
+    servicesList.add(newService.toMap());
+
+    // Update the document with the new list of services
+    await documentReference.set({
+      'rentService': servicesList,
+    }, SetOptions(merge: true)).then((value) {
+      print("Service successfully added!");
+    }).catchError((error) {
+      print("Failed to add service: $error");
+    });
+  }
+
+  static void addRentNightService(ServiceModel newService) async {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('rent').doc('night');
+
+    // First, get the current list of services
+    DocumentSnapshot docSnapshot = await documentReference.get();
+
+    // If the document exists, retrieve the current list of services
+    List<dynamic> servicesList = [];
+    if (docSnapshot.exists && docSnapshot.data() != null) {
+      servicesList =
+          (docSnapshot.data() as Map<String, dynamic>)['rentService'] ?? [];
+    }
+
+    // Add the new service to the list
+    servicesList.add(newService.toMap());
+
+    // Update the document with the new list of services
+    await documentReference.set({
+      'rentService': servicesList,
+    }, SetOptions(merge: true)).then((value) {
+      print("Service successfully added!");
+    }).catchError((error) {
+      print("Failed to add service: $error");
+    });
+  }
+
+//night services
+  static void addNightService(ServiceModel newService) async {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('services').doc('night');
+
+    // First, get the current list of services
+    DocumentSnapshot docSnapshot = await documentReference.get();
+
+    // If the document exists, retrieve the current list of services
+    List<dynamic> servicesList = [];
+    if (docSnapshot.exists && docSnapshot.data() != null) {
+      servicesList =
+          (docSnapshot.data() as Map<String, dynamic>)['services'] ?? [];
+    }
+
+    // Add the new service to the list
+    servicesList.add(newService.toMap());
+
+    // Update the document with the new list of services
+    await documentReference.set({
+      'services': servicesList,
+    }, SetOptions(merge: true)).then((value) {
+      print("Service successfully added!");
+    }).catchError((error) {
+      print("Failed to add service: $error");
+    });
+  }
+
+  Stream<List<ServiceModel>> getProducts() {
     final collection = FirebaseFirestore.instance.collection('services');
     return collection.snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) => Service.fromSnapshot(doc)).toList();
+      return snapshot.docs
+          .map((doc) => ServiceModel.fromMap(doc.data()))
+          .toList();
     });
   }
-  // Stream<List<Service>> getUnavailableProducts() {
-  //   final collection = FirebaseFirestore.instance.collection('products');
-  //   return collection.where('avalible', isEqualTo: false).snapshots().map((snapshot) {
-  //     return snapshot.docs.map((doc) => Service.fromSnapshot(doc)).toList();
-  //   });
-  // }
-  // Future<void> productNotAvailable(String product) async {
-  //   final collection = FirebaseFirestore.instance.collection('products');
-  //   return await collection.doc(product).update(
-  //     {
-  //       'avalible' : false,
-  //     },
-  //   );
-  // }
-  // Future<void> productAvailable(String product)async{
-  //   final collection = FirebaseFirestore.instance.collection('products');
-  //   return await collection.doc(product).update(
-  //     {
-  //       'avalible' : true,
-  //     },
-  //   );
-  // }
 
-
-  // Future<void> addProductToBestSelling(Service product) async{
-  //   final collection = FirebaseFirestore.instance.collection('products');
-  //   await collection.doc(product.id).update({
-  //     "isbestselling" : true,
-  //   });
-  //
-  //
-  // }
-  // Future<void> removeProductFromBestSelling(Service product) async{
-  //   final collection = FirebaseFirestore.instance.collection('products');
-  //   await collection.doc(product.id).update({
-  //     'isbestselling' : false,
-  //   });
-  // }
-  // Future<void> addProductToFavorite(Service product) async{
-  //   final collection = FirebaseFirestore.instance.collection('products');
-  //   await collection.doc(product.id).update({
-  //     "favorite" : true,
-  //   });
-  //
-  //
-  // }
-  // Future<void> removeProductFromFavorite(Service product) async{
-  //   final collection = FirebaseFirestore.instance.collection('products');
-  //   await collection.doc(product.id).update({
-  //     'favorite' : false,
-  //   });
-  // }
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   Future<List<String>> getAllTokens() async {
-    QuerySnapshot snapshot = await _db.collection('users').where('fcm', isNotEqualTo: null).get();
+    QuerySnapshot snapshot =
+        await _db.collection('users').where('fcm', isNotEqualTo: null).get();
 
-    List<String> tokens = snapshot.docs.map((doc) => doc['fcm'] as String).toList();
+    List<String> tokens =
+        snapshot.docs.map((doc) => doc['fcm'] as String).toList();
 
     return tokens;
   }
@@ -229,9 +234,9 @@ class ServicesService {
   //   await dataCollection.doc(categoryId).delete();
   // }
   //delete Product by id
-  Future<void> deleteProduct(String productId) async{
+  Future<void> deleteProduct(String productId) async {
     final CollectionReference dataCollection =
-    FirebaseFirestore.instance.collection('products');
+        FirebaseFirestore.instance.collection('products');
     await dataCollection.doc(productId).delete();
   }
   // Future<void> deleteProductFromBestSelling(String productId) async{
@@ -299,23 +304,21 @@ class ServicesService {
   //   });
   // }
 
-
 // update product
   Future<void> updateProduct(
-      Service product,
-      ) async {
+    ServiceModel product,
+  ) async {
     final collection = FirebaseFirestore.instance
         .collection('products')
         .doc(product.id)
         .update(product.toMap());
 
     await collection;
-
-
   }
-  Future<Service> getProductById(String productId) async {
-    final collection = FirebaseFirestore.instance.collection('products');
-    final doc = await collection.doc(productId).get();
-    return Service.fromSnapshot(doc);
-  }
+
+  // Future<ServiceModel> getProductById(String productId) async {
+  //   final collection = FirebaseFirestore.instance.collection('products');
+  //   final doc = await collection.doc(productId).get();
+  //   return ServiceModel.fromMap(doc.data());
+  // }
 }
