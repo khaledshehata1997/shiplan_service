@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../view_model/maid_model/maid_model.dart';
 
@@ -37,50 +38,73 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
   }
 
   // Add Maid to Firestore
-  Future<void> _addMaid() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+Future<void> _addMaid() async {
+  if (_formKey.currentState!.validate()) {
+    _formKey.currentState!.save();
 
-      try {
-        // Placeholder for image URL - replace this with actual image upload logic
-        String imageUrl = imageFile != null ? imageFile!.path : '';
+    try {
+      // Placeholder for image URL - replace this with actual image upload logic
+      String imageUrl = imageFile != null ? imageFile!.path : '';
 
-        // Create the Maid object
-        Maid newMaid = Maid(
-          id: '', // Firestore will generate this ID
-          name: name,
-          age: age,
-          country: country,
-          imageUrl: imageUrl,
-        );
+      // Create the Maid object
+      MaidModel newMaid = MaidModel(
+        id: Uuid().v4(),
+        name: name,
+        age: age,
+        country: country,
+        imageUrl: imageUrl,
+      );
 
-        // Add maid to Firestore
-        await FirebaseFirestore.instance.collection('maids').add(newMaid.toMap());
+      // Firestore reference to 'maids' collection, or specific document if needed
+      DocumentReference documentReference = FirebaseFirestore.instance.collection('maids').doc('maidList');
 
+      // First, get the current list of maids
+      DocumentSnapshot docSnapshot = await documentReference.get();
+
+      // If the document exists, retrieve the current list of maids
+      List<dynamic> maidsList = [];
+      if (docSnapshot.exists && docSnapshot.data() != null) {
+        maidsList = (docSnapshot.data() as Map<String, dynamic>)['maidService'] ?? [];
+      }
+
+      // Add the new maid to the list
+      maidsList.add(newMaid.toMap());
+
+      // Update the document with the new list of maids
+      await documentReference.set({
+        'maidService': maidsList,
+      }, SetOptions(merge: true)).then((value) {
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Maid added successfully!')),
         );
-
-        // Clear form fields or navigate back
-        _formKey.currentState!.reset();
-        setState(() {
-          imageFile = null;
-        });
-      } catch (e) {
+      }).catchError((error) {
         // Show error message
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error adding maid: $e')),
+          SnackBar(content: Text('Failed to add maid: $error')),
         );
-      }
+      });
+
+      // Clear form fields or navigate back
+      _formKey.currentState!.reset();
+      setState(() {
+        imageFile = null;
+      });
+    } catch (e) {
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error adding maid: $e')),
+      );
     }
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Maid'),
+        title: Text('اضف خادمة'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -104,11 +128,11 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
 
               // Age input field
               TextFormField(
-                decoration: InputDecoration(labelText: 'Age'),
+                decoration: InputDecoration(labelText: 'السن'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty || int.tryParse(value) == null) {
-                    return 'Please enter a valid age';
+                    return 'من فضلك ادخل السن';
                   }
                   return null;
                 },
@@ -119,10 +143,10 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
 
               // Country input field
               TextFormField(
-                decoration: InputDecoration(labelText: 'Country'),
+                decoration: InputDecoration(labelText: 'الدولة'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a country';
+                    return 'من فضلك ادخل الدولة';
                   }
                   return null;
                 },
@@ -141,11 +165,11 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
                       imageFile!,
                       height: 150,
                     )
-                        : Text('No image selected'),
+                        : Text('لا يوجد صورة'),
                     ElevatedButton.icon(
                       onPressed: _pickImage,
                       icon: Icon(Icons.image),
-                      label: Text('Pick Image'),
+                      label: Text('التقاط صورة'),
                     ),
                   ],
                 ),
@@ -154,7 +178,7 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
               // Add Maid button
               ElevatedButton(
                 onPressed: _addMaid,
-                child: Text('Add Maid'),
+                child: Text('اضف خادمة'),
               ),
             ],
           ),

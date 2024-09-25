@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Maid {
+class MaidModel {
   String id; // Firestore document ID
   String name;
   int age;
   String country;
   String imageUrl;
 
-  Maid({
+  MaidModel({
     required this.id,
     required this.name,
     required this.age,
@@ -26,8 +26,8 @@ class Maid {
   }
 
   // Create a Maid object from Firebase document data
-  factory Maid.fromMap(String id, Map<String, dynamic> data) {
-    return Maid(
+  factory MaidModel.fromMap(String id, Map<String, dynamic> data) {
+    return MaidModel(
       id: id,
       name: data['name'],
       age: data['age'],
@@ -36,7 +36,7 @@ class Maid {
     );
   }
 }
-Future<void> addMaid(Maid maid) async {
+Future<void> addMaid(MaidModel maid) async {
   final firestore = FirebaseFirestore.instance;
 
   try {
@@ -45,7 +45,7 @@ Future<void> addMaid(Maid maid) async {
     print("Error adding maid: $e");
   }
 }
-Future<void> updateMaid(Maid maid) async {
+Future<void> updateMaid(MaidModel maid) async {
   final firestore = FirebaseFirestore.instance;
 
   try {
