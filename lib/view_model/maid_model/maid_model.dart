@@ -20,6 +20,7 @@ class MaidModel {
     return {
       'name': name,
       'age': age,
+      'id': id,
       'country': country,
       'imageUrl': imageUrl,
     };
