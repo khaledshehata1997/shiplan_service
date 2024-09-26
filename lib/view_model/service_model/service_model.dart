@@ -95,6 +95,32 @@ class ServicesService {
       print("Failed to add service: $error");
     });
   }
+    static void addDayOffersService(ServiceModel newService) async {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('offers').doc('day');
+
+    // First, get the current list of services
+    DocumentSnapshot docSnapshot = await documentReference.get();
+
+    // If the document exists, retrieve the current list of services
+    List<dynamic> servicesList = [];
+    if (docSnapshot.exists && docSnapshot.data() != null) {
+      servicesList =
+          (docSnapshot.data() as Map<String, dynamic>)['offers'] ?? [];
+    }
+
+    // Add the new service to the list
+    servicesList.add(newService.toMap());
+
+    // Update the document with the new list of services
+    await documentReference.set({
+      'offers': servicesList,
+    }, SetOptions(merge: true)).then((value) {
+      print("offers successfully added!");
+    }).catchError((error) {
+      print("Failed to add service: $error");
+    });
+  }
 
   static void addRentDayService(ServiceModel newService) async {
     DocumentReference documentReference =

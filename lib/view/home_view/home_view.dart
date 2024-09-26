@@ -9,6 +9,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:shiplan_service/constants.dart';
 import 'package:shiplan_service/main.dart';
 import 'package:shiplan_service/view/home_view/add_maid.dart';
+import 'package:shiplan_service/view/home_view/add_offers.dart';
 import 'package:shiplan_service/view/home_view/add_service.dart';
 import 'package:shiplan_service/view/home_view/buy_offers_view.dart';
 import 'package:shiplan_service/view/home_view/offers_view.dart';
@@ -80,6 +81,17 @@ class _HomeViewState extends State<HomeView> {
                   ),
                   onTap: () {
                     Get.to(const AddServiceScreen());
+                  },
+                ),
+                ListTile(
+                  // leading: const Icon(Icons.support_agent_outlined),
+                  title: Text(
+                    'اضافه عروض'.tr,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Get.to(const AddOffersScreen());
                   },
                 ),
                 ListTile(
