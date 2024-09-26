@@ -30,6 +30,20 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
+  Future<List<ServiceModel>> fetchOffers() async {
+    DocumentSnapshot snapshot =
+        await FirebaseFirestore.instance.collection('offers').doc('day').get();
+
+    if (snapshot.exists) {
+      List<dynamic> servicesData =
+          (snapshot.data() as Map<String, dynamic>)['offers'] ?? [];
+      return servicesData.map((data) => ServiceModel.fromMap(data)).toList();
+    } else {
+      return [];
+    }
+  }
+
+  List<ServiceModel> offersList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -434,7 +448,9 @@ class _HomeViewState extends State<HomeView> {
                     children: [
                       IconButton(
                           onPressed: () {
-                            Get.to(const OffersView());
+                            Get.to(OffersView(
+                              offers: offersList,
+                            ));
                           },
                           icon: const Icon(Icons.arrow_back_ios)),
                       const Text(
@@ -460,104 +476,121 @@ class _HomeViewState extends State<HomeView> {
               SizedBox(
                   height: Get.height * .3,
                   width: Get.width,
-                  child: GridView.builder(
-                    reverse: true,
-                    scrollDirection: Axis.horizontal,
-                    //  physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 10,
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 1.2,
-                            mainAxisSpacing: 15,
-                            crossAxisCount: 1),
-                    itemBuilder: (BuildContext context, int index) {
-                      //  final product = products[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Get.to(const ProductDetails());
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            // height: Get.height * 0.09,
-                            // width: Get.width * 0.4,
-                            decoration: BoxDecoration(
-                                image: const DecorationImage(
-                                  image: AssetImage(
-                                    'images/women.png',
+                  child: FutureBuilder<List<ServiceModel>>(
+                      future: fetchOffers(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
+                          return const Center(child: Text('No services found'));
+                        } else {
+                          List<ServiceModel> offers = snapshot.data!;
+                          offersList = offers;
+                          return GridView.builder(
+                            reverse: true,
+                            scrollDirection: Axis.horizontal,
+                            //  physics: const NeverScrollableScrollPhysics(),
+                            itemCount: offers.length,
+                            shrinkWrap: true,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: 1.2,
+                                    mainAxisSpacing: 15,
+                                    crossAxisCount: 1),
+                            itemBuilder: (BuildContext context, int index) {
+                              ServiceModel offer = offers[index];
+                              return Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Get.to(OrderDetails(serviceModel: offer));
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    // height: Get.height * 0.09,
+                                    // width: Get.width * 0.4,
+                                    decoration: BoxDecoration(
+                                        image: const DecorationImage(
+                                          image: AssetImage(
+                                            'images/women.png',
+                                          ),
+                                        ),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Colors.grey,
+                                            offset: Offset(0.0, 1.0), //(x,y)
+                                            blurRadius: 3.0,
+                                          ),
+                                        ],
+                                        color: index.isEven
+                                            ? buttonColor
+                                            : mainColor,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            '${offer.vistCount} زيارات ${offer.isDay ? "صباحية" : "مسائية"} ${offer.maidCountry}',
+                                            textDirection: TextDirection.rtl,
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          SizedBox(
+                                            height: 25,
+                                          ),
+                                          Divider(),
+                                          SizedBox(
+                                            height: 25,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Icon(Icons.nights_stay_outlined),
+                                              Text(
+                                                '${offer.isDay ? 'صباحية' : 'مسائية'}',
+                                                textDirection:
+                                                    TextDirection.rtl,
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            '${offer.priceAfterTax} ريال',
+                                            textDirection: TextDirection.rtl,
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    offset: Offset(0.0, 1.0), //(x,y)
-                                    blurRadius: 3.0,
-                                  ),
-                                ],
-                                color: index.isEven ? buttonColor : mainColor,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    '4 زيارات مسائيه افريقيا',
-                                    textDirection: TextDirection.rtl,
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    '4 زيارات خلال الشهر',
-                                    textDirection: TextDirection.rtl,
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    height: 25,
-                                  ),
-                                  Divider(),
-                                  SizedBox(
-                                    height: 25,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Icon(Icons.nights_stay_outlined),
-                                      Text(
-                                        'مسائي',
-                                        textDirection: TextDirection.rtl,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    '310 ريال',
-                                    textDirection: TextDirection.rtl,
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  )),
+                              );
+                            },
+                          );
+                        }
+                      })),
             ],
           ),
         ));
