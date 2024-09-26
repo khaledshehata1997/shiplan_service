@@ -14,7 +14,7 @@ class ServiceModel {
   final double priceAfterTax;
   final String title;
   final bool isDay;
-  final Map<String, bool> freeDays;
+  final Map<String, Map<String, String>> freeDays;
 
   ServiceModel(
       {required this.maidId,
@@ -45,7 +45,12 @@ class ServiceModel {
       description: data['description'] ?? '',
       priceAfterTax: data['priceAfterTax'].toDouble() ?? 0.0,
       title: data['title'] ?? '',
-      freeDays: Map<String, bool>.from(data['freeDays'] ?? {}),
+      freeDays: (data['freeDays'] as Map<String, dynamic>).map((key, value) {
+        return MapEntry(
+          key,
+          Map<String, String>.from(value as Map), // Cast the inner map
+        );
+      }),
     );
   }
   Map<String, dynamic> toMap() {
@@ -148,10 +153,62 @@ class ServicesService {
       print("Failed to add service: $error");
     });
   }
+   static void addRentDayOffersService(ServiceModel newService) async {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('rentOffers').doc('day');
+
+    // First, get the current list of services
+    DocumentSnapshot docSnapshot = await documentReference.get();
+
+    // If the document exists, retrieve the current list of services
+    List<dynamic> servicesList = [];
+    if (docSnapshot.exists && docSnapshot.data() != null) {
+      servicesList =
+          (docSnapshot.data() as Map<String, dynamic>)['rentOffersService'] ?? [];
+    }
+
+    // Add the new service to the list
+    servicesList.add(newService.toMap());
+
+    // Update the document with the new list of services
+    await documentReference.set({
+      'rentService': servicesList,
+    }, SetOptions(merge: true)).then((value) {
+      print("Service successfully added!");
+    }).catchError((error) {
+      print("Failed to add service: $error");
+    });
+  }
 
   static void addRentNightService(ServiceModel newService) async {
     DocumentReference documentReference =
-        FirebaseFirestore.instance.collection('rent').doc('night');
+        FirebaseFirestore.instance.collection('rentOffers').doc('night');
+
+    // First, get the current list of services
+    DocumentSnapshot docSnapshot = await documentReference.get();
+
+    // If the document exists, retrieve the current list of services
+    List<dynamic> servicesList = [];
+    if (docSnapshot.exists && docSnapshot.data() != null) {
+      servicesList =
+          (docSnapshot.data() as Map<String, dynamic>)['rentService'] ?? [];
+    }
+
+    // Add the new service to the list
+    servicesList.add(newService.toMap());
+
+    // Update the document with the new list of services
+    await documentReference.set({
+      'rentService': servicesList,
+    }, SetOptions(merge: true)).then((value) {
+      print("Service successfully added!");
+    }).catchError((error) {
+      print("Failed to add service: $error");
+    });
+  }
+    static void addRentNightOffersService(ServiceModel newService) async {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('rentOffers').doc('night');
 
     // First, get the current list of services
     DocumentSnapshot docSnapshot = await documentReference.get();
@@ -203,7 +260,32 @@ class ServicesService {
       print("Failed to add service: $error");
     });
   }
+ static void addNightOffersService(ServiceModel newService) async {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('offers').doc('night');
 
+    // First, get the current list of services
+    DocumentSnapshot docSnapshot = await documentReference.get();
+
+    // If the document exists, retrieve the current list of services
+    List<dynamic> servicesList = [];
+    if (docSnapshot.exists && docSnapshot.data() != null) {
+      servicesList =
+          (docSnapshot.data() as Map<String, dynamic>)['offers'] ?? [];
+    }
+
+    // Add the new service to the list
+    servicesList.add(newService.toMap());
+
+    // Update the document with the new list of services
+    await documentReference.set({
+      'services': servicesList,
+    }, SetOptions(merge: true)).then((value) {
+      print("offers successfully added!");
+    }).catchError((error) {
+      print("Failed to add service: $error");
+    });
+  }
   Stream<List<ServiceModel>> getProducts() {
     final collection = FirebaseFirestore.instance.collection('services');
     return collection.snapshots().map((snapshot) {

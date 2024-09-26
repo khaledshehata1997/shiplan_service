@@ -6,13 +6,15 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:shiplan_service/view/home_view/order_data_view.dart';
 import 'package:shiplan_service/view_model/maid_model/maid_model.dart';
+import 'package:shiplan_service/view_model/service_model/service_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../constants.dart';
 
 class ConfirmOrderView extends StatefulWidget {
-  const ConfirmOrderView({super.key});
+  ServiceModel serviceModel;
+   ConfirmOrderView({super.key, required this.serviceModel});
 
   @override
   State<ConfirmOrderView> createState() => _ConfirmOrderViewState();
@@ -114,7 +116,7 @@ class _ConfirmOrderViewState extends State<ConfirmOrderView> {
       // WhatsApp URL with proper format
       String phoneNumber =
           "201064871625"; // Your custom phone number in international format (without the '+')
-      String message = "Order Details:\n"
+      String message = "Order Details:${widget.serviceModel.freeDays}  \n"
           "اسم الخادمة: ${_selectedMaid!.name}\n"
           "اسم العميل: $_fullName\n"
           "رقم الهاتف: $_phoneNumber\n"

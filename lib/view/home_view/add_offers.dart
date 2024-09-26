@@ -17,8 +17,8 @@ class AddOffersScreen extends StatefulWidget {
 class _AddOffersScreenState extends State<AddOffersScreen> {
   String? _selectedValue;
   List<String> listOfValue = [
-    'صباحي',
-    'مسائي',
+    'استقدام',
+    'تأجير',
   ];
   final summaryController = TextEditingController();
   final titleController = TextEditingController();
@@ -275,7 +275,7 @@ class _AddOffersScreenState extends State<AddOffersScreen> {
                                       int.parse(vistCountController.text),
                                   serviceSummary: summaryController.text,
                                   isDay:
-                                      _selectedValue == 'صباحي' ? true : false,
+                                      _selectedValue == 'استقدام' ? true : false,
                                   maidCountry: maidCountryController.text,
                                   serviceType: serviceTypeController.text,
                                   description: descriptionController.text,
