@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'auth_service.dart';
 class AuthViewModel extends GetxController {
   bool isLoading = false;
   bool isPhotoLoading = false;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   FirebaseAuth auth = FirebaseAuth.instance;
   final AuthService _authService = AuthService();
@@ -66,6 +68,12 @@ class AuthViewModel extends GetxController {
 
       var data = await auth.createUserWithEmailAndPassword(
           email: email!, password: password!);
+          await _firestore.collection('users').doc().set({
+          'uid':  data.user!.uid,
+          'email':email!,
+          'name': name!,
+          'isAdmin': false,
+        });
       _authService.createUserProfile(
         userId: data.user!.uid,
         name: name!,
