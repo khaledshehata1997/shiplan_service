@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
@@ -7,12 +8,11 @@ import 'package:uuid/uuid.dart';
 
 import '../../view_model/maid_model/maid_model.dart';
 
-
 class AddMaidScreen extends StatefulWidget {
   const AddMaidScreen({super.key});
 
   @override
-  State<AddMaidScreen>  createState() => _AddMaidScreenState();
+  State<AddMaidScreen> createState() => _AddMaidScreenState();
 }
 
 class _AddMaidScreenState extends State<AddMaidScreen> {
@@ -38,67 +38,79 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
   }
 
   // Add Maid to Firestore
-Future<void> _addMaid() async {
-  if (_formKey.currentState!.validate()) {
-    _formKey.currentState!.save();
+  Future<void> _addMaid() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
 
-    try {
-      // Placeholder for image URL - replace this with actual image upload logic
-      String imageUrl = imageFile != null ? imageFile!.path : '';
+      try {
+        // Upload image to Firebase Storage if the image is selected
+        String imageUrl = '';
+        if (imageFile != null) {
+          final storageRef = FirebaseStorage.instance
+              .ref()
+              .child('maids/${Uuid().v4()}'); // Generate unique file name
 
-      // Create the Maid object
-      MaidModel newMaid = MaidModel(
-        id: Uuid().v4(),
-        name: name,
-        age: age,
-        country: country,
-        imageUrl: imageUrl,
-      );
+          // Upload file to Firebase Storage
+          await storageRef.putFile(imageFile!);
 
-      // Firestore reference to 'maids' collection, or specific document if needed
-      DocumentReference documentReference = FirebaseFirestore.instance.collection('maids').doc('maidList');
+          // Get the download URL of the uploaded image
+          imageUrl = await storageRef.getDownloadURL();
+        }
 
-      // First, get the current list of maids
-      DocumentSnapshot docSnapshot = await documentReference.get();
-
-      // If the document exists, retrieve the current list of maids
-      List<dynamic> maidsList = [];
-      if (docSnapshot.exists && docSnapshot.data() != null) {
-        maidsList = (docSnapshot.data() as Map<String, dynamic>)['maidService'] ?? [];
-      }
-
-      // Add the new maid to the list
-      maidsList.add(newMaid.toMap());
-
-      // Update the document with the new list of maids
-      await documentReference.set({
-        'maidService': maidsList,
-      }, SetOptions(merge: true)).then((value) {
-        // Show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Maid added successfully!')),
+        // Create the Maid object with imageUrl
+        MaidModel newMaid = MaidModel(
+          id: Uuid().v4(),
+          name: name,
+          age: age,
+          country: country,
+          imageUrl: imageUrl,
         );
-      }).catchError((error) {
+
+        // Firestore reference to 'maids' collection or specific document
+        DocumentReference documentReference =
+            FirebaseFirestore.instance.collection('maids').doc('maidList');
+
+        // First, get the current list of maids
+        DocumentSnapshot docSnapshot = await documentReference.get();
+
+        // If the document exists, retrieve the current list of maids
+        List<dynamic> maidsList = [];
+        if (docSnapshot.exists && docSnapshot.data() != null) {
+          maidsList =
+              (docSnapshot.data() as Map<String, dynamic>)['maidService'] ?? [];
+        }
+
+        // Add the new maid to the list
+        maidsList.add(newMaid.toMap());
+
+        // Update the document with the new list of maids
+        await documentReference.set({
+          'maidService': maidsList,
+        }, SetOptions(merge: true)).then((value) {
+          // Show success message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Maid added successfully!')),
+          );
+        }).catchError((error) {
+          // Show error message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to add maid: $error')),
+          );
+        });
+
+        // Clear form fields or navigate back
+        _formKey.currentState!.reset();
+        setState(() {
+          imageFile = null;
+        });
+      } catch (e) {
         // Show error message
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to add maid: $error')),
+          SnackBar(content: Text('Error adding maid: $e')),
         );
-      });
-
-      // Clear form fields or navigate back
-      _formKey.currentState!.reset();
-      setState(() {
-        imageFile = null;
-      });
-    } catch (e) {
-      // Show error message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error adding maid: $e')),
-      );
+      }
     }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +143,9 @@ Future<void> _addMaid() async {
                 decoration: InputDecoration(labelText: 'السن'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
-                  if (value == null || value.isEmpty || int.tryParse(value) == null) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      int.tryParse(value) == null) {
                     return 'من فضلك ادخل السن';
                   }
                   return null;
@@ -162,9 +176,9 @@ Future<void> _addMaid() async {
                   children: [
                     imageFile != null
                         ? Image.file(
-                      imageFile!,
-                      height: 150,
-                    )
+                            imageFile!,
+                            height: 150,
+                          )
                         : Text('لا يوجد صورة'),
                     ElevatedButton.icon(
                       onPressed: _pickImage,

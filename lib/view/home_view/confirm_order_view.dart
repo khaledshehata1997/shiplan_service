@@ -47,7 +47,8 @@ class _ConfirmOrderViewState extends State<ConfirmOrderView> {
           .get();
 
       if (snapshot.exists && snapshot.data() != null) {
-        List<dynamic> maidServiceList = (snapshot.data() as Map<String, dynamic>)['maidService'] ?? [];
+        List<dynamic> maidServiceList =
+            (snapshot.data() as Map<String, dynamic>)['maidService'] ?? [];
 
         List<MaidModel> maids = maidServiceList.map((maid) {
           return MaidModel(
@@ -70,67 +71,71 @@ class _ConfirmOrderViewState extends State<ConfirmOrderView> {
     }
   }
 
-Future<void> _confirmOrder() async {
-  if (_selectedMaid == null || _fullName == null || _phoneNumber == null || _address == null) {
-    Get.snackbar('Error', 'Please fill all the fields and select a maid.');
-    return;
-  }
-
-  try {
-    // Create the order data
-    Map<String, dynamic> orderData = {
-      'maidId': _selectedMaid!.id,
-      'maidName': _selectedMaid!.name,
-      'fullName': _fullName,
-      'phoneNumber': _phoneNumber,
-      'address': _address,
-      'timestamp': DateTime.now().toIso8601String(),
-    };
-
-    // Reference to the user's document
-    DocumentReference userDocRef = FirebaseFirestore.instance.collection('users').doc(_userId);
-
-    // Get the current order history list from the user's document
-    DocumentSnapshot userDocSnapshot = await userDocRef.get();
-    Map<String, dynamic>? userData = userDocSnapshot.data() as Map<String, dynamic>?;
-
-    // Initialize orderHistory if it doesn't exist
-    List<dynamic> orderHistory = userData?['orderHistory'] ?? [];
-
-    // Append the new order to the order history list
-    orderHistory.add(orderData);
-
-    // Update the user's document with the new order history list
-    await userDocRef.update({'orderHistory': orderHistory});
-
-    Get.snackbar('Success', 'Order confirmed and saved to history.');
-
-    // WhatsApp URL with proper format
-    String phoneNumber = "201064871625"; // Your custom phone number in international format (without the '+')
-    String message = 
-        "Order Details:\n"
-        "Maid Name: ${_selectedMaid!.name}\n"
-        "Full Name: $_fullName\n"
-        "Phone Number: $_phoneNumber\n"
-        "Address: $_address\n"
-        "Timestamp: ${DateTime.now().toIso8601String()}";
-
-    String whatsappUrl = "https://wa.me/$phoneNumber?text=${Uri.encodeFull(message)}";
-
-    // Launch WhatsApp with the new method
-    Uri url = Uri.parse(whatsappUrl);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      Get.snackbar('Error', 'Could not launch WhatsApp.');
+  Future<void> _confirmOrder() async {
+    if (_selectedMaid == null ||
+        _fullName == null ||
+        _phoneNumber == null ||
+        _address == null) {
+      Get.snackbar('Error', 'Please fill all the fields and select a maid.');
+      return;
     }
 
-  } catch (e) {
-    print('Error saving order: $e');
-    Get.snackbar('Error', 'Failed to confirm the order. Please try again.');
-  }
-}
+    try {
+      // Create the order data
+      Map<String, dynamic> orderData = {
+        'maidId': _selectedMaid!.id,
+        'maidName': _selectedMaid!.name,
+        'fullName': _fullName,
+        'phoneNumber': _phoneNumber,
+        'address': _address,
+        'timestamp': DateTime.now().toIso8601String(),
+      };
 
+      // Reference to the user's document
+      DocumentReference userDocRef =
+          FirebaseFirestore.instance.collection('users').doc(_userId);
+
+      // Get the current order history list from the user's document
+      DocumentSnapshot userDocSnapshot = await userDocRef.get();
+      Map<String, dynamic>? userData =
+          userDocSnapshot.data() as Map<String, dynamic>?;
+
+      // Initialize orderHistory if it doesn't exist
+      List<dynamic> orderHistory = userData?['orderHistory'] ?? [];
+
+      // Append the new order to the order history list
+      orderHistory.add(orderData);
+
+      // Update the user's document with the new order history list
+      await userDocRef.update({'orderHistory': orderHistory});
+
+      Get.snackbar('Success', 'Order confirmed and saved to history.');
+
+      // WhatsApp URL with proper format
+      String phoneNumber =
+          "201064871625"; // Your custom phone number in international format (without the '+')
+      String message = "Order Details:\n"
+          "اسم الخادمة: ${_selectedMaid!.name}\n"
+          "اسم العميل: $_fullName\n"
+          "رقم الهاتف: $_phoneNumber\n"
+          "العنوان: $_address\n"
+          "التاريخ: ${DateTime.now().toIso8601String()}";
+
+      String whatsappUrl =
+          "https://wa.me/$phoneNumber?text=${Uri.encodeFull(message)}";
+
+      // Launch WhatsApp with the new method
+      Uri url = Uri.parse(whatsappUrl);
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
+      } else {
+        Get.snackbar('Error', 'Could not launch WhatsApp.');
+      }
+    } catch (e) {
+      print('Error saving order: $e');
+      Get.snackbar('Error', 'Failed to confirm the order. Please try again.');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,6 +170,7 @@ Future<void> _confirmOrder() async {
                             child: ListTile(
                               leading: Text("السن: ${maid.age}"),
                               title: Text("الاسم :${maid.name}"),
+                              subtitle: Image.network(maid.imageUrl),
                               trailing: Text("الدولة ${maid.country}"),
                             ),
                           );
@@ -264,11 +270,13 @@ Future<void> _confirmOrder() async {
                     height: Get.height * 0.06,
                     width: Get.width * 0.9,
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: buttonColor),
                       onPressed: _confirmOrder,
                       child: const Text(
                         "تأكيد الطلب",
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
