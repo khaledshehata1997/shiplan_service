@@ -162,16 +162,18 @@ class _ConfirmOrderViewState extends State<ConfirmOrderView> {
                 _maids.isNotEmpty
                     ? DropdownButton<MaidModel>(
                         isExpanded: true,
+                        itemHeight: 100,
                         hint: const Text('اختر الخادمة'),
                         value: _selectedMaid,
                         items: _maids.map((maid) {
                           return DropdownMenuItem<MaidModel>(
                             value: maid,
                             child: ListTile(
-                              leading: Text("السن: ${maid.age}"),
-                              title: Text("الاسم :${maid.name}"),
-                              subtitle: Image.network(maid.imageUrl),
-                              trailing: Text("الدولة ${maid.country}"),
+                              isThreeLine: true,
+                              title: Text("الاسم: ${maid.name}"),
+                              subtitle: Text("السن: ${maid.age}"),
+                              leading: Image.network(maid.imageUrl),
+                              trailing: Text("الدولة: ${maid.country}"),
                             ),
                           );
                         }).toList(),
