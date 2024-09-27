@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -463,7 +462,7 @@ bool isAdmin = false;
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   onTap: () {
-                    Get.to(const RentOffersView());
+                    Get.to( RentOffersView(isAdmin: isAdmin,));
                   },
                   child: Container(
                     padding: const EdgeInsets.all(4),

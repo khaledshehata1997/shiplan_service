@@ -7,7 +7,9 @@ import 'package:shiplan_service/view/home_view/order_details.dart';
 import 'package:shiplan_service/view_model/service_model/service_model.dart';
 
 class RentOffersView extends StatefulWidget {
-  const RentOffersView({super.key});
+  bool isAdmin;
+  
+   RentOffersView({super.key, required this.isAdmin});
 
   @override
   State<RentOffersView> createState() => _RentOffersViewState();
@@ -28,6 +30,24 @@ class _RentOffersViewState extends State<RentOffersView>
       return [];
     }
   }
+   Future<void> deleteDayService(ServiceModel service) async {
+        print("dddddffdfd ${widget.isAdmin}");
+
+    try {
+      await FirebaseFirestore.instance
+          .collection('rent')
+          .doc('day') // Specify the day or night document
+          .update({
+        'rentService': FieldValue.arrayRemove(
+            [service.toMap()]) // Use the exact map from the object
+      });
+      Get.snackbar('Success', 'Service deleted successfully',
+          snackPosition: SnackPosition.BOTTOM);
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to delete service: $e',
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
 
   Future<List<ServiceModel>> fetchRentNightServices() async {
     DocumentSnapshot snapshot =
@@ -39,6 +59,22 @@ class _RentOffersViewState extends State<RentOffersView>
       return servicesData.map((data) => ServiceModel.fromMap(data)).toList();
     } else {
       return [];
+    }
+  }
+   Future<void> deleteRentNightService(ServiceModel service) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('rentOffers')
+          .doc('night') // Specify the day or night document
+          .update({
+        'rentService': FieldValue.arrayRemove(
+            [service.toMap()]) // Use the exact map from the object
+      });
+      Get.snackbar('Success', 'Service deleted successfully',
+          snackPosition: SnackPosition.BOTTOM);
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to delete service: $e',
+          snackPosition: SnackPosition.BOTTOM);
     }
   }
 
@@ -141,6 +177,37 @@ class _RentOffersViewState extends State<RentOffersView>
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: InkWell(
+                              onLongPress: !widget.isAdmin ? () {} : () async {
+                                bool confirmDelete = await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Confirm Delete'),
+                                      content: const Text(
+                                          'Are you sure you want to delete this service?'),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text('Cancel'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(false);
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: const Text('Delete'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(true);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+
+                                if (confirmDelete == true) {
+                                  await deleteRentNightService(
+                                      service); // Pass the full ServiceModel object
+                                }
+                              },
                               onTap: () {
                                 Get.to(OrderDetails(
                                   serviceModel: service,
@@ -242,6 +309,38 @@ class _RentOffersViewState extends State<RentOffersView>
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: InkWell(
+                              onLongPress: !widget.isAdmin ? () {} : () async {
+                                bool confirmDelete = await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Confirm Delete'),
+                                      content: const Text(
+                                          'Are you sure you want to delete this service?'),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text('Cancel'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(false);
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: const Text('Delete'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(true);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+
+                                if (confirmDelete == true) {
+                                  await deleteDayService(
+                                      service); // Pass the full ServiceModel object
+                                }
+                              },
+
                               onTap: () {
                                 Get.to(OrderDetails(
                                   serviceModel: service,
