@@ -6,9 +6,11 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:shiplan_service/view/home_view/order_data_view.dart';
 import 'package:shiplan_service/view_model/maid_model/maid_model.dart';
+import 'package:shiplan_service/view_model/order_model/order_model.dart';
 import 'package:shiplan_service/view_model/service_model/service_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../constants.dart';
 
@@ -84,16 +86,30 @@ class _ConfirmOrderViewState extends State<ConfirmOrderView> {
 
     try {
       // Create the order data
-      Map<String, dynamic> orderData = {
-        'maidId': _selectedMaid!.id,
-        'maidName': _selectedMaid!.name,
-        'fullName': _fullName,
-        'phoneNumber': _phoneNumber,
-        'price': widget.serviceModel.priceAfterTax,
-        'serviceType': widget.serviceModel.isDay?'صباحية':'مسائية',
-        'address': _address,
-        'timestamp': DateTime.now().toIso8601String(),
-      };
+      // Map<String, dynamic> orderData = {
+      //   'maidId': _selectedMaid!.id,
+      //   'maidName': _selectedMaid!.name,
+      //   'fullName': _fullName,
+      //   'phoneNumber': _phoneNumber,
+      //   'price': widget.serviceModel.priceAfterTax,
+      //   'serviceType': widget.serviceModel.isDay?'صباحية':'مسائية',
+      //   'address': _address,
+      //   'timestamp': DateTime.now().toIso8601String(),
+      // };
+      OrderModel orderData = OrderModel(
+        id: Uuid().v4(),
+         maidId: _selectedMaid!.id,
+          visitCount:  widget.serviceModel.vistCount,
+           maidName:  _selectedMaid!.name,
+            maidCountry:  widget.serviceModel.maidCountry, 
+            fullName: _fullName!,
+             phoneNumber: _phoneNumber!, 
+            address: _address!,
+             isDay: widget.serviceModel.isDay?'صباحية':'مسائية',
+              serviceType: widget.serviceModel.isDay?'صباحية':'مسائية',
+               price: widget.serviceModel.priceAfterTax,
+                timestamp: DateTime.now(),
+                );
 
       // Reference to the user's document
       DocumentReference userDocRef =
@@ -108,7 +124,7 @@ class _ConfirmOrderViewState extends State<ConfirmOrderView> {
       List<dynamic> orderHistory = userData?['orderHistory'] ?? [];
 
       // Append the new order to the order history list
-      orderHistory.add(orderData);
+      orderHistory.add(orderData.toMap());
 
       // Update the user's document with the new order history list
       await userDocRef.update({'orderHistory': orderHistory});

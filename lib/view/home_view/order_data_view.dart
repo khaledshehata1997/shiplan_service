@@ -41,7 +41,7 @@ class _OrderDataViewState extends State<OrderDataView> {
                 height: 10,
               ),
               Text(
-                '${widget.orderDetails.timestamp}',
+                '${widget.orderDetails.id}',
                 textDirection: TextDirection.rtl,
                 style: const TextStyle(
                   fontSize: 15,
@@ -62,11 +62,11 @@ class _OrderDataViewState extends State<OrderDataView> {
               const SizedBox(
                 height: 10,
               ),
-              const Row(
+               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    '3 زيارات علي مدار الشهر',
+                    '${widget.orderDetails.visitCount} زيارات علي مدار الشهر',
                     textDirection: TextDirection.rtl,
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                   ),
@@ -79,11 +79,11 @@ class _OrderDataViewState extends State<OrderDataView> {
               const SizedBox(
                 height: 5,
               ),
-              const Row(
+               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    'اندونيسي',
+                    '${widget.orderDetails.maidCountry}',
                     textDirection: TextDirection.rtl,
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                   ),
