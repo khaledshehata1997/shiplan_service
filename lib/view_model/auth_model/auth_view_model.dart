@@ -68,16 +68,11 @@ class AuthViewModel extends GetxController {
 
       var data = await auth.createUserWithEmailAndPassword(
           email: email!, password: password!);
-          await _firestore.collection('users').doc().set({
-          'uid':  data.user!.uid,
-          'email':email!,
-          'name': name!,
-          'isAdmin': false,
-        });
       _authService.createUserProfile(
         userId: data.user!.uid,
         name: name!,
         email: email!,
+        isAdmin: false,
       );
 
       userProfile = await _authService.getUserProfile(data.user!.uid);
@@ -113,6 +108,8 @@ class AuthViewModel extends GetxController {
         userId: FirebaseAuth.instance.currentUser!.uid,
         name: name!,
         email: email!,
+        isAdmin: false,
+        
       );
 
       userProfile = await _authService

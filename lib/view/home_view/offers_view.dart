@@ -8,7 +8,8 @@ import '../../constants.dart';
 
 class OffersView extends StatefulWidget {
   List<ServiceModel> offers;
-  OffersView({super.key, required this.offers});
+  bool isAdmin;
+  OffersView({super.key, required this.offers, required this.isAdmin});
 
   @override
   State<OffersView> createState() => _OffersViewState();
@@ -69,43 +70,43 @@ class _OffersViewState extends State<OffersView> {
                           color: index.isEven ? buttonColor : mainColor,
                           borderRadius: BorderRadius.circular(10)),
                       child: Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
                               '${widget.offers[index].vistCount} زيارات ${widget.offers[index].isDay ? "صباحية" : "مسائية"} ${widget.offers[index].maidCountry}',
                               textDirection: TextDirection.rtl,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 25,
                             ),
-                            Divider(),
-                            SizedBox(
+                            const Divider(),
+                            const SizedBox(
                               height: 25,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Icon(Icons.nights_stay_outlined),
+                                const Icon(Icons.nights_stay_outlined),
                                 Text(
                                   '${widget.offers[index].isDay ? "صباحي" : "مسائي"}',
                                   textDirection: TextDirection.rtl,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 15,
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Text(
                               '${widget.offers[index].priceAfterTax} ريال',
                               textDirection: TextDirection.rtl,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.bold),
                             ),
                           ],

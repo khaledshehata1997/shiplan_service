@@ -12,12 +12,13 @@ class AuthService {
     required String userId,
     required String name,
     required String email,
+    required bool isAdmin,
   }) async {
     try {
       await _firestore.collection('users').doc(userId).set({
         'name': name,
         'email': email,
-        'phone' : ""
+        'isAdmin' : false
       });
     } catch (e) {
       // Handle the error
@@ -29,6 +30,7 @@ class AuthService {
     required String userId,
     required String name,
     required String email,
+    required bool isAdmin,
     // required String cr,
     // required String vat,
   }) async {
@@ -44,6 +46,7 @@ class AuthService {
       await _firestore.collection('users').doc(userId).update({
         'name': name,
         'email': email,
+        'isAdmin': isAdmin,
         // 'cr': cr,
         // 'vat': vat,
         "addresses": []
@@ -207,11 +210,11 @@ class UserProfile {
   factory UserProfile.fromMap(Map<String, dynamic> map, {String? id}) {
     final isAdmin = (map['isAdmin'] ?? false) || map['role'] == 'admin';
     return UserProfile(
-      id: 'id',
-      name: map['name'],
-      phone: map['phone'],
-      role: map['role'],
-      email: map['email'],
+  
+      name: map['name']??'',
+      phone: map['phone']??'',
+      role: map['role']??'',
+      email: map['email']??'',
       cr: map['cr'] ?? '',
       vat: map['vat'] ?? "",
       photo: map['photo'] ?? '',

@@ -7,7 +7,8 @@ import 'package:shiplan_service/view/home_view/order_details.dart';
 import 'package:shiplan_service/view_model/service_model/service_model.dart';
 
 class BuyOffersView extends StatefulWidget {
-  const BuyOffersView({super.key});
+  bool isAdmin;
+   BuyOffersView({super.key, required this.isAdmin});
 
   @override
   State<BuyOffersView> createState() => _BuyOffersViewState();
@@ -168,7 +169,7 @@ class _BuyOffersViewState extends State<BuyOffersView>
                               onTap: () {
                                 Get.to(OrderDetails(serviceModel: service));
                               },
-                              onLongPress: () async {
+                              onLongPress: !widget.isAdmin ? () {} : () async {
                                 bool confirmDelete = await showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -298,7 +299,7 @@ class _BuyOffersViewState extends State<BuyOffersView>
                               onTap: () {
                                 Get.to(OrderDetails(serviceModel: service));
                               },
-                              onLongPress: () async {
+                               onLongPress: !widget.isAdmin ? () {} : () async {
                                 bool confirmDelete = await showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
