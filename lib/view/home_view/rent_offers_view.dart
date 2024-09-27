@@ -31,7 +31,7 @@ class _RentOffersViewState extends State<RentOffersView>
 
   Future<List<ServiceModel>> fetchRentNightServices() async {
     DocumentSnapshot snapshot =
-        await FirebaseFirestore.instance.collection('rent').doc('night').get();
+        await FirebaseFirestore.instance.collection('rentOffers').doc('night').get();
 
     if (snapshot.exists) {
       List<dynamic> servicesData =

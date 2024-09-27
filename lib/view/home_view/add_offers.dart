@@ -1,72 +1,117 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
-
 import '../../view_model/service_model/service_model.dart';
 
 class AddOffersScreen extends StatefulWidget {
-  const AddOffersScreen({super.key});
+  const AddOffersScreen({Key? key}) : super(key: key);
 
   @override
   State<AddOffersScreen> createState() => _AddOffersScreenState();
 }
 
 class _AddOffersScreenState extends State<AddOffersScreen> {
-  String? _selectedValue;
-  List<String> listOfValue = [
-    'استقدام',
-    'تأجير',
-  ];
+  final _formKey = GlobalKey<FormState>();
   final summaryController = TextEditingController();
   final titleController = TextEditingController();
-  final priceController = TextEditingController();
+  final priceController = TextEditingController(text: '0');
   final serviceTypeController = TextEditingController();
   final maidCountryController = TextEditingController();
-  final freeDaysController = TextEditingController();
   final hoursController = TextEditingController();
-  final vistCountController = TextEditingController();
+  final visitCountController = TextEditingController();
   final descriptionController = TextEditingController();
-  final priceAfterTaxController = TextEditingController();
-  @override
-  void initState() {
-    priceController.text = '0';
-    priceAfterTaxController.text = '0';
-    super.initState();
-  }
+  final priceAfterTaxController = TextEditingController(text: '0');
 
-  bool isLoading = false;
-  String error = '';
-  final _fromKey = GlobalKey<FormState>();
+  String? _selectedValue;
+  bool _isLoading = false;
+  String _error = '';
+  final List<String> listOfValue = ['أستقدام', 'تأجير'];
+
+  // Multi-selection for weekdays and time range
+  final List<String> _weekdays = ['السبت', 'الأحد', 'الأثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعه'];
+  final Map<String, TimeRange> _selectedDays = {};
+
+ void _submitService(bool isDay) async {
+  if (_formKey.currentState?.validate() ?? false) {
+    setState(() => _isLoading = true);
+
+    try {
+      // Prepare the freeDays data from the selected days and time ranges
+      final Map<String, Map<String, String>> freeDays = _selectedDays.map((day, timeRange) {
+        return MapEntry(
+          day,
+          {
+            'startTime': timeRange.startTime?.format(context) ?? 'N/A',
+            'endTime': timeRange.endTime?.format(context) ?? 'N/A',
+          },
+        );
+      });
+
+      final serviceModel = ServiceModel(
+        maidId: "1",
+        hours: int.parse(hoursController.text),
+        vistCount: int.parse(visitCountController.text),
+        serviceSummary: summaryController.text,
+        isDay: isDay,
+        maidCountry: maidCountryController.text,
+        serviceType: serviceTypeController.text,
+        description: descriptionController.text,
+        freeDays: freeDays, // Assign the freeDays map here
+        title: titleController.text,
+        id: Uuid().v4(),
+        regularPrice: double.parse(priceController.text),
+        priceAfterTax: double.parse(priceAfterTaxController.text),
+      );
+
+      // Submit the service depending on the type
+      if (_selectedValue == 'أستقدام') {
+        isDay ? ServicesService.addDayOffersService(serviceModel) : ServicesService.addNightOffersService(serviceModel);
+      } else {
+        isDay ? ServicesService.addRentDayOffersService(serviceModel) : ServicesService.addRentDayOffersService(serviceModel);
+      }
+
+      // Log the selected days and time ranges for debugging
+      print('Selected Free Days: $freeDays');
+
+      // Handle success
+      Get.back();
+      Get.snackbar('Success', 'Service added successfully');
+    } catch (e) {
+      setState(() => _error = e.toString());
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+}
+@override
+  void dispose() {
+   summaryController.dispose();
+   titleController.dispose();
+   priceController.dispose();
+   serviceTypeController.dispose();
+   maidCountryController.dispose();
+   hoursController.dispose();
+   visitCountController.dispose();
+   descriptionController.dispose();
+   priceAfterTaxController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _fromKey,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('اضافة عرض'),
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                // pick image button
-
-                const SizedBox(
-                  height: 20,
-                ),
+    return Scaffold(
+      appBar: AppBar(title: Text('add product'.tr)),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
                 DropdownButtonFormField(
                   value: _selectedValue,
                   hint: Text(
-                    'اختر نوع العرض',
+                    'اختر نوع الخدمة',
                   ),
                   isExpanded: true,
                   onChanged: (value) {
@@ -98,218 +143,161 @@ class _AddOffersScreenState extends State<AddOffersScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                // upload image button
-                TextFormField(
-                  controller: summaryController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter service summary';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'service summary'.tr,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                  ),
-                ),
+              _buildTextField(summaryController, 'service summary'.tr, 'Please enter service summary'),
+              _buildTextField(titleController, 'title'.tr, 'Please enter title'),
+              _buildTextField(serviceTypeController, 'service type'.tr, 'Please enter service type'),
+              _buildTextField(maidCountryController, 'maid country'.tr, 'Please enter maid country'),
+              _buildTextField(hoursController, 'hours'.tr, null, isNumber: true),
+              _buildTextField(visitCountController, 'visit count'.tr, null, isNumber: true),
+              _buildTextField(priceController, 'price'.tr, 'Please enter price', isNumber: true),
+              _buildTextField(priceAfterTaxController, 'price after tax'.tr, null, isNumber: true),
+              
+              const SizedBox(height: 20),
 
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: titleController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter title';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'title'.tr,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                  ),
-                ),
+              // Weekday multi-selection with time range
+              _buildMultiSelectWeekdays(),
+              const SizedBox(height: 20),
+              _buildSelectedDaysTimeRange(),
+              
+              const SizedBox(height: 20),
 
-                const SizedBox(
-                  height: 20,
+              if (_isLoading)
+                const Center(child: CircularProgressIndicator())
+              else
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildSubmitButton('Add day service', true),
+                    _buildSubmitButton('Add night service', false),
+                  ],
                 ),
-                TextFormField(
-                  controller: serviceTypeController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter service type';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'service type'.tr,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: freeDaysController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter free days';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'free days'.tr,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: maidCountryController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter maid country';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'maid country'.tr,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  controller: hoursController,
-                  decoration: InputDecoration(
-                    labelText: 'hours'.tr,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  controller: vistCountController,
-                  decoration: InputDecoration(
-                    labelText: 'vistCount'.tr,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  controller: priceController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter price';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'price'.tr,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  controller: priceAfterTaxController,
-                  decoration: InputDecoration(
-                    labelText: 'price after tax'.tr,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                // add button
-                if (isLoading)
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                else
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          if (_fromKey.currentState!.validate()) {
-                            try {
-                              setState(() {
-                                isLoading = true;
-                              });
-                              ServicesService.addDayOffersService(ServiceModel(
-                                  maidId: "1",
-                                  hours: int.parse(hoursController.text),
-                                  vistCount:
-                                      int.parse(vistCountController.text),
-                                  serviceSummary: summaryController.text,
-                                  isDay:
-                                      _selectedValue == 'استقدام' ? true : false,
-                                  maidCountry: maidCountryController.text,
-                                  serviceType: serviceTypeController.text,
-                                  description: descriptionController.text,
-                                  freeDays: {},
-                                  title: titleController.text,
-                                  id: Uuid().v4(),
-                                  regularPrice:
-                                      double.parse(priceController.text),
-                                  priceAfterTax: double.parse(
-                                      priceAfterTaxController.text)));
-
-                              setState(() {
-                                isLoading = false;
-                              });
-                              Get.back();
-                              Get.snackbar(
-                                  'Success', 'Service added successfully');
-                            } catch (e) {
-                              setState(() {
-                                isLoading = false;
-                                error = e.toString();
-                              });
-                            }
-                          }
-                        },
-                        child: Text("اضافة عرض"),
-                      ),
-                    ],
-                  ),
-              ],
-            ),
+            ],
           ),
         ),
       ),
     );
   }
+
+  // Widget to show the multi-selection of weekdays
+  Widget _buildMultiSelectWeekdays() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Select Available Days', style: TextStyle(fontSize: 16)),
+        const SizedBox(height: 10),
+        Wrap(
+          spacing: 10,
+          children: _weekdays.map((day) {
+            return ChoiceChip(
+              label: Text(day),
+              selected: _selectedDays.containsKey(day),
+              onSelected: (selected) {
+                setState(() {
+                  if (selected) {
+                    _selectedDays[day] = TimeRange(); // Initialize with empty time range
+                  } else {
+                    _selectedDays.remove(day);
+                  }
+                });
+              },
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
+
+  // Widget to build time range pickers for the selected days
+  Widget _buildSelectedDaysTimeRange() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: _selectedDays.entries.map((entry) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('${entry.key} Time Range', style: TextStyle(fontSize: 16)),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildTimePicker(
+                    label: 'From',
+                    selectedTime: entry.value.startTime,
+                    onTimePicked: (pickedTime) {
+                      setState(() {
+                        _selectedDays[entry.key]?.startTime = pickedTime;
+                      });
+                    },
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: _buildTimePicker(
+                    label: 'To',
+                    selectedTime: entry.value.endTime,
+                    onTimePicked: (pickedTime) {
+                      setState(() {
+                        _selectedDays[entry.key]?.endTime = pickedTime;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+          ],
+        );
+      }).toList(),
+    );
+  }
+
+  // Time picker widget
+  Widget _buildTimePicker({required String label, required TimeOfDay? selectedTime, required Function(TimeOfDay) onTimePicked}) {
+    return OutlinedButton(
+      onPressed: () async {
+        TimeOfDay? picked = await showTimePicker(
+          context: context,
+          initialTime: selectedTime ?? TimeOfDay.now(),
+        );
+        if (picked != null) {
+          onTimePicked(picked);
+        }
+      },
+      child: Text(
+        selectedTime != null ? selectedTime.format(context) : label,
+      ),
+    );
+  }
+
+  // TextField helper
+  Widget _buildTextField(TextEditingController controller, String label, String? validatorMessage, {bool isNumber = false}) {
+    return Column(
+      children: [
+        TextFormField(
+          controller: controller,
+          keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+          decoration: InputDecoration(
+            labelText: label,
+            border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+          ),
+          validator: validatorMessage != null ? (value) => value?.isEmpty ?? true ? validatorMessage : null : null,
+        ),
+        const SizedBox(height: 20),
+      ],
+    );
+  }
+
+  // Submit button widget
+  ElevatedButton _buildSubmitButton(String text, bool isDay) {
+    return ElevatedButton(
+      onPressed: () => _submitService(isDay),
+      child: Text(text.tr),
+    );
+  }
+}
+
+// Helper class to hold the time range for each day
+class TimeRange {
+  TimeOfDay? startTime;
+  TimeOfDay? endTime;
 }

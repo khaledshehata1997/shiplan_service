@@ -32,7 +32,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  Future<List<ServiceModel>> fetchOffers() async {
+  Future<List<ServiceModel>> fetchdayOffers() async {
     DocumentSnapshot snapshot =
         await FirebaseFirestore.instance.collection('offers').doc('day').get();
 
@@ -43,6 +43,31 @@ class _HomeViewState extends State<HomeView> {
     } else {
       return [];
     }
+  }
+    Future<List<ServiceModel>> fetchNightOffers() async {
+    DocumentSnapshot snapshot =
+        await FirebaseFirestore.instance.collection('offers').doc('night').get();
+
+    if (snapshot.exists) {
+      List<dynamic> servicesData =
+          (snapshot.data() as Map<String, dynamic>)['services'] ?? [];
+      return servicesData.map((data) => ServiceModel.fromMap(data)).toList();
+    } else {
+      return [];
+    }
+  }
+  Future<List<ServiceModel>> fetchAllOffers() async {
+  List<ServiceModel> offersList = [];
+  List<ServiceModel> offersDayOffers = await fetchdayOffers();
+    print("dssdsd ${offersDayOffers.length}");
+  List<ServiceModel> offersNightList = await fetchNightOffers();
+      print("dssdsd ${offersNightList.length}");
+
+  offersList.addAll(offersDayOffers);
+  offersList.addAll(offersNightList);
+  offersList.shuffle();
+
+  return offersList;
   }
  
 late Future<UserModel> _user;
@@ -68,7 +93,6 @@ bool isAdmin = false;
             }
             if (snapshot.hasData) {
                 UserModel user = snapshot.data!;
-                print("kjefkjefkefj ${user.isAdmin} user ${user.uid} ${snapshot.data!.isAdmin}");
                 isAdmin=user.isAdmin;
                   return Drawer(
               backgroundColor: Colors.white,
@@ -508,7 +532,7 @@ bool isAdmin = false;
                   height: Get.height * .3,
                   width: Get.width,
                   child: FutureBuilder<List<ServiceModel>>(
-                      future: fetchOffers(),
+                      future: fetchAllOffers(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {

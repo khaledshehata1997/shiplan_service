@@ -210,10 +210,8 @@ class ServicesService {
     DocumentReference documentReference =
         FirebaseFirestore.instance.collection('rentOffers').doc('night');
 
-    // First, get the current list of services
     DocumentSnapshot docSnapshot = await documentReference.get();
 
-    // If the document exists, retrieve the current list of services
     List<dynamic> servicesList = [];
     if (docSnapshot.exists && docSnapshot.data() != null) {
       servicesList =
@@ -223,7 +221,6 @@ class ServicesService {
     // Add the new service to the list
     servicesList.add(newService.toMap());
 
-    // Update the document with the new list of services
     await documentReference.set({
       'rentService': servicesList,
     }, SetOptions(merge: true)).then((value) {
@@ -251,7 +248,6 @@ class ServicesService {
     // Add the new service to the list
     servicesList.add(newService.toMap());
 
-    // Update the document with the new list of services
     await documentReference.set({
       'services': servicesList,
     }, SetOptions(merge: true)).then((value) {

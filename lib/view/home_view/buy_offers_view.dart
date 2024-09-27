@@ -229,7 +229,7 @@ class _BuyOffersViewState extends State<BuyOffersView>
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Text(
+                                      Text( 
                                         '${service.title}',
                                         textDirection: TextDirection.rtl,
                                         style: const TextStyle(
