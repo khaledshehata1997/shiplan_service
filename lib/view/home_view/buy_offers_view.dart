@@ -61,6 +61,23 @@ class _BuyOffersViewState extends State<BuyOffersView>
     }
   }
 
+  Future<void> deleteService(ServiceModel service) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('services')
+          .doc(service.isDay ? 'day' : 'night') // Specify the day or night document
+          .update({
+        'services': FieldValue.arrayRemove(
+            [service.toMap()]) // Use the exact map from the object
+      });
+      Get.snackbar('Success', 'Service deleted successfully',
+          snackPosition: SnackPosition.BOTTOM);
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to delete service: $e',
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,6 +167,37 @@ class _BuyOffersViewState extends State<BuyOffersView>
                             child: InkWell(
                               onTap: () {
                                 Get.to(OrderDetails(serviceModel: service));
+                              },
+                              onLongPress: () async {
+                                bool confirmDelete = await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Confirm Delete'),
+                                      content: const Text(
+                                          'Are you sure you want to delete this service?'),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text('Cancel'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(false);
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: const Text('Delete'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(true);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+
+                                if (confirmDelete == true) {
+                                  await deleteService(
+                                      service); // Pass the full ServiceModel object
+                                }
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(4),
@@ -249,6 +297,37 @@ class _BuyOffersViewState extends State<BuyOffersView>
                             child: InkWell(
                               onTap: () {
                                 Get.to(OrderDetails(serviceModel: service));
+                              },
+                              onLongPress: () async {
+                                bool confirmDelete = await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Confirm Delete'),
+                                      content: const Text(
+                                          'Are you sure you want to delete this service?'),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text('Cancel'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(false);
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: const Text('Delete'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(true);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+
+                                if (confirmDelete == true) {
+                                  await deleteService(
+                                      service); // Pass the full ServiceModel object
+                                }
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(4),
