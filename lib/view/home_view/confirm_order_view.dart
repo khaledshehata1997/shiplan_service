@@ -89,6 +89,8 @@ class _ConfirmOrderViewState extends State<ConfirmOrderView> {
         'maidName': _selectedMaid!.name,
         'fullName': _fullName,
         'phoneNumber': _phoneNumber,
+        'price': widget.serviceModel.priceAfterTax,
+        'serviceType': widget.serviceModel.isDay?'صباحية':'مسائية',
         'address': _address,
         'timestamp': DateTime.now().toIso8601String(),
       };
@@ -121,6 +123,8 @@ class _ConfirmOrderViewState extends State<ConfirmOrderView> {
           "اسم العميل: $_fullName\n"
           "رقم الهاتف: $_phoneNumber\n"
           "العنوان: $_address\n"
+          "السعر: ${widget.serviceModel.priceAfterTax}\n"
+          "نوع الخدمة: ${widget.serviceModel.isDay?'صباحية':'مسائية'}\n"
           "التاريخ: ${DateTime.now().toIso8601String()}";
 
       String whatsappUrl =

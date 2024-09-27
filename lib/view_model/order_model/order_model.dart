@@ -4,6 +4,9 @@ class OrderModel {
   final String fullName;
   final String phoneNumber;
   final String address;
+  final String isDay;
+  final String serviceType;
+  final double price;
   final DateTime timestamp;
 
   OrderModel({
@@ -12,6 +15,9 @@ class OrderModel {
     required this.fullName,
     required this.phoneNumber,
     required this.address,
+    required this.isDay,
+    required this.serviceType,
+    required this.price,
     required this.timestamp,
   });
 
@@ -23,6 +29,9 @@ class OrderModel {
       fullName: data['fullName'] ?? '',
       phoneNumber: data['phoneNumber'] ?? '',
       address: data['address'] ?? '',
+      isDay: data['serviceType'] ?? '',
+      serviceType: data['serviceType'] ?? '',
+      price: data['price'] ?? '',
       timestamp: DateTime.parse(data['timestamp']),
     );
   }
@@ -35,6 +44,9 @@ class OrderModel {
       'fullName': fullName,
       'phoneNumber': phoneNumber,
       'address': address,
+      'serviceType': serviceType,
+      'price': price,
+      'isDay': isDay,
       'timestamp': timestamp.toIso8601String(),
     };
   }

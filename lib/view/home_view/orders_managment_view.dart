@@ -91,7 +91,7 @@ class _OrdersManagmentViewState extends State<OrdersManagmentView> {
                     padding: const EdgeInsets.all(10.0),
                     child: GestureDetector(
                       onTap: () {
-                        Get.to(const OrderDataView());
+                        Get.to( OrderDataView(orderDetails: order,));
                       },
                       child: Container(
                         padding: const EdgeInsets.all(4),

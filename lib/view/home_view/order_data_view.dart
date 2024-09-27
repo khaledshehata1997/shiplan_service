@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:shiplan_service/view_model/order_model/order_model.dart';
 
 class OrderDataView extends StatefulWidget {
-  const OrderDataView({super.key});
+  OrderModel orderDetails;
+  OrderDataView({super.key, required this.orderDetails});
 
   @override
   State<OrderDataView> createState() => _OrderDataViewState();
@@ -24,35 +26,35 @@ class _OrderDataViewState extends State<OrderDataView> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-               Text(
+              const Text(
                 'رقم الطلب',
                 textDirection: TextDirection.rtl,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-               SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-               Text(
-                'IWN216543',
+              Text(
+                '${widget.orderDetails.timestamp}',
                 textDirection: TextDirection.rtl,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 15,
                 ),
               ),
-               SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-               Divider(),
-               SizedBox(
+              const Divider(),
+              const SizedBox(
                 height: 10,
               ),
-               Text(
+              const Text(
                 'تفاصيل الطلب',
                 textDirection: TextDirection.rtl,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -66,7 +68,7 @@ class _OrderDataViewState extends State<OrderDataView> {
                   Text(
                     '3 زيارات علي مدار الشهر',
                     textDirection: TextDirection.rtl,
-                    style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     width: 10,
@@ -74,16 +76,16 @@ class _OrderDataViewState extends State<OrderDataView> {
                   Icon(Icons.check, size: 18),
                 ],
               ),
-               SizedBox(
+              const SizedBox(
                 height: 5,
               ),
-               Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
                     'اندونيسي',
                     textDirection: TextDirection.rtl,
-                    style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     width: 10,
@@ -94,116 +96,116 @@ class _OrderDataViewState extends State<OrderDataView> {
                   ),
                 ],
               ),
-               SizedBox(
+              const SizedBox(
                 width: 10,
               ),
-               Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    'مسائية',
+                    '${widget.orderDetails.isDay}',
                     textDirection: TextDirection.rtl,
-                    style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  Icon(Icons.watch_later_outlined, size: 18),
+                  const Icon(Icons.watch_later_outlined, size: 18),
                 ],
               ),
-               SizedBox(
+              const SizedBox(
                 height: 5,
               ),
-               Divider(),
-               SizedBox(
+              const Divider(),
+              const SizedBox(
                 height: 10,
               ),
-               Text(
+              const Text(
                 'حاله الطلب',
                 textDirection: TextDirection.rtl,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-               SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-               Text(
+              const Text(
                 'جاري',
                 textDirection: TextDirection.rtl,
                 style: TextStyle(
                   fontSize: 15,
                 ),
               ),
-               SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-               Divider(),
-               SizedBox(
+              const Divider(),
+              const SizedBox(
                 height: 10,
               ),
-               Text(
+              const Text(
                 'اسم العميل',
                 textDirection: TextDirection.rtl,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-               SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-               Text(
-                'احمد سعيد علي',
+              Text(
+                '${widget.orderDetails.fullName}',
                 textDirection: TextDirection.rtl,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 15,
                 ),
               ),
-               SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-               Divider(),
-               SizedBox(
+              const Divider(),
+              const SizedBox(
                 height: 10,
               ),
-               Text(
+              const Text(
                 'العنوان',
                 textDirection: TextDirection.rtl,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-               SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-               Text(
-                '46 شارع 12 المساكن/الهرم',
+              Text(
+                '${widget.orderDetails.address}',
                 textDirection: TextDirection.rtl,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 15,
                 ),
               ),
-               SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-               Divider(),
-               SizedBox(
+              const Divider(),
+              const SizedBox(
                 height: 10,
               ),
-               Text(
+              const Text(
                 'رقم الهاتف',
                 textDirection: TextDirection.rtl,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-               SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-               Text(
-                '01265486541',
+              Text(
+                 '${widget.orderDetails.phoneNumber}',
                 textDirection: TextDirection.rtl,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 15,
                 ),
               ),
-               SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-               Divider(),
-               SizedBox(
+              const Divider(),
+              const SizedBox(
                 height: 10,
               ),
             ],
