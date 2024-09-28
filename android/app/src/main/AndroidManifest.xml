@@ -28,7 +28,7 @@
     </intent>
   </queries>
     <application
-        android:label="shiplan_service"
+        android:label="الشبلان للاستقدام"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
