@@ -27,33 +27,33 @@ class _OrderDetailsState extends State<OrderDetails> {
               Text(
                 '${widget.serviceModel.vistCount} زيارات ${widget.serviceModel.isDay ? 'صباحية' : 'مسائية'} ${widget.serviceModel.maidCountry}',
                 textDirection: TextDirection.rtl,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               const Divider(),
               Text(
                 '${widget.serviceModel.vistCount} زيارات علي مدار الشهر',
                 textDirection: TextDirection.rtl,
-                style: const TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 10),
               Text(
                 '${widget.serviceModel.regularPrice} ريال',
                 textDirection: TextDirection.rtl,
-                style: const TextStyle(fontSize: 17),
+                style: const TextStyle(fontSize: 16),
               ),
                const SizedBox(height: 10),
                   Text(
                 'السعر بعد الضريبة ${widget.serviceModel.priceAfterTax} ريال',
                 textDirection: TextDirection.rtl,
-                style: const TextStyle(fontSize: 17),
+                style: const TextStyle(fontSize: 16),
               ),
               const Divider(),
               const SizedBox(height: 10),
               const Text(
-                'تفاصيل الباقة',
+                'تفاصيل الخدمه',
                 textDirection: TextDirection.rtl,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               Row(
@@ -62,7 +62,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   Text(
                     '${widget.serviceModel.vistCount} زيارات علي مدار الشهر',
                     textDirection: TextDirection.rtl,
-                    style: const TextStyle(fontSize: 12),
+                    style: const TextStyle(fontSize: 14),
                   ),
                   const SizedBox(width: 10),
                   const Icon(Icons.check, size: 18),
@@ -75,7 +75,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   Text(
                     widget.serviceModel.maidCountry,
                     textDirection: TextDirection.rtl,
-                    style: const TextStyle(fontSize: 12),
+                    style: const TextStyle(fontSize: 14),
                   ),
                   const SizedBox(width: 10),
                   const Icon(
@@ -91,7 +91,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   Text(
                     widget.serviceModel.isDay ? "صباحية" : "مسائية",
                     textDirection: TextDirection.rtl,
-                    style: const TextStyle(fontSize: 12),
+                    style: const TextStyle(fontSize: 14),
                   ),
                   const SizedBox(width: 10),
                   const Icon(Icons.watch_later_outlined, size: 18),
@@ -103,7 +103,7 @@ class _OrderDetailsState extends State<OrderDetails> {
               const Text(
                 'الأيام المتاحة للحجز',
                 textDirection: TextDirection.rtl,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
 
@@ -111,7 +111,7 @@ class _OrderDetailsState extends State<OrderDetails> {
               _buildAvailableDays(widget.serviceModel.freeDays ),
 
               const Divider(),
-              SizedBox(height: Get.height * 0.15),
+              SizedBox(height: Get.height * 0.08),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(

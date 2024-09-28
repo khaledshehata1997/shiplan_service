@@ -105,7 +105,13 @@ class _MidsListScreenState extends State<MidsListScreen> {
                                   radius: 40,
                                   child: Image.network(maid.imageUrl),
                                 ),
-                                Text("الاسم : ${maid.name}"),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("الاسم : ${maid.name}",style: TextStyle(fontWeight: FontWeight.bold),),
+                                    Text("السن : ${maid.age}"),
+                                  ],
+                                ),
                                 Text("الدولة : ${maid.country}"),
                               ],
                             ),

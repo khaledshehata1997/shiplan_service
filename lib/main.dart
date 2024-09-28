@@ -7,6 +7,8 @@ import 'package:shiplan_service/firebase_options.dart';
 import 'package:shiplan_service/view/auth_view/splash_view.dart';
 import 'package:shiplan_service/view/home_view/nav_bar_view.dart';
 import 'package:shiplan_service/view_model/auth_model/auth_service.dart';
+import 'view/drawer_screen/our_location_page.dart';
+import 'view/drawer_screen/technical_support.dart';
 import 'view/onboarding_view/onboarding_view.dart';
 
 void main() async{

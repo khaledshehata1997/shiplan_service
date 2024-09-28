@@ -34,9 +34,9 @@ class _NavBarViewState extends State<NavBarView> {
           unselectedItemColor: Colors.black,
           type : BottomNavigationBarType.fixed,
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home_outlined,size: 30,),label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.list,size: 30),label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.person_outline_outlined,size: 30),label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.home_outlined,size: 30,),label: 'الرئيسية'),
+            BottomNavigationBarItem(icon: Icon(Icons.list,size: 30),label: 'الخادمات'),
+            BottomNavigationBarItem(icon: Icon(Icons.person_outline_outlined,size: 30),label: 'الملف الشخصي'),
           ],
 
         ),

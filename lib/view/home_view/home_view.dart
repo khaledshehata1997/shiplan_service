@@ -20,6 +20,9 @@ import 'package:shiplan_service/view/home_view/rent_offers_view.dart';
 import 'package:shiplan_service/view/view_model/user_model.dart';
 import 'package:shiplan_service/view_model/service_model/service_model.dart';
 
+import '../drawer_screen/our_location_page.dart';
+import '../drawer_screen/technical_support.dart';
+
 // import '../drawer_screen/our_location_page.dart';
 // import '../drawer_screen/technical_support.dart';
 class HomeView extends StatefulWidget {
@@ -116,7 +119,7 @@ bool isAdmin = false;
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       onTap: () {
-                        // Get.to(const TechnicalSupport());
+                         Get.to(const TechnicalSupport());
                       },
                     ),
                   if(user.isAdmin)
@@ -187,7 +190,7 @@ bool isAdmin = false;
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       onTap: () {
-                        // Get.to(const OurLocationPage());
+                         //Get.to(const OurLocationPage());
                       },
                     ),
                     ListTile(
@@ -215,15 +218,7 @@ bool isAdmin = false;
                             linkUrl: appLink);
                       },
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.call),
-                      title: Text(
-                        'تواصل معنا'.tr,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      onTap: () {},
-                    ),
+
                      if(user.isAdmin)
                     ListTile(
                       leading: const Icon(Icons.support),
@@ -528,7 +523,7 @@ bool isAdmin = false;
                 height: 15,
               ),
               SizedBox(
-                  height: Get.height * .3,
+                  height: Get.height * .235,
                   width: Get.width,
                   child: FutureBuilder<List<ServiceModel>>(
                       future: fetchAllOffers(),
@@ -554,7 +549,7 @@ bool isAdmin = false;
                             shrinkWrap: true,
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 1.2,
+                                    childAspectRatio: .85,
                                     mainAxisSpacing: 15,
                                     crossAxisCount: 1),
                             itemBuilder: (BuildContext context, int index) {
@@ -570,11 +565,11 @@ bool isAdmin = false;
                                     // height: Get.height * 0.09,
                                     // width: Get.width * 0.4,
                                     decoration: BoxDecoration(
-                                        image: const DecorationImage(
-                                          image: AssetImage(
-                                            'images/women.png',
-                                          ),
-                                        ),
+                                        // image: const DecorationImage(
+                                        //   image: AssetImage(
+                                        //     'images/women.png',
+                                        //   ),
+                                        // ),
                                         boxShadow: const [
                                           BoxShadow(
                                             color: Colors.grey,
@@ -582,9 +577,7 @@ bool isAdmin = false;
                                             blurRadius: 3.0,
                                           ),
                                         ],
-                                        color: index.isEven
-                                            ? buttonColor
-                                            : mainColor,
+                                        color:buttonColor,
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     child: Padding(
@@ -600,13 +593,8 @@ bool isAdmin = false;
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          SizedBox(
-                                            height: 25,
-                                          ),
-                                          Divider(),
+
+
                                           SizedBox(
                                             height: 25,
                                           ),

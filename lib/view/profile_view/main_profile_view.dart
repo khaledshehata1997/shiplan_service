@@ -108,11 +108,11 @@ class _MainProfileViewState extends State<MainProfileView> {
                             const SizedBox(
                               width: 15,
                             ),
-                            IconButton(onPressed: (){
-                              Get.to(const userSttings.Settings());
-                              
-              
-                            }, icon: const Icon(Icons.settings,color: Colors.black,))
+                            // IconButton(onPressed: (){
+                            //   Get.to(const userSttings.Settings());
+                            //
+                            //
+                            // }, icon: const Icon(Icons.settings,color: Colors.black,))
                           ],
                         ),
                         const SizedBox(

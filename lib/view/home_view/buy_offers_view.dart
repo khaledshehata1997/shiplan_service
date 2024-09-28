@@ -237,6 +237,24 @@ class _BuyOffersViewState extends State<BuyOffersView>
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white),
                                       ),
+                                      Text(
+                                        'جنسية الخادمه:  ${service.maidCountry}',
+                                        textDirection: TextDirection.rtl,
+                                        style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        'عدد الزيارات: ${service.vistCount} زيارة',
+                                        textDirection: TextDirection.rtl,
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                       const SizedBox(
                                         height: 10,
                                       ),
