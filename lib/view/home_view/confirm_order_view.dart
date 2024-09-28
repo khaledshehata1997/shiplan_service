@@ -134,7 +134,7 @@ class _ConfirmOrderViewState extends State<ConfirmOrderView> {
       // WhatsApp URL with proper format
       String phoneNumber =
           "201064871625"; // Your custom phone number in international format (without the '+')
-      String message = "Order Details:${widget.serviceModel.freeDays}  \n"
+      String message = "تفاصيل الطلب:${widget.serviceModel.serviceSummary}  \n"
           "اسم الخادمة: ${_selectedMaid!.name}\n"
           "اسم العميل: $_fullName\n"
           "رقم الهاتف: $_phoneNumber\n"

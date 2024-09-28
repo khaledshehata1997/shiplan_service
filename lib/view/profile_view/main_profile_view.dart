@@ -7,6 +7,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:shiplan_service/constants.dart';
 import 'package:shiplan_service/view/profile_view/profile_view.dart';
 import 'package:shiplan_service/view/profile_view/settings.dart' as userSttings;
+import 'package:shiplan_service/view/view_model/user_model.dart';
 import 'package:shiplan_service/view_model/order_model/order_model.dart';
 
 import '../home_view/order_data_view.dart';
@@ -18,6 +19,7 @@ class MainProfileView extends StatefulWidget {
 }
 
 class _MainProfileViewState extends State<MainProfileView> {
+  late Future<UserModel> _user;
   Future<List<OrderModel>> _getOrderHistory() async {
     try {
       // Reference to the user's document
@@ -52,143 +54,163 @@ class _MainProfileViewState extends State<MainProfileView> {
     }
   }
   double value = 3.5;
+@override
+  void initState() {
+          _user = UserService().getUserData(FirebaseAuth.instance.currentUser!.uid);
 
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
           preferredSize: Size(double.infinity, Get.height * .3),
-          child: Stack(
-            children: [
-              AppBar(
-                centerTitle: true,
-                title: Text("حسابي"),
-                elevation: 0,
-                automaticallyImplyLeading: false,
-                backgroundColor: mainColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(30),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                const EdgeInsets.symmetric(vertical: 32, horizontal: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            IconButton(onPressed: (){Get.back();}, icon: Icon(Icons.arrow_back_ios,color: Colors.black,))
-                          ],
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        IconButton(onPressed: (){
-                          Get.to(userSttings.Settings());
-                          
-
-                        }, icon: Icon(Icons.settings,color: Colors.black,))
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Column(
-                          children: [
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-
-                                Text(
-                                  'ايهاب ابراهيم',
-                                  textDirection: TextDirection.rtl,
-                                  style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.person_outline_outlined,size: 18,),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-
-                                Text(
-                                  '0545687415',
-                                  textDirection: TextDirection.rtl,
-                                  style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.call,size: 18,),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        ClipOval(
-                          child: Container(
-                            color: Colors.white, // Optional: Background color behind the image
-                            width: 100, // Diameter of the circle
-                            height: 100, // Diameter of the circle
-                            child: Image.asset(
-                              "images/pana.png", // Replace with your image path
-                              fit: BoxFit.cover, // Ensures the image covers the circle
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Center(
-                      child: SizedBox(
-                        height: Get.height * 0.04,
-                        width: Get.width * 0.6,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Get.to( Profile());
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: buttonColor),
-                          child: Text(
-                            "تعديل الملف الشخصي",
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+          child: FutureBuilder<UserModel>(
+            future: _user,
+            builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+            if (snapshot.hasData) {
+                UserModel user = snapshot.data!;
+              return Stack(
+                children: [
+                  AppBar(
+                    centerTitle: true,
+                    title: const Text("حسابي"),
+                    elevation: 0,
+                    automaticallyImplyLeading: false,
+                    backgroundColor: mainColor,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        bottom: Radius.circular(30),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ],
-          )),
+                  ),
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(vertical: 32, horizontal: 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                IconButton(onPressed: (){Get.back();}, icon: const Icon(Icons.arrow_back_ios,color: Colors.black,))
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            IconButton(onPressed: (){
+                              Get.to(const userSttings.Settings());
+                              
+              
+                            }, icon: const Icon(Icons.settings,color: Colors.black,))
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Column(
+                              children: [
+                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+              
+                                    Text(
+                                      '${user.name}',
+                                      textDirection: TextDirection.rtl,
+                                      style: const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    const Icon(Icons.person_outline_outlined,size: 18,),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+              
+                                    Text(
+                                      '${user.email}',
+                                      textDirection: TextDirection.rtl,
+                                      style: const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    const Icon(Icons.call,size: 18,),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            ClipOval(
+                              child: Container(
+                                color: Colors.white, // Optional: Background color behind the image
+                                width: 100, // Diameter of the circle
+                                height: 100, // Diameter of the circle
+                                child: Image.asset(
+                                  "images/pana.png", // Replace with your image path
+                                  fit: BoxFit.cover, // Ensures the image covers the circle
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Center(
+                          child: SizedBox(
+                            height: Get.height * 0.04,
+                            width: Get.width * 0.6,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Get.to( const Profile());
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: buttonColor),
+                              child: const Text(
+                                "تعديل الملف الشخصي",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            }else{
+              return Container();
+            }
+  })),
       body: Column(
         children: [
           SizedBox(
             height: Get.height * 0.02,
           ),
-          Center(
-            child: const  Text(
+          const Center(
+            child: Text(
               'اخر التعاقدات',
               textDirection: TextDirection.rtl,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -240,7 +262,7 @@ class _MainProfileViewState extends State<MainProfileView> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10)),
                         child: Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
@@ -271,7 +293,7 @@ class _MainProfileViewState extends State<MainProfileView> {
                                     maxValueVisibility: true,
                                     valueLabelVisibility: false,
                                     animationDuration:
-                                        Duration(milliseconds: 1000),
+                                        const Duration(milliseconds: 1000),
                                     valueLabelPadding:
                                         const EdgeInsets.symmetric(
                                             vertical: 1, horizontal: 8),
