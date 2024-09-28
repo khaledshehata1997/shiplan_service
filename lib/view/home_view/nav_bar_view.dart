@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shiplan_service/view/home_view/addresess_view.dart';
 import 'package:shiplan_service/view/home_view/home_view.dart';
+import 'package:shiplan_service/view/home_view/mids_list_view.dart';
 import 'package:shiplan_service/view/profile_view/main_profile_view.dart';
 import 'package:shiplan_service/view/profile_view/profile_view.dart';
 
@@ -15,8 +16,8 @@ class NavBarView extends StatefulWidget {
   State<NavBarView> createState() => _NavBarViewState();
 }
 int _selectedIndex = 0;
-const List<Widget> _pages = [
-  HomeView(),AddresessView(),MainProfileView(),
+ List<Widget> _pages = [
+  HomeView(),MidsListScreen(),MainProfileView(),
 ];
 class _NavBarViewState extends State<NavBarView> {
 
@@ -34,7 +35,7 @@ class _NavBarViewState extends State<NavBarView> {
           type : BottomNavigationBarType.fixed,
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home_outlined,size: 30,),label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.location_on_outlined,size: 30),label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.list,size: 30),label: ''),
             BottomNavigationBarItem(icon: Icon(Icons.person_outline_outlined,size: 30),label: ''),
           ],
 
