@@ -100,7 +100,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('add product'.tr)),
+      appBar: AppBar(title: Text("اضف خدمة")),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Form(
@@ -143,15 +143,14 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-              _buildTextField(summaryController, 'service summary'.tr, 'Please enter service summary'),
-              _buildTextField(titleController, 'title'.tr, 'Please enter title'),
-              _buildTextField(serviceTypeController, 'service type'.tr, 'Please enter service type'),
-              _buildTextField(maidCountryController, 'maid country'.tr, 'Please enter maid country'),
-              _buildTextField(hoursController, 'hours'.tr, null, isNumber: true),
-              _buildTextField(visitCountController, 'visit count'.tr, null, isNumber: true),
-              _buildTextField(priceController, 'price'.tr, 'Please enter price', isNumber: true),
-              _buildTextField(priceAfterTaxController, 'price after tax'.tr, null, isNumber: true),
-              
+              _buildTextField(summaryController, 'تفصيل الخدمة', 'من فضلك اكتب تفاصيل الخدمة'),
+              _buildTextField(titleController, 'العنوان', 'من فضلك اكتب عنوان الخدمة'),
+              _buildTextField(serviceTypeController, 'نوع الخدمة', 'من فضلك اكتب نوع الخدمة'),
+              _buildTextField(maidCountryController, 'دولة الخادمة', 'من فضلك اكتب دولة الخادمة'),
+              _buildTextField(hoursController, 'عدد الساعات', null, isNumber: true),
+              _buildTextField(visitCountController, 'عدد الزيارات', null, isNumber: true),
+              _buildTextField(priceController, 'السعر', 'من فضلك اكتب السعر', isNumber: true),
+              _buildTextField(priceAfterTaxController, 'سعر الخدمة بعد الضريبة', null, isNumber: true),              
               const SizedBox(height: 20),
 
               // Weekday multi-selection with time range
@@ -167,8 +166,8 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildSubmitButton('Add day service', true),
-                    _buildSubmitButton('Add night service', false),
+                    _buildSubmitButton('أضف خدمة صباحية', true),
+                    _buildSubmitButton('أضف خدمة مسائية', false),
                   ],
                 ),
             ],
