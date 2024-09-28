@@ -180,7 +180,7 @@ class _MainProfileViewState extends State<MainProfileView> {
                             width: Get.width * 0.6,
                             child: ElevatedButton(
                               onPressed: () {
-                                Get.to( const Profile());
+                                Get.to(  Profile(userModel: user,));
                               },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: buttonColor),
