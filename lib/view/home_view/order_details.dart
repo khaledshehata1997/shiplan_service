@@ -38,7 +38,13 @@ class _OrderDetailsState extends State<OrderDetails> {
               ),
               const SizedBox(height: 10),
               Text(
-                '${widget.serviceModel.priceAfterTax} ريال',
+                '${widget.serviceModel.regularPrice} ريال',
+                textDirection: TextDirection.rtl,
+                style: const TextStyle(fontSize: 17),
+              ),
+               const SizedBox(height: 10),
+                  Text(
+                'السعر بعد الضريبة ${widget.serviceModel.priceAfterTax} ريال',
                 textDirection: TextDirection.rtl,
                 style: const TextStyle(fontSize: 17),
               ),

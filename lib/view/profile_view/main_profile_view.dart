@@ -53,7 +53,7 @@ class _MainProfileViewState extends State<MainProfileView> {
       return [];
     }
   }
-  double value = 3.5;
+  double value = 5;
 @override
   void initState() {
           _user = UserService().getUserData(FirebaseAuth.instance.currentUser!.uid);

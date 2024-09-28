@@ -251,7 +251,7 @@ class _BuyOffersViewState extends State<BuyOffersView>
                                         height: 10,
                                       ),
                                       Text(
-                                        'السعر الأصلي: ${service.priceAfterTax} ريال',
+                                        'السعر الأصلي: ${service.regularPrice} ريال',
                                         textDirection: TextDirection.rtl,
                                         style: const TextStyle(
                                             fontSize: 17,
@@ -381,7 +381,7 @@ class _BuyOffersViewState extends State<BuyOffersView>
                                         height: 10,
                                       ),
                                       Text(
-                                        'السعر الأصلي: ${service.priceAfterTax} ريال',
+                                        'السعر الأصلي: ${service.regularPrice} ريال',
                                         textDirection: TextDirection.rtl,
                                         style: const TextStyle(
                                             fontSize: 17,

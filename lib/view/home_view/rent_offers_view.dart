@@ -264,7 +264,7 @@ class _RentOffersViewState extends State<RentOffersView>
                                         height: 10,
                                       ),
                                       Text(
-                                        'السعر الأصلي: ${service.priceAfterTax} ريال',
+                                        'السعر الأصلي: ${service.regularPrice} ريال',
                                         textDirection: TextDirection.rtl,
                                         style: const TextStyle(
                                             fontSize: 17,
@@ -397,7 +397,7 @@ class _RentOffersViewState extends State<RentOffersView>
                                         height: 10,
                                       ),
                                       Text(
-                                        'السعر الأصلي: ${service.priceAfterTax} ريال',
+                                        'السعر الأصلي: ${service.regularPrice} ريال',
                                         textDirection: TextDirection.rtl,
                                         style: const TextStyle(
                                             fontSize: 17,

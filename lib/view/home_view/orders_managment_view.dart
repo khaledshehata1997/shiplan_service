@@ -51,7 +51,7 @@ class _OrdersManagmentViewState extends State<OrdersManagmentView> {
     }
   }
 
-  double value = 3.5;
+  double value = 5;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
