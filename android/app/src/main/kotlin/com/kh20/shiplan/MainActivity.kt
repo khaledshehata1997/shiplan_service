@@ -1,4 +1,4 @@
-package com.example.shiplan_service
+package com.kh20.shiplan
 
 import io.flutter.embedding.android.FlutterActivity
 

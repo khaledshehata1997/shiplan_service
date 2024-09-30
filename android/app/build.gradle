@@ -26,12 +26,12 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 android {
-    namespace = "com.example.shiplan_service"
+    namespace = "com.kh20.shiplan"
     compileSdk = 34 // Replace with the actual SDK version you're using
     ndkVersion = '21.4.7075529' // Use the correct NDK version or remove if not using NDK
     
     defaultConfig {
-        applicationId "com.example.shiplan_service"
+        applicationId "com.kh20.shiplan"
         minSdk = 23
         targetSdk = 34  // Replace with your target SDK version
         versionCode = flutterVersionCode.toInteger() // Use the `flutterVersionCode` you've already defined
@@ -46,10 +46,17 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
+    signingConfigs {
+        release {
+            keyAlias = keystoreProperties['keyAlias']
+            keyPassword = keystoreProperties['keyPassword']
+            storeFile = keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword = keystoreProperties['storePassword']
+        }
+    }
     buildTypes {
         release {
-            signingConfig = signingConfigs.debug // Replace with release signingConfig if necessary
+            signingConfig = signingConfigs.release 
         }
     }
 }
