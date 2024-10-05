@@ -59,11 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAMp72y9mutXlY2U7dSpIIMd-x0JVYYUDE',
-    appId: '1:639757077046:ios:3a8b274e1b5e4f27c66697',
+    appId: '1:639757077046:ios:ccc700bca726d82fc66697',
     messagingSenderId: '639757077046',
     projectId: 'shiplan-dad96',
     storageBucket: 'shiplan-dad96.appspot.com',
-    iosBundleId: 'com.example.shiplanService',
+    iosBundleId: 'com.kh20.shiplan',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -72,7 +72,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '639757077046',
     projectId: 'shiplan-dad96',
     storageBucket: 'shiplan-dad96.appspot.com',
-    iosBundleId: 'com.example.shiplanService',
+    iosBundleId: 'com.kh20.shiplan',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
