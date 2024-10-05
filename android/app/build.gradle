@@ -34,7 +34,7 @@ android {
         applicationId "com.kh20.shiplan"
         minSdk = 23
         targetSdk = 34  // Replace with your target SDK version
-        versionCode = flutterVersionCode.toInteger() // Use the `flutterVersionCode` you've already defined
+        versionCode = 4 // Use the `flutterVersionCode` you've already defined
         versionName = flutterVersionName // Use the `flutterVersionName` you've already defined
     }
 

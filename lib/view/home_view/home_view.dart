@@ -158,41 +158,7 @@ bool isAdmin = false;
                         Get.to(const AddOffersScreen());
                       },
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.language_outlined),
-                      title: Text(
-                        'اللغة'.tr,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      onTap: () {
-                        // Get.to(const Language());
-                      },
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        // Get.to(const AboutUs());
-                      },
-                      child: ListTile(
-                        leading: const Icon(Icons.group),
-                        title: Text(
-                          'من نحن'.tr,
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.gps_fixed_outlined),
-                      title: Text(
-                        'موقعنا'.tr,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      onTap: () {
-                         //Get.to(const OurLocationPage());
-                      },
-                    ),
+
                     ListTile(
                       leading: const Icon(Icons.share),
                       title: Row(
@@ -304,23 +270,23 @@ bool isAdmin = false;
           }
         ),
         appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: buttonColor,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              height: Get.height * 0.1,
-              width: Get.width * 0.1,
-              child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.notifications_none_rounded,
-                    color: Colors.white,
-                  )),
-            ),
-          ),
+          // leading: Padding(
+          //   padding: const EdgeInsets.all(4.0),
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //       color: buttonColor,
+          //       borderRadius: BorderRadius.circular(12),
+          //     ),
+          //     height: Get.height * 0.1,
+          //     width: Get.width * 0.1,
+          //     child: IconButton(
+          //         onPressed: () {},
+          //         icon: const Icon(
+          //           Icons.notifications_none_rounded,
+          //           color: Colors.white,
+          //         )),
+          //   ),
+          // ),
           centerTitle: true,
           title: Container(
               height: Get.height * .075,
