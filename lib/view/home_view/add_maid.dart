@@ -1,12 +1,12 @@
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
-
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shiplan_service/constant/counteries.dart';
+import 'package:shiplan_service/view_model/maid_model/maid_model.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../view_model/maid_model/maid_model.dart';
+import 'package:file_picker/file_picker.dart'; // Import the file_picker package
 
 class AddMaidScreen extends StatefulWidget {
   const AddMaidScreen({super.key});
@@ -17,12 +17,14 @@ class AddMaidScreen extends StatefulWidget {
 
 class _AddMaidScreenState extends State<AddMaidScreen> {
   final _formKey = GlobalKey<FormState>();
+  CounteriesModel slectedCountery = counteriesList.first;
 
   // Form input fields
   String name = '';
   int age = 0;
-  String country = '';
+  // String country = '';
   File? imageFile;
+  File? cvFile; // Added CV file variable
 
   // Image picker instance
   final ImagePicker _picker = ImagePicker();
@@ -37,18 +39,32 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
     }
   }
 
+  // Method to pick CV file using file_picker
+  Future<void> _pickCV() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'], // Restrict t
+    );
+
+    if (result != null && result.files.isNotEmpty) {
+      setState(() {
+        cvFile = File(result.files.single.path!);
+      });
+    }
+  }
+
   // Add Maid to Firestore
   Future<void> _addMaid() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-
+      String id = const Uuid().v4();
       try {
         // Upload image to Firebase Storage if the image is selected
         String imageUrl = '';
         if (imageFile != null) {
           final storageRef = FirebaseStorage.instance
               .ref()
-              .child('maids/${Uuid().v4()}'); // Generate unique file name
+              .child('maids/$id-image'); // Generate unique file name for image
 
           // Upload file to Firebase Storage
           await storageRef.putFile(imageFile!);
@@ -57,13 +73,28 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
           imageUrl = await storageRef.getDownloadURL();
         }
 
-        // Create the Maid object with imageUrl
+        // Upload CV to Firebase Storage if the CV is selected
+        String cvUrl = '';
+        if (cvFile != null) {
+          final cvStorageRef = FirebaseStorage.instance
+              .ref()
+              .child('maids/$id-cv'); // Generate unique file name for CV
+
+          // Upload CV file to Firebase Storage
+          await cvStorageRef.putFile(cvFile!);
+
+          // Get the download URL of the uploaded CV
+          cvUrl = await cvStorageRef.getDownloadURL();
+        }
+
+        // Create the Maid object with imageUrl and cvUrl
         MaidModel newMaid = MaidModel(
-          id: Uuid().v4(),
+          id: id,
           name: name,
           age: age,
-          country: country,
+          country: slectedCountery.name,
           imageUrl: imageUrl,
+          cvUrl: cvUrl,
         );
 
         // Firestore reference to 'maids' collection or specific document
@@ -89,7 +120,7 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
         }, SetOptions(merge: true)).then((value) {
           // Show success message
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Maid added successfully!')),
+            const SnackBar(content: Text('Maid added successfully!')),
           );
         }).catchError((error) {
           // Show error message
@@ -102,6 +133,7 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
         _formKey.currentState!.reset();
         setState(() {
           imageFile = null;
+          cvFile = null; // Clear CV file after upload
         });
       } catch (e) {
         // Show error message
@@ -116,7 +148,7 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('اضف خادمة'),
+        title: const Text('اضف خادمة'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -126,7 +158,7 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
             children: [
               // Name input field
               TextFormField(
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: const InputDecoration(labelText: 'Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a name';
@@ -140,7 +172,7 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
 
               // Age input field
               TextFormField(
-                decoration: InputDecoration(labelText: 'السن'),
+                decoration: const InputDecoration(labelText: 'السن'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null ||
@@ -154,20 +186,34 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
                   age = int.parse(value!);
                 },
               ),
-
-              // Country input field
-              TextFormField(
-                decoration: InputDecoration(labelText: 'الدولة'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'من فضلك ادخل الدولة';
-                  }
-                  return null;
+              const SizedBox(height: 20),
+              DropdownMenu<CounteriesModel>(
+                initialSelection: counteriesList.first,
+                onSelected: (value) {
+                  setState(() {
+                    slectedCountery = value!;
+                  });
                 },
-                onSaved: (value) {
-                  country = value!;
-                },
+                dropdownMenuEntries: counteriesList
+                    .map<DropdownMenuEntry<CounteriesModel>>((value) {
+                  return DropdownMenuEntry<CounteriesModel>(
+                      value: value, label: value.name);
+                }).toList(),
               ),
+
+              // // Country input field
+              // TextFormField(
+              //   decoration: const InputDecoration(labelText: 'الدولة'),
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return 'من فضلك ادخل الدولة';
+              //     }
+              //     return null;
+              //   },
+              //   onSaved: (value) {
+              //     country = value!;
+              //   },
+              // ),
 
               // Image picker widget
               Padding(
@@ -179,11 +225,28 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
                             imageFile!,
                             height: 150,
                           )
-                        : Text('لا يوجد صورة'),
+                        : const Text('لا يوجد صورة'),
                     ElevatedButton.icon(
                       onPressed: _pickImage,
-                      icon: Icon(Icons.image),
-                      label: Text('التقاط صورة'),
+                      icon: const Icon(Icons.image),
+                      label: const Text('التقاط صورة'),
+                    ),
+                  ],
+                ),
+              ),
+
+              // CV picker widget
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Column(
+                  children: [
+                    cvFile != null
+                        ? Text('CV selected: ${cvFile!.path.split('/').last}')
+                        : const Text('لا يوجد CV'),
+                    ElevatedButton.icon(
+                      onPressed: _pickCV,
+                      icon: const Icon(Icons.upload_file),
+                      label: const Text('رفع السيرة الذاتية'),
                     ),
                   ],
                 ),
@@ -192,7 +255,7 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
               // Add Maid button
               ElevatedButton(
                 onPressed: _addMaid,
-                child: Text('اضف خادمة'),
+                child: const Text('اضف خادمة'),
               ),
             ],
           ),

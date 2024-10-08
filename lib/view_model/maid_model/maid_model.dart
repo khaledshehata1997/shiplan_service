@@ -6,6 +6,7 @@ class MaidModel {
   int age;
   String country;
   String imageUrl;
+  String cvUrl;
 
   MaidModel({
     required this.id,
@@ -13,6 +14,7 @@ class MaidModel {
     required this.age,
     required this.country,
     required this.imageUrl,
+    required this.cvUrl,
   });
 
   // Convert a Maid object into a map for Firebase
@@ -23,6 +25,8 @@ class MaidModel {
       'id': id,
       'country': country,
       'imageUrl': imageUrl,
+      'cvUrl':cvUrl
+
     };
   }
 
@@ -34,6 +38,7 @@ class MaidModel {
       age: data['age'],
       country: data['country'],
       imageUrl: data['imageUrl'],
+      cvUrl: data['cvUrl']
     );
   }
 }

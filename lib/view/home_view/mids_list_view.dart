@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:shiplan_service/view/cv_viewer_screen.dart';
 import 'package:shiplan_service/view_model/maid_model/maid_model.dart';
 
 class MidsListScreen extends StatefulWidget {
@@ -31,12 +34,12 @@ class _MidsListScreenState extends State<MidsListScreen> {
 
         List<MaidModel> maids = maidServiceList.map((maid) {
           return MaidModel(
-            id: maid['id'] ?? "",
-            name: maid['name'],
-            age: maid['age'],
-            country: maid['country'],
-            imageUrl: maid['imageUrl'],
-          );
+              id: maid['id'] ?? "",
+              name: maid['name'],
+              age: maid['age'],
+              country: maid['country'] ?? "",
+              imageUrl: maid['imageUrl'] ?? "",
+              cvUrl: maid['cvUrl'] ?? "");
         }).toList();
 
         return maids;
@@ -76,7 +79,7 @@ class _MidsListScreenState extends State<MidsListScreen> {
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Center(child: Text('No services found'));
             } else {
-               List<MaidModel> maids = snapshot.data!;
+              List<MaidModel> maids = snapshot.data!;
               return ListView.builder(
                   itemCount: maids.length,
                   itemBuilder: (context, index) {
@@ -87,7 +90,7 @@ class _MidsListScreenState extends State<MidsListScreen> {
                         height: 100,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               color: Colors.grey,
                               // changes position of shadow
@@ -103,16 +106,30 @@ class _MidsListScreenState extends State<MidsListScreen> {
                               children: [
                                 CircleAvatar(
                                   radius: 40,
-                                  child: Image.network(maid.imageUrl),
+                                  backgroundImage: NetworkImage(maid.imageUrl),
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text("الاسم : ${maid.name}",style: TextStyle(fontWeight: FontWeight.bold),),
+                                    Text(
+                                      "الاسم : ${maid.name}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                     Text("السن : ${maid.age}"),
                                   ],
                                 ),
-                                Text("الدولة : ${maid.country}"),
+                                Column(
+                                  children: [
+                                    Text("الدولة : ${maid.country}"),
+                                    TextButton(
+                                        onPressed: () {
+                                          Get.to(() => CVViewerScreen(
+                                              cvPath: maid.cvUrl));
+                                        },
+                                        child: const Text("Show cv"))
+                                  ],
+                                ),
                               ],
                             ),
                           ),

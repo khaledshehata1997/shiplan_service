@@ -61,6 +61,7 @@ class _ConfirmOrderViewState extends State<ConfirmOrderView> {
             age: maid['age'],
             country: maid['country'],
             imageUrl: maid['imageUrl'],
+            cvUrl: maid['cvUrl']
           );
         }).toList();
 
