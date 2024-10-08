@@ -27,7 +27,10 @@ class CounteriesScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(4.0),
                   child: InkWell(
                     onTap: () {
-                      Get.to(BuyOffersView(isAdmin: isAdmin));
+                      Get.to(BuyOffersView(
+                        isAdmin: isAdmin,
+                        maidCountry: counteriesList[index].name,
+                      ));
                     },
                     child: Container(
                       height: 150,
