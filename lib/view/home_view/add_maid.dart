@@ -22,9 +22,9 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
   // Form input fields
   String name = '';
   int age = 0;
-  // String country = '';
   File? imageFile;
   File? cvFile; // Added CV file variable
+  bool isLoading = false; // Loading state
 
   // Image picker instance
   final ImagePicker _picker = ImagePicker();
@@ -43,7 +43,7 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
   Future<void> _pickCV() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf'], // Restrict t
+      allowedExtensions: ['pdf'], // Restrict to PDF
     );
 
     if (result != null && result.files.isNotEmpty) {
@@ -57,6 +57,10 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
   Future<void> _addMaid() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      setState(() {
+        isLoading = true; // Start loading
+      });
+
       String id = const Uuid().v4();
       try {
         // Upload image to Firebase Storage if the image is selected
@@ -134,8 +138,12 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
         setState(() {
           imageFile = null;
           cvFile = null; // Clear CV file after upload
+          isLoading = false; // Stop loading
         });
       } catch (e) {
+        setState(() {
+          isLoading = false; // Stop loading on error
+        });
         // Show error message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error adding maid: $e')),
@@ -188,6 +196,7 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
               ),
               const SizedBox(height: 20),
               DropdownMenu<CounteriesModel>(
+                expandedInsets: const EdgeInsets.symmetric(horizontal: 10),
                 initialSelection: counteriesList.first,
                 onSelected: (value) {
                   setState(() {
@@ -200,20 +209,6 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
                       value: value, label: value.name);
                 }).toList(),
               ),
-
-              // // Country input field
-              // TextFormField(
-              //   decoration: const InputDecoration(labelText: 'الدولة'),
-              //   validator: (value) {
-              //     if (value == null || value.isEmpty) {
-              //       return 'من فضلك ادخل الدولة';
-              //     }
-              //     return null;
-              //   },
-              //   onSaved: (value) {
-              //     country = value!;
-              //   },
-              // ),
 
               // Image picker widget
               Padding(
@@ -252,11 +247,13 @@ class _AddMaidScreenState extends State<AddMaidScreen> {
                 ),
               ),
 
-              // Add Maid button
-              ElevatedButton(
-                onPressed: _addMaid,
-                child: const Text('اضف خادمة'),
-              ),
+              // Add Maid button or Loading widget
+              isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : ElevatedButton(
+                      onPressed: _addMaid,
+                      child: const Text('اضف خادمة'),
+                    ),
             ],
           ),
         ),

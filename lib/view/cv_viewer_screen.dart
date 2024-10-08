@@ -17,26 +17,7 @@ class _CVViewerScreenState extends State<CVViewerScreen> {
   @override
   void initState() {
     super.initState();
-    //  _loadPdfUrl();
   }
-
-  // Future<void> _loadPdfUrl() async {
-  //   try {
-  //     String url = await getPdfUrl(widget.cvPath);
-  //     setState(() {
-  //       pdfUrl = url;
-  //     });
-  //   } catch (e) {
-  //     // Handle any errors
-  //     print('Error getting PDF URL: $e');
-  //   }
-  // }
-
-  // Future<String> getPdfUrl(String cvPath) async {
-  //   final storageRef = FirebaseStorage.instance.ref().child(cvPath);
-  //   String url = await storageRef.getDownloadURL();
-  //   return url;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +25,7 @@ class _CVViewerScreenState extends State<CVViewerScreen> {
       appBar: AppBar(
         title: const Text("CV Viewer"),
       ),
-      body: widget.cvPath != null
+      body: widget.cvPath.isNotEmpty
           ? SfPdfViewer.network(widget.cvPath)
           : const Center(
               child:

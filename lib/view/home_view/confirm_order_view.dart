@@ -16,7 +16,7 @@ import '../../constants.dart';
 
 class ConfirmOrderView extends StatefulWidget {
   ServiceModel serviceModel;
-   ConfirmOrderView({super.key, required this.serviceModel});
+  ConfirmOrderView({super.key, required this.serviceModel});
 
   @override
   State<ConfirmOrderView> createState() => _ConfirmOrderViewState();
@@ -56,13 +56,12 @@ class _ConfirmOrderViewState extends State<ConfirmOrderView> {
 
         List<MaidModel> maids = maidServiceList.map((maid) {
           return MaidModel(
-            id: maid['id'] ?? "",
-            name: maid['name'],
-            age: maid['age'],
-            country: maid['country'],
-            imageUrl: maid['imageUrl'],
-            cvUrl: maid['cvUrl']
-          );
+              id: maid['id'] ?? "",
+              name: maid['name'],
+              age: maid['age'],
+              country: maid['country'] ?? "",
+              imageUrl: maid['imageUrl'] ?? "",
+              cvUrl: maid['cvUrl'] ?? "");
         }).toList();
 
         return maids;
@@ -98,19 +97,19 @@ class _ConfirmOrderViewState extends State<ConfirmOrderView> {
       //   'timestamp': DateTime.now().toIso8601String(),
       // };
       OrderModel orderData = OrderModel(
-        id: Uuid().v4(),
-         maidId: _selectedMaid!.id,
-          visitCount:  widget.serviceModel.vistCount,
-           maidName:  _selectedMaid!.name,
-            maidCountry:  widget.serviceModel.maidCountry, 
-            fullName: _fullName!,
-             phoneNumber: _phoneNumber!, 
-            address: _address!,
-             isDay: widget.serviceModel.isDay?'صباحية':'مسائية',
-              serviceType: widget.serviceModel.isDay?'صباحية':'مسائية',
-               price: widget.serviceModel.priceAfterTax,
-                timestamp: DateTime.now(),
-                );
+        id: const Uuid().v4(),
+        maidId: _selectedMaid!.id,
+        visitCount: widget.serviceModel.vistCount,
+        maidName: _selectedMaid!.name,
+        maidCountry: widget.serviceModel.maidCountry,
+        fullName: _fullName!,
+        phoneNumber: _phoneNumber!,
+        address: _address!,
+        isDay: widget.serviceModel.isDay ? 'صباحية' : 'مسائية',
+        serviceType: widget.serviceModel.isDay ? 'صباحية' : 'مسائية',
+        price: widget.serviceModel.priceAfterTax,
+        timestamp: DateTime.now(),
+      );
 
       // Reference to the user's document
       DocumentReference userDocRef =
@@ -137,11 +136,12 @@ class _ConfirmOrderViewState extends State<ConfirmOrderView> {
           "+201140045515"; // Your custom phone number in international format (without the '+')
       String message = "تفاصيل الطلب:${widget.serviceModel.serviceSummary}  \n"
           "اسم الخادمة: ${_selectedMaid!.name}\n"
+          "cv الخادمة: ${_selectedMaid!.cvUrl}\n"
           "اسم العميل: $_fullName\n"
           "رقم الهاتف: $_phoneNumber\n"
           "العنوان: $_address\n"
           "السعر: ${widget.serviceModel.priceAfterTax}\n"
-          "نوع الخدمة: ${widget.serviceModel.isDay?'صباحية':'مسائية'}\n"
+          "نوع الخدمة: ${widget.serviceModel.isDay ? 'صباحية' : 'مسائية'}\n"
           "التاريخ: ${DateTime.now().toIso8601String()}";
 
       String whatsappUrl =
