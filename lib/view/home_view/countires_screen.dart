@@ -14,7 +14,7 @@ class CounteriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.green,
-      appBar: AppBar(title: const Text('Counteries')),
+      appBar: AppBar(title: const Text('الدول'), centerTitle: true),
       body: SafeArea(
         child: Center(
             child: Padding(
@@ -35,20 +35,29 @@ class CounteriesScreen extends StatelessWidget {
                     child: Container(
                       height: 150,
                       decoration: BoxDecoration(
-                        color: Colors.white70,
+                        color: Colors.green[700],
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SvgPicture.network(
                               counteriesList[index].image,
                               width: 25,
                               height: 25,
                             ),
-                            Text(counteriesList[index].name),
-                            Text(counteriesList[index].price),
+                            Text(
+                              counteriesList[index].name,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              counteriesList[index].price,
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ],
                         ),
                       ),
