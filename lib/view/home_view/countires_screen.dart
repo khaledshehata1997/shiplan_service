@@ -4,6 +4,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:shiplan_service/constant/counteries.dart';
 import 'package:shiplan_service/view/home_view/buy_offers_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shiplan_service/view/view_mids_by_country.dart';
 
 class CounteriesScreen extends StatelessWidget {
   bool isAdmin = false;
@@ -27,8 +28,7 @@ class CounteriesScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(4.0),
                   child: InkWell(
                     onTap: () {
-                      Get.to(BuyOffersView(
-                        isAdmin: isAdmin,
+                      Get.to(ViewMidsByCountery(
                         maidCountry: counteriesList[index].name,
                       ));
                     },
