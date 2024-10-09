@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:shiplan_service/constant/const_data.dart';
 import 'package:shiplan_service/constants.dart';
 import 'package:shiplan_service/view/cv_viewer_screen.dart';
 import 'package:shiplan_service/view_model/maid_model/maid_model.dart';
@@ -112,31 +113,37 @@ class _ViewMidsByCounteryState extends State<ViewMidsByCountery> {
                                       backgroundImage:
                                           NetworkImage(maid.imageUrl),
                                     ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "الاسم : ${maid.name}",
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                            overflow: TextOverflow.clip,
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "الاسم : ${maid.name}",
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              overflow: TextOverflow.visible,
+                                            ),
+                                            maxLines: 2,
                                           ),
-                                        ),
-                                        Text(
-                                          "السن : ${maid.age}",
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                      ],
+                                          Text(
+                                            "السن : ${maid.age}",
+                                            style:
+                                                const TextStyle(fontSize: 16),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     Text(
                                       "الدولة : ${maid.country}",
-                                      style: TextStyle(fontSize: 16),
+                                      style: const TextStyle(fontSize: 16),
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Row(
@@ -150,7 +157,7 @@ class _ViewMidsByCounteryState extends State<ViewMidsByCountery> {
                                         ),
                                         onPressed: () async {
                                           String phoneNumber =
-                                              "+201140045515"; // Replace with your WhatsApp number
+                                              ConstData.phoneNumberWhatsapp;
                                           String message =
                                               "الاسم: ${maid.name} \n"
                                               "السن: ${maid.age} \n"

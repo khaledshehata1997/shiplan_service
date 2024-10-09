@@ -22,7 +22,10 @@ class CounteriesScreen extends StatelessWidget {
           child: GridView.builder(
               itemCount: counteriesList.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, childAspectRatio: 1.5, mainAxisSpacing: 5),
+                crossAxisCount: 2,
+                childAspectRatio: 1.2,
+                mainAxisSpacing: 1,
+              ),
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.all(4.0),
@@ -33,32 +36,65 @@ class CounteriesScreen extends StatelessWidget {
                       ));
                     },
                     child: Container(
-                      height: 150,
                       decoration: BoxDecoration(
                         color: Colors.green[700],
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SvgPicture.network(
-                              counteriesList[index].image,
-                              width: 25,
-                              height: 25,
-                            ),
-                            Text(
-                              counteriesList[index].name,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              counteriesList[index].price,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SvgPicture.network(
+                                counteriesList[index].image,
+                                width: 50,
+                                height: 50,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                counteriesList[index].name,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    "جديدة",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Text(
+                                    counteriesList[index].price,
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                              if (counteriesList[index]
+                                  .priceWithExtra
+                                  .isNotEmpty)
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      "سبق لها العمل",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    Text(
+                                      counteriesList[index].priceWithExtra,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

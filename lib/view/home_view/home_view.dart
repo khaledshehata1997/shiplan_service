@@ -10,6 +10,7 @@ import 'package:shiplan_service/main.dart';
 import 'package:shiplan_service/view/home_view/add_maid.dart';
 import 'package:shiplan_service/view/home_view/add_offers.dart';
 import 'package:shiplan_service/view/home_view/add_service.dart';
+import 'package:shiplan_service/view/home_view/add_special_order.dart';
 import 'package:shiplan_service/view/home_view/buy_offers_view.dart';
 import 'package:shiplan_service/view/home_view/countires_screen.dart';
 import 'package:shiplan_service/view/home_view/offers_view.dart';
@@ -151,18 +152,18 @@ class _HomeViewState extends State<HomeView> {
                               Get.to(const AddServiceScreen());
                             },
                           ),
-                        if (user.isAdmin)
-                          ListTile(
-                            // leading: const Icon(Icons.support_agent_outlined),
-                            title: Text(
-                              'اضافه عروض'.tr,
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            onTap: () {
-                              Get.to(const AddOffersScreen());
-                            },
+                        // if (user.isAdmin)
+                        ListTile(
+                          // leading: const Icon(Icons.support_agent_outlined),
+                          title: Text(
+                            'ارسل طلبك الخاص'.tr,
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
+                          onTap: () {
+                            Get.to(const AddSpecialOrder());
+                          },
+                        ),
 
                         ListTile(
                           leading: const Icon(Icons.share),
@@ -178,7 +179,7 @@ class _HomeViewState extends State<HomeView> {
                           onTap: () async {
                             // Set the app link and the message to be shared
                             const String appLink =
-                                'https://play.google.com/store/apps/details?id=com.example.myapp';
+                                'https://play.google.com/store/apps/details?id=com.kh20.shiplan';
                             const String message =
                                 'Share our app with others: $appLink';
 
