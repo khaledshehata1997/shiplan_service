@@ -10,6 +10,7 @@ import 'package:shiplan_service/main.dart';
 import 'package:shiplan_service/view/home_view/add_maid.dart';
 import 'package:shiplan_service/view/home_view/add_offers.dart';
 import 'package:shiplan_service/view/home_view/add_service.dart';
+import 'package:shiplan_service/view/home_view/add_special_order.dart';
 import 'package:shiplan_service/view/home_view/buy_offers_view.dart';
 import 'package:shiplan_service/view/home_view/countires_screen.dart';
 import 'package:shiplan_service/view/home_view/offers_view.dart';
@@ -20,6 +21,7 @@ import 'package:shiplan_service/view/home_view/rent_offers_view.dart';
 import 'package:shiplan_service/view/view_model/user_model.dart';
 import 'package:shiplan_service/view_model/service_model/service_model.dart';
 
+import '../auth_view/sign_in_view.dart';
 import '../drawer_screen/our_location_page.dart';
 import '../drawer_screen/technical_support.dart';
 
@@ -151,18 +153,18 @@ class _HomeViewState extends State<HomeView> {
                               Get.to(const AddServiceScreen());
                             },
                           ),
-                        if (user.isAdmin)
-                          ListTile(
-                            // leading: const Icon(Icons.support_agent_outlined),
-                            title: Text(
-                              'اضافه عروض'.tr,
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            onTap: () {
-                              Get.to(const AddOffersScreen());
-                            },
+                        // if (user.isAdmin)
+                        ListTile(
+                          // leading: const Icon(Icons.support_agent_outlined),
+                          title: Text(
+                            'ارسل طلبك الخاص'.tr,
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
+                          onTap: () {
+                            Get.to(const AddSpecialOrder());
+                          },
+                        ),
 
                         ListTile(
                           leading: const Icon(Icons.share),
@@ -178,7 +180,7 @@ class _HomeViewState extends State<HomeView> {
                           onTap: () async {
                             // Set the app link and the message to be shared
                             const String appLink =
-                                'https://play.google.com/store/apps/details?id=com.example.myapp';
+                                'https://play.google.com/store/apps/details?id=com.kh20.shiplan';
                             const String message =
                                 'Share our app with others: $appLink';
 
@@ -244,7 +246,7 @@ class _HomeViewState extends State<HomeView> {
                                       onPressed: () {
                                         // auth.signOut();
                                         // _handleSignOut();
-                                        // Get.offAll(const SignIn());
+                                         Get.offAll( SignIn());
                                       },
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: mainColor,
@@ -469,151 +471,206 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Get.to(OffersView(
-                              offers: offersList,
-                              isAdmin: isAdmin,
-                            ));
-                          },
-                          icon: const Icon(Icons.arrow_back_ios)),
-                      const Text(
-                        'جميع العروض',
-                        style: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  Container(
-                      alignment: Alignment.topRight,
-                      margin: const EdgeInsets.only(right: 15),
-                      child: const Text(
-                        'العروض',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      )),
-                ],
-              ),
               const SizedBox(
                 height: 15,
               ),
-              SizedBox(
-                  height: Get.height * .235,
-                  width: Get.width,
-                  child: FutureBuilder<List<ServiceModel>>(
-                      future: fetchAllOffers(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Center(
-                              child: Text('Error: ${snapshot.error}'));
-                        } else if (!snapshot.hasData ||
-                            snapshot.data!.isEmpty) {
-                          return const Center(child: Text('No services found'));
-                        } else {
-                          List<ServiceModel> offers = snapshot.data!;
-                          offersList = offers;
-                          return GridView.builder(
-                            reverse: true,
-                            scrollDirection: Axis.horizontal,
-                            //  physics: const NeverScrollableScrollPhysics(),
-                            itemCount: offers.length,
-                            shrinkWrap: true,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: .85,
-                                    mainAxisSpacing: 15,
-                                    crossAxisCount: 1),
-                            itemBuilder: (BuildContext context, int index) {
-                              ServiceModel offer = offers[index];
-                              return Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Get.to(OrderDetails(serviceModel: offer));
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(4),
-                                    // height: Get.height * 0.09,
-                                    // width: Get.width * 0.4,
-                                    decoration: BoxDecoration(
-                                        // image: const DecorationImage(
-                                        //   image: AssetImage(
-                                        //     'images/women.png',
-                                        //   ),
-                                        // ),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: Colors.grey,
-                                            offset: Offset(0.0, 1.0), //(x,y)
-                                            blurRadius: 3.0,
-                                          ),
-                                        ],
-                                        color: buttonColor,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            '${offer.vistCount} زيارات ${offer.isDay ? "صباحية" : "مسائية"} ${offer.maidCountry}',
-                                            textDirection: TextDirection.rtl,
-                                            style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          const SizedBox(
-                                            height: 25,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              const Icon(
-                                                  Icons.nights_stay_outlined),
-                                              Text(
-                                                offer.isDay
-                                                    ? 'صباحية'
-                                                    : 'مسائية',
-                                                textDirection:
-                                                    TextDirection.rtl,
-                                                style: const TextStyle(
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Text(
-                                            '${offer.priceAfterTax} ريال',
-                                            textDirection: TextDirection.rtl,
-                                            style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        }
-                      })),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.arrow_downward),
+                  SizedBox(width: 10,),
+                  Text(
+                    'في حالة لم تجد طلبك',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to(AddSpecialOrder(
+                      //isAdmin: isAdmin,
+                    ));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    // height: Get.height * 0.09,
+                    // width: Get.width * 0.4,
+                    decoration: BoxDecoration(
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(0.0, 1.0), //(x,y)
+                            blurRadius: 3.0,
+                          ),
+                        ],
+                        color: buttonColor,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Image.asset('images/pana1.png'),
+                        const Text(
+                          'تقدم بطلبك الخاص',
+                          style: TextStyle(
+                              fontSize: 23,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Row(
+              //       children: [
+              //         IconButton(
+              //             onPressed: () {
+              //               Get.to(OffersView(
+              //                 offers: offersList,
+              //                 isAdmin: isAdmin,
+              //               ));
+              //             },
+              //             icon: const Icon(Icons.arrow_back_ios)),
+              //         const Text(
+              //           'جميع العروض',
+              //           style: TextStyle(
+              //               fontSize: 17, fontWeight: FontWeight.bold),
+              //         ),
+              //       ],
+              //     ),
+              //     Container(
+              //         alignment: Alignment.topRight,
+              //         margin: const EdgeInsets.only(right: 15),
+              //         child: const Text(
+              //           'العروض',
+              //           style: TextStyle(
+              //               fontSize: 20, fontWeight: FontWeight.bold),
+              //         )),
+              //   ],
+              // ),
+              // const SizedBox(
+              //   height: 15,
+              // ),
+              // SizedBox(
+              //     height: Get.height * .235,
+              //     width: Get.width,
+              //     child: FutureBuilder<List<ServiceModel>>(
+              //         future: fetchAllOffers(),
+              //         builder: (context, snapshot) {
+              //           if (snapshot.connectionState ==
+              //               ConnectionState.waiting) {
+              //             return const Center(
+              //                 child: CircularProgressIndicator());
+              //           } else if (snapshot.hasError) {
+              //             return Center(
+              //                 child: Text('Error: ${snapshot.error}'));
+              //           } else if (!snapshot.hasData ||
+              //               snapshot.data!.isEmpty) {
+              //             return const Center(child: Text('No services found'));
+              //           } else {
+              //             List<ServiceModel> offers = snapshot.data!;
+              //             offersList = offers;
+              //             return GridView.builder(
+              //               reverse: true,
+              //               scrollDirection: Axis.horizontal,
+              //               //  physics: const NeverScrollableScrollPhysics(),
+              //               itemCount: offers.length,
+              //               shrinkWrap: true,
+              //               gridDelegate:
+              //                   const SliverGridDelegateWithFixedCrossAxisCount(
+              //                       childAspectRatio: .85,
+              //                       mainAxisSpacing: 15,
+              //                       crossAxisCount: 1),
+              //               itemBuilder: (BuildContext context, int index) {
+              //                 ServiceModel offer = offers[index];
+              //                 return Padding(
+              //                   padding: const EdgeInsets.all(6.0),
+              //                   child: GestureDetector(
+              //                     onTap: () {
+              //                       Get.to(OrderDetails(serviceModel: offer));
+              //                     },
+              //                     child: Container(
+              //                       padding: const EdgeInsets.all(4),
+              //                       // height: Get.height * 0.09,
+              //                       // width: Get.width * 0.4,
+              //                       decoration: BoxDecoration(
+              //                           // image: const DecorationImage(
+              //                           //   image: AssetImage(
+              //                           //     'images/women.png',
+              //                           //   ),
+              //                           // ),
+              //                           boxShadow: const [
+              //                             BoxShadow(
+              //                               color: Colors.grey,
+              //                               offset: Offset(0.0, 1.0), //(x,y)
+              //                               blurRadius: 3.0,
+              //                             ),
+              //                           ],
+              //                           color: buttonColor,
+              //                           borderRadius:
+              //                               BorderRadius.circular(10)),
+              //                       child: Padding(
+              //                         padding: const EdgeInsets.all(8.0),
+              //                         child: Column(
+              //                           crossAxisAlignment:
+              //                               CrossAxisAlignment.end,
+              //                           children: [
+              //                             Text(
+              //                               '${offer.vistCount} زيارات ${offer.isDay ? "صباحية" : "مسائية"} ${offer.maidCountry}',
+              //                               textDirection: TextDirection.rtl,
+              //                               style: const TextStyle(
+              //                                   fontSize: 15,
+              //                                   fontWeight: FontWeight.bold),
+              //                             ),
+              //                             const SizedBox(
+              //                               height: 25,
+              //                             ),
+              //                             Row(
+              //                               mainAxisAlignment:
+              //                                   MainAxisAlignment.end,
+              //                               children: [
+              //                                 const Icon(
+              //                                     Icons.nights_stay_outlined),
+              //                                 Text(
+              //                                   offer.isDay
+              //                                       ? 'صباحية'
+              //                                       : 'مسائية',
+              //                                   textDirection:
+              //                                       TextDirection.rtl,
+              //                                   style: const TextStyle(
+              //                                     fontSize: 15,
+              //                                   ),
+              //                                 ),
+              //                               ],
+              //                             ),
+              //                             const SizedBox(
+              //                               height: 10,
+              //                             ),
+              //                             Text(
+              //                               '${offer.priceAfterTax} ريال',
+              //                               textDirection: TextDirection.rtl,
+              //                               style: const TextStyle(
+              //                                   fontSize: 15,
+              //                                   fontWeight: FontWeight.bold),
+              //                             ),
+              //                           ],
+              //                         ),
+              //                       ),
+              //                     ),
+              //                   ),
+              //                 );
+              //               },
+              //             );
+              //           }
+              //         })),
             ],
           ),
         ));

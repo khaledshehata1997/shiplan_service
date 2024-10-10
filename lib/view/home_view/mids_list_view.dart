@@ -65,7 +65,7 @@ class _MidsListScreenState extends State<MidsListScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          'الخادمات',
+          'جميع الخادمات',
           style: TextStyle(color: Colors.black),
         ),
       ),

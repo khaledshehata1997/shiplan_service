@@ -23,11 +23,11 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
   final descriptionController = TextEditingController();
   final priceAfterTaxController = TextEditingController(text: '0');
 
-  String? _selectedValue;
+  String? _selectedValue = "تأجير";
   CounteriesModel slectedCountery = counteriesList.first;
   bool _isLoading = false;
   String _error = '';
-  final List<String> listOfValue = ['أستقدام', 'تأجير'];
+  //final List<String> listOfValue = ['أستقدام', 'تأجير'];
 
   // Multi-selection for weekdays and time range
   final List<String> _weekdays = [
@@ -115,7 +115,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("اضف خدمة")),
+      appBar: AppBar(title: const Text("اضف خدمة تأجير")),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Form(
@@ -123,41 +123,41 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DropdownButtonFormField(
-                value: _selectedValue,
-                hint: const Text(
-                  'اختر نوع الخدمة',
-                ),
-                isExpanded: true,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedValue = value;
-                  });
-                },
-                onSaved: (value) {
-                  setState(() {
-                    _selectedValue = value;
-                  });
-                },
-                validator: (String? value) {
-                  if (value!.isEmpty) {
-                    return "can't empty";
-                  } else {
-                    return null;
-                  }
-                },
-                items: listOfValue.map((String val) {
-                  return DropdownMenuItem(
-                    value: val,
-                    child: Text(
-                      val,
-                    ),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
+              // DropdownButtonFormField(
+              //   value: _selectedValue,
+              //   hint: const Text(
+              //     'اختر نوع الخدمة',
+              //   ),
+              //   isExpanded: true,
+              //   onChanged: (value) {
+              //     setState(() {
+              //       _selectedValue = value;
+              //     });
+              //   },
+              //   onSaved: (value) {
+              //     setState(() {
+              //       _selectedValue = value;
+              //     });
+              //   },
+              //   validator: (String? value) {
+              //     if (value!.isEmpty) {
+              //       return "can't empty";
+              //     } else {
+              //       return null;
+              //     }
+              //   },
+              //   items: listOfValue.map((String val) {
+              //     return DropdownMenuItem(
+              //       value: val,
+              //       child: Text(
+              //         val,
+              //       ),
+              //     );
+              //   }).toList(),
+              // ),
+              // const SizedBox(
+              //   height: 20,
+              // ),
               _buildTextField(summaryController, 'تفصيل الخدمة',
                   'من فضلك اكتب تفاصيل الخدمة'),
               _buildTextField(
