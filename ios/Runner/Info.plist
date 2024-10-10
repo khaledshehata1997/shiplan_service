@@ -45,5 +45,27 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- Permissions for camera and media library -->
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs access to the camera to upload photos.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access to the photo library to upload images.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app requires microphone access for voice recording.</string>
+
+	<!-- Permissions for file access and sharing -->
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app needs permission to add photos to your library.</string>
+
+	<!-- Permissions for Firebase push notifications -->
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	
 </dict>
 </plist>

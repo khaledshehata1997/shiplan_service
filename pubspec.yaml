@@ -43,7 +43,7 @@ dependencies:
   flutter_rating_stars: ^1.1.0
   carousel_slider: ^5.0.0
   url_launcher: ^6.3.0
-  google_maps_flutter: ^2.9.0
+  # google_maps_flutter: ^2.9.0
   firebase_core: ^3.4.1
   firebase_auth: ^5.2.1
   google_sign_in: ^6.2.1
