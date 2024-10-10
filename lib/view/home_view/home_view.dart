@@ -419,7 +419,7 @@ class _HomeViewState extends State<HomeView> {
                       children: [
                         Image.asset('images/pana.png'),
                         const Text(
-                          'خدمه الأستقدام',
+                          'خدمات الاستقدام',
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
@@ -460,7 +460,7 @@ class _HomeViewState extends State<HomeView> {
                       children: [
                         Image.asset('images/pana1.png'),
                         const Text(
-                          'خدمه التأجير',
+                          'خدمات التأجير',
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,

@@ -18,98 +18,116 @@ class CounteriesScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('دول الاستقدام'), centerTitle: true),
       body: SafeArea(
         child: Center(
-            child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GridView.builder(
-              itemCount: counteriesList.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.1,
-                mainAxisSpacing: 1,
-              ),
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: InkWell(
-                    onTap: () {
-                      Get.to(ViewMidsByCountery(
-                        maidCountry: counteriesList[index].name,
-                      ));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color:mainColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 35,
-                                height: 35,
-                                child: SvgPicture.network(
-                                  counteriesList[index].image,
+            child: Column(
+              children: [
+                Text(
+                  '"جميع الاسعار شامله قيمة الضريبه المضافة"',
+                  style: const TextStyle(
 
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 6,
-                              ),
-                              Text(
-                                counteriesList[index].name,
-                                style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16
 
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  fontSize: 18
-
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  const Text(
-                                    "جديدة",
-                                    style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    counteriesList[index].price,
-                                    style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              if (counteriesList[index]
-                                  .priceWithExtra
-                                  .isNotEmpty)
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                  ),
+                ),
+                Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Container(
+                            width: Get.width,
+                            height: Get.height*.78,
+                            child: GridView.builder(
+                                              itemCount: counteriesList.length,
+                                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 2,
+                                                childAspectRatio: 1.1,
+                                                mainAxisSpacing: 1,
+                                              ),
+                                              itemBuilder: (context, index) {
+                                                return Padding(
+                                                  padding: const EdgeInsets.all(4.0),
+                                                  child: InkWell(
+                                                    onTap: () {
+                            Get.to(ViewMidsByCountery(
+                              maidCountry: counteriesList[index].name,
+                            ));
+                                                    },
+                                                    child: Container(
+                            decoration: BoxDecoration(
+                              color:mainColor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    const Text(
-                                      "سبق لها العمل",
-                                      style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                                    Container(
+                                      width: 35,
+                                      height: 35,
+                                      child: SvgPicture.network(
+                                        counteriesList[index].image,
+
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 6,
                                     ),
                                     Text(
-                                      counteriesList[index].priceWithExtra,
-                                      style:
-                                          const TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                                      counteriesList[index].name,
+                                      style: const TextStyle(
+
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        fontSize: 18
+
+                                      ),
                                     ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        const Text(
+                                          "جديدة",
+                                          style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          counteriesList[index].price,
+                                          style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    if (counteriesList[index]
+                                        .priceWithExtra
+                                        .isNotEmpty)
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          const Text(
+                                            "سبق لها العمل",
+                                            style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            counteriesList[index].priceWithExtra,
+                                            style:
+                                                const TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
                                   ],
                                 ),
-                            ],
+                              ),
+                            ),
+                                                    ),
+                                                  ),
+                                                );
+                                              }),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                );
-              }),
-        )),
+              ],
+            )),
       ),
     );
   }
