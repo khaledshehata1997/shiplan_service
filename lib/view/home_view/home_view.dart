@@ -391,48 +391,48 @@ class _HomeViewState extends State<HomeView> {
               const SizedBox(
                 height: 60,
               ),
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: GestureDetector(
-              //     onTap: () {
-              //       //   Get.to( BuyOffersView(isAdmin:isAdmin));
-              //       Get.to(CounteriesScreen(
-              //         isAdmin: isAdmin,
-              //       ));
-              //     },
-              //     child: Container(
-              //       padding: const EdgeInsets.all(4),
-              //       // height: Get.height * 0.09,
-              //       // width: Get.width * 0.4,
-              //       decoration: BoxDecoration(
-              //           boxShadow: const [
-              //             BoxShadow(
-              //               color: Colors.grey,
-              //               offset: Offset(0.0, 1.0), //(x,y)
-              //               blurRadius: 3.0,
-              //             ),
-              //           ],
-              //           color: buttonColor,
-              //           borderRadius: BorderRadius.circular(10)),
-              //       child: Row(
-              //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //         children: [
-              //           Image.asset('images/pana.png'),
-              //           const Text(
-              //             'خدمات الاستقدام',
-              //             style: TextStyle(
-              //                 fontSize: 25,
-              //                 fontWeight: FontWeight.bold,
-              //                 color: Colors.white),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // const SizedBox(
-              //   height: 15,
-              // ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    //   Get.to( BuyOffersView(isAdmin:isAdmin));
+                    Get.to(CounteriesScreen(
+                      isAdmin: isAdmin,
+                    ));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    // height: Get.height * 0.09,
+                    // width: Get.width * 0.4,
+                    decoration: BoxDecoration(
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(0.0, 1.0), //(x,y)
+                            blurRadius: 3.0,
+                          ),
+                        ],
+                        color: buttonColor,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Image.asset('images/pana.png'),
+                        const Text(
+                          'خدمات الاستقدام',
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
