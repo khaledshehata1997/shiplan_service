@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       title: 'Flutter Demo',
 debugShowCheckedModeBanner: false,
-      home: user == null ? SplashView() : const NavBarView(),
+      home: user == null ? OnBording() : const NavBarView(),
     );
   }
 }

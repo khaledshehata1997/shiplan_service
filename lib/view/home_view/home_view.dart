@@ -91,251 +91,251 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _key,
-        endDrawer: FutureBuilder<UserModel>(
-            future: _user,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              }
-              if (snapshot.hasData) {
-                UserModel user = snapshot.data!;
-                isAdmin = user.isAdmin;
-                return Drawer(
-                  backgroundColor: Colors.white,
-                  child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.all(30),
-                          width: Get.width,
-                          height: Get.height * .2,
-                          alignment: Alignment.center,
-                          color: Colors.white,
-                          child: Image.asset('images/splash.png'),
-                        ),
-                        ListTile(
-                          leading: const Icon(Icons.support_agent_outlined),
-                          title: Text(
-                            'الدعم الفني'.tr,
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          onTap: () {
-                            Get.to(const TechnicalSupport());
-                          },
-                        ),
-                        if (user.isAdmin)
-                          ListTile(
-                            // leading: const Icon(Icons.support_agent_outlined),
-                            title: Text(
-                              'اضافه خادمه'.tr,
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            onTap: () {
-                              Get.to(const AddMaidScreen());
-                            },
-                          ),
-                        if (user.isAdmin)
-                          ListTile(
-                            // leading: const Icon(Icons.support_agent_outlined),
-                            title: Text(
-                              'اضافه خدمه'.tr,
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            onTap: () {
-                              Get.to(const AddServiceScreen());
-                            },
-                          ),
-                        // if (user.isAdmin)
-                        ListTile(
-                          // leading: const Icon(Icons.support_agent_outlined),
-                          title: Text(
-                            'ارسل طلبك الخاص'.tr,
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          onTap: () {
-                            Get.to(const AddSpecialOrder());
-                          },
-                        ),
-
-                        ListTile(
-                          leading: const Icon(Icons.share),
-                          title: Row(
-                            children: [
-                              Text(
-                                ' مشاركة التطبيق'.tr,
-                                style: const TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          onTap: () async {
-                            // Set the app link and the message to be shared
-                            const String appLink =
-                                'https://play.google.com/store/apps/details?id=com.kh20.shiplan';
-                            const String message =
-                                'Share our app with others: $appLink';
-
-                            // Share the app link and message using the share dialog
-                            await FlutterShare.share(
-                                title: 'مشاركة التطبيق',
-                                text: message,
-                                linkUrl: appLink);
-                          },
-                        ),
-
-                        if (user.isAdmin)
-                          ListTile(
-                            leading: const Icon(Icons.support),
-                            title: Text(
-                              'أداره الطلبات'.tr,
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            onTap: () {
-                              Get.to(const OrdersManagmentView());
-                              // Get.to(const OurLocationPage());
-                            },
-                          ),
-                        // FirebaseAuth.instance.currentUser == null
-                        //     ? GestureDetector(
-                        //   onTap: () {
-                        //     Get.to(const SignIn());
-                        //   },
-                        //   child: ListTile(
-                        //     title: Text(
-                        //       'تسجيل الدخول'.tr,
-                        //       style: TextStyle(
-                        //           fontSize: 18,
-                        //           fontWeight: FontWeight.bold,
-                        //           color: mainColor),
-                        //     ),
-                        //   ),
-                        // )
-                        //     :
-                        GestureDetector(
-                          onTap: () {
-                            Get.defaultDialog(
-                                title: 'Are you sure?'.tr,
-                                content: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.white,
-                                          elevation: 10),
-                                      child: Text(
-                                        'no'.tr,
-                                        style: const TextStyle(
-                                            color: Colors.black),
-                                      ),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        // auth.signOut();
-                                        // _handleSignOut();
-                                         Get.offAll( SignIn());
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: mainColor,
-                                          elevation: 10),
-                                      child: Text('yes'.tr,
-                                          style: const TextStyle(
-                                              color: Colors.white)),
-                                    ),
-                                  ],
-                                ));
-                          },
-                          child: ListTile(
-                            leading: const Icon(
-                              Icons.logout_outlined,
-                              color: Colors.red,
-                            ),
-                            title: Text(
-                              'تسجيل الخروج'.tr,
-                              style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.red),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }
-
-              return Container();
-            }),
-        appBar: AppBar(
-          // leading: Padding(
-          //   padding: const EdgeInsets.all(4.0),
-          //   child: Container(
-          //     decoration: BoxDecoration(
-          //       color: buttonColor,
-          //       borderRadius: BorderRadius.circular(12),
-          //     ),
-          //     height: Get.height * 0.1,
-          //     width: Get.width * 0.1,
-          //     child: IconButton(
-          //         onPressed: () {},
-          //         icon: const Icon(
-          //           Icons.notifications_none_rounded,
-          //           color: Colors.white,
-          //         )),
-          //   ),
-          // ),
-          centerTitle: true,
-          title: SizedBox(
-              height: Get.height * .075,
-              width: Get.width * .4,
-              child: Image.asset('images/splash.png')),
-          // title: const Text("الرئيسيه",textDirection: TextDirection.rtl,style: TextStyle(color: Colors.black),),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: buttonColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                height: Get.height * 0.1,
-                width: Get.width * 0.135,
-                child: IconButton(
-                    onPressed: () {
-                      _key.currentState!.openEndDrawer();
-                    },
-                    icon: const Icon(
-                      Icons.list_outlined,
-                      color: Colors.white,
-                    )),
-              ),
-            ),
-          ],
-        ),
+        // endDrawer: FutureBuilder<UserModel>(
+        //     future: _user,
+        //     builder: (context, snapshot) {
+        //       if (snapshot.connectionState == ConnectionState.waiting) {
+        //         return const Center(child: CircularProgressIndicator());
+        //       }
+        //       if (snapshot.hasError) {
+        //         return Text('Error: ${snapshot.error}');
+        //       }
+        //       if (snapshot.hasData) {
+        //         UserModel user = snapshot.data!;
+        //         isAdmin = user.isAdmin;
+        //         return Drawer(
+        //           backgroundColor: Colors.white,
+        //           child: Directionality(
+        //             textDirection: TextDirection.rtl,
+        //             child: ListView(
+        //               padding: EdgeInsets.zero,
+        //               children: <Widget>[
+        //                 Container(
+        //                   padding: const EdgeInsets.all(30),
+        //                   width: Get.width,
+        //                   height: Get.height * .2,
+        //                   alignment: Alignment.center,
+        //                   color: Colors.white,
+        //                   child: Image.asset('images/splash.png'),
+        //                 ),
+        //                 ListTile(
+        //                   leading: const Icon(Icons.support_agent_outlined),
+        //                   title: Text(
+        //                     'الدعم الفني'.tr,
+        //                     style: const TextStyle(
+        //                         fontSize: 18, fontWeight: FontWeight.bold),
+        //                   ),
+        //                   onTap: () {
+        //                     Get.to(const TechnicalSupport());
+        //                   },
+        //                 ),
+        //                 if (user.isAdmin)
+        //                   ListTile(
+        //                     // leading: const Icon(Icons.support_agent_outlined),
+        //                     title: Text(
+        //                       'اضافه خادمه'.tr,
+        //                       style: const TextStyle(
+        //                           fontSize: 18, fontWeight: FontWeight.bold),
+        //                     ),
+        //                     onTap: () {
+        //                       Get.to(const AddMaidScreen());
+        //                     },
+        //                   ),
+        //                 if (user.isAdmin)
+        //                   ListTile(
+        //                     // leading: const Icon(Icons.support_agent_outlined),
+        //                     title: Text(
+        //                       'اضافه خدمه'.tr,
+        //                       style: const TextStyle(
+        //                           fontSize: 18, fontWeight: FontWeight.bold),
+        //                     ),
+        //                     onTap: () {
+        //                       Get.to(const AddServiceScreen());
+        //                     },
+        //                   ),
+        //                 // if (user.isAdmin)
+        //                 ListTile(
+        //                   // leading: const Icon(Icons.support_agent_outlined),
+        //                   title: Text(
+        //                     'ارسل طلبك الخاص'.tr,
+        //                     style: const TextStyle(
+        //                         fontSize: 18, fontWeight: FontWeight.bold),
+        //                   ),
+        //                   onTap: () {
+        //                     Get.to(const AddSpecialOrder());
+        //                   },
+        //                 ),
+        //
+        //                 ListTile(
+        //                   leading: const Icon(Icons.share),
+        //                   title: Row(
+        //                     children: [
+        //                       Text(
+        //                         ' مشاركة التطبيق'.tr,
+        //                         style: const TextStyle(
+        //                             fontSize: 18, fontWeight: FontWeight.bold),
+        //                       ),
+        //                     ],
+        //                   ),
+        //                   onTap: () async {
+        //                     // Set the app link and the message to be shared
+        //                     const String appLink =
+        //                         'https://play.google.com/store/apps/details?id=com.kh20.shiplan';
+        //                     const String message =
+        //                         'Share our app with others: $appLink';
+        //
+        //                     // Share the app link and message using the share dialog
+        //                     await FlutterShare.share(
+        //                         title: 'مشاركة التطبيق',
+        //                         text: message,
+        //                         linkUrl: appLink);
+        //                   },
+        //                 ),
+        //
+        //                 if (user.isAdmin)
+        //                   ListTile(
+        //                     leading: const Icon(Icons.support),
+        //                     title: Text(
+        //                       'أداره الطلبات'.tr,
+        //                       style: const TextStyle(
+        //                           fontSize: 18, fontWeight: FontWeight.bold),
+        //                     ),
+        //                     onTap: () {
+        //                       Get.to(const OrdersManagmentView());
+        //                       // Get.to(const OurLocationPage());
+        //                     },
+        //                   ),
+        //                 // FirebaseAuth.instance.currentUser == null
+        //                 //     ? GestureDetector(
+        //                 //   onTap: () {
+        //                 //     Get.to(const SignIn());
+        //                 //   },
+        //                 //   child: ListTile(
+        //                 //     title: Text(
+        //                 //       'تسجيل الدخول'.tr,
+        //                 //       style: TextStyle(
+        //                 //           fontSize: 18,
+        //                 //           fontWeight: FontWeight.bold,
+        //                 //           color: mainColor),
+        //                 //     ),
+        //                 //   ),
+        //                 // )
+        //                 //     :
+        //                 GestureDetector(
+        //                   onTap: () {
+        //                     Get.defaultDialog(
+        //                         title: 'Are you sure?'.tr,
+        //                         content: Row(
+        //                           mainAxisAlignment:
+        //                               MainAxisAlignment.spaceAround,
+        //                           children: [
+        //                             ElevatedButton(
+        //                               onPressed: () {
+        //                                 Navigator.pop(context);
+        //                               },
+        //                               style: ElevatedButton.styleFrom(
+        //                                   backgroundColor: Colors.white,
+        //                                   elevation: 10),
+        //                               child: Text(
+        //                                 'no'.tr,
+        //                                 style: const TextStyle(
+        //                                     color: Colors.black),
+        //                               ),
+        //                             ),
+        //                             ElevatedButton(
+        //                               onPressed: () {
+        //                                 // auth.signOut();
+        //                                 // _handleSignOut();
+        //                                  Get.offAll( SignIn());
+        //                               },
+        //                               style: ElevatedButton.styleFrom(
+        //                                   backgroundColor: mainColor,
+        //                                   elevation: 10),
+        //                               child: Text('yes'.tr,
+        //                                   style: const TextStyle(
+        //                                       color: Colors.white)),
+        //                             ),
+        //                           ],
+        //                         ));
+        //                   },
+        //                   child: ListTile(
+        //                     leading: const Icon(
+        //                       Icons.logout_outlined,
+        //                       color: Colors.red,
+        //                     ),
+        //                     title: Text(
+        //                       'تسجيل الخروج'.tr,
+        //                       style: const TextStyle(
+        //                           fontSize: 18,
+        //                           fontWeight: FontWeight.bold,
+        //                           color: Colors.red),
+        //                     ),
+        //                   ),
+        //                 ),
+        //               ],
+        //             ),
+        //           ),
+        //         );
+        //       }
+        //
+        //       return Container();
+        //     }),
+        // appBar: AppBar(
+        //   // leading: Padding(
+        //   //   padding: const EdgeInsets.all(4.0),
+        //   //   child: Container(
+        //   //     decoration: BoxDecoration(
+        //   //       color: buttonColor,
+        //   //       borderRadius: BorderRadius.circular(12),
+        //   //     ),
+        //   //     height: Get.height * 0.1,
+        //   //     width: Get.width * 0.1,
+        //   //     child: IconButton(
+        //   //         onPressed: () {},
+        //   //         icon: const Icon(
+        //   //           Icons.notifications_none_rounded,
+        //   //           color: Colors.white,
+        //   //         )),
+        //   //   ),
+        //   // ),
+        //   centerTitle: true,
+        //   title: SizedBox(
+        //       height: Get.height * .05,
+        //       width: Get.width * .3,
+        //       child: Image.asset('images/new_icon.png')),
+        //   // title: const Text("الرئيسيه",textDirection: TextDirection.rtl,style: TextStyle(color: Colors.black),),
+        //   actions: [
+        //     Padding(
+        //       padding: const EdgeInsets.all(4.0),
+        //       child: Container(
+        //         decoration: BoxDecoration(
+        //           color: buttonColor,
+        //           borderRadius: BorderRadius.circular(10),
+        //         ),
+        //         height: Get.height * 0.1,
+        //         width: Get.width * 0.135,
+        //         child: IconButton(
+        //             onPressed: () {
+        //               _key.currentState!.openEndDrawer();
+        //             },
+        //             icon: const Icon(
+        //               Icons.list_outlined,
+        //               color: Colors.white,
+        //             )),
+        //       ),
+        //     ),
+        //   ],
+        // ),
         body: SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(
-                height: 5,
+                height: 50,
               ),
               CarouselSlider(
                 items: [
                   SizedBox(
-                    height: Get.height * .2,
+                    height: Get.height * .25,
                     width: Get.width * .8,
                     child: Image.asset(
                       'images/Frame 174.png',
@@ -345,7 +345,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                   SizedBox(
-                    height: Get.height * .2,
+                    height: Get.height * .25,
                     width: Get.width * .8,
                     child: Image.asset(
                       'images/Frame 174.png',
@@ -355,7 +355,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                   SizedBox(
-                    height: Get.height * .2,
+                    height: Get.height * .25,
                     width: Get.width * .8,
                     child: Image.asset(
                       'images/Frame 174.png',
@@ -366,14 +366,14 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ],
                 options: CarouselOptions(
-                  height: 175,
-                  aspectRatio: 16 / 10,
-                  viewportFraction: .7,
+                  height: 200,
+                  aspectRatio: 20 / 10,
+                  viewportFraction: .8,
                   initialPage: 0,
                   enableInfiniteScroll: true,
                   reverse: false,
                   autoPlay: true,
-                  autoPlayInterval: const Duration(seconds: 4),
+                  autoPlayInterval: const Duration(seconds: 8),
                   autoPlayAnimationDuration: const Duration(milliseconds: 800),
                   autoPlayCurve: Curves.fastOutSlowIn,
                   enlargeCenterPage: true,
@@ -389,50 +389,50 @@ class _HomeViewState extends State<HomeView> {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   )),
               const SizedBox(
-                height: 20,
+                height: 60,
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: () {
-                    //   Get.to( BuyOffersView(isAdmin:isAdmin));
-                    Get.to(CounteriesScreen(
-                      isAdmin: isAdmin,
-                    ));
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    // height: Get.height * 0.09,
-                    // width: Get.width * 0.4,
-                    decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(0.0, 1.0), //(x,y)
-                            blurRadius: 3.0,
-                          ),
-                        ],
-                        color: buttonColor,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Image.asset('images/pana.png'),
-                        const Text(
-                          'خدمات الاستقدام',
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: GestureDetector(
+              //     onTap: () {
+              //       //   Get.to( BuyOffersView(isAdmin:isAdmin));
+              //       Get.to(CounteriesScreen(
+              //         isAdmin: isAdmin,
+              //       ));
+              //     },
+              //     child: Container(
+              //       padding: const EdgeInsets.all(4),
+              //       // height: Get.height * 0.09,
+              //       // width: Get.width * 0.4,
+              //       decoration: BoxDecoration(
+              //           boxShadow: const [
+              //             BoxShadow(
+              //               color: Colors.grey,
+              //               offset: Offset(0.0, 1.0), //(x,y)
+              //               blurRadius: 3.0,
+              //             ),
+              //           ],
+              //           color: buttonColor,
+              //           borderRadius: BorderRadius.circular(10)),
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //         children: [
+              //           Image.asset('images/pana.png'),
+              //           const Text(
+              //             'خدمات الاستقدام',
+              //             style: TextStyle(
+              //                 fontSize: 25,
+              //                 fontWeight: FontWeight.bold,
+              //                 color: Colors.white),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 15,
+              // ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
@@ -472,7 +472,7 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
               const SizedBox(
-                height: 15,
+                height: 30,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -487,6 +487,9 @@ class _HomeViewState extends State<HomeView> {
                         color: Colors.black),
                   ),
                 ],
+              ),
+              const SizedBox(
+                height: 30,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
