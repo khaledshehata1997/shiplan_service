@@ -50,13 +50,19 @@ class _AddSpecialOrderState extends State<AddSpecialOrder> {
                     addressController, 'عنوانك', 'من فضلك ادخل العنوان'),
                 const Divider(),
                 const SizedBox(height: 20),
-                _buildTextField(midAddressController, 'جنسية الخادمة',
+                _buildTextField(
+                    midAddressController,
+                    // 'جنسية الخادمة',
+                    'البلد',
                     'من فضلك ادخل التفاصيل'),
+                // _buildTextField(
+                //     midAgeController, 'سن الخادمة', 'من فضلك ادخل سن الخادمة',
+                //     isNumber: true),
                 _buildTextField(
-                    midAgeController, 'سن الخادمة', 'من فضلك ادخل سن الخادمة',
-                    isNumber: true),
-                _buildTextField(
-                    jobController, 'وظيفة الخادمة', 'من فضلك ادخل الوظيفة'),
+                    jobController,
+                    // 'وظيفة الخادمة', 'من فضلك ادخل الوظيفة'
+                    'الخدمه',
+                    'من فضلك ادخل الخدمه'),
                 const SizedBox(height: 40),
                 SizedBox(
                   width: double.infinity,
@@ -113,10 +119,19 @@ class _AddSpecialOrderState extends State<AddSpecialOrder> {
         "الاسم: ${nameController.text}\n"
         "رقم الهاتف: ${phoneController.text}\n"
         "العنوان: ${addressController.text}\n"
-        "عنوان الخادمة: ${midAddressController.text}\n"
-        "سن الخادمة: ${midAgeController.text}\n"
-        "الوظيفة: ${jobController.text}\n"
-        "تاريخ الطلب: ${DateTime.now().toIso8601String()}\n";
+        "البلد: ${midAddressController.text}\n"
+        // "سن الخادمة: ${midAgeController.text}\n"
+        "الخدمه: ${jobController.text}\n"
+        "تاريخ الطلب: ${DateTime.now().toIso8601String()}\n"
+        // "تم استلام طلب خاص\n"
+        //     "الاسم: ${nameController.text}\n"
+        //     "رقم الهاتف: ${phoneController.text}\n"
+        //     "العنوان: ${addressController.text}\n"
+        //     "عنوان الخادمة: ${midAddressController.text}\n"
+        //     "سن الخادمة: ${midAgeController.text}\n"
+        //     "الوظيفة: ${jobController.text}\n"
+        //     "تاريخ الطلب: ${DateTime.now().toIso8601String()}\n"
+        ;
 
     String whatsappUrl =
         "https://wa.me/$phoneNumber?text=${Uri.encodeFull(message)}";

@@ -8,8 +8,8 @@ import 'package:shiplan_service/view_model/service_model/service_model.dart';
 
 class RentOffersView extends StatefulWidget {
   bool isAdmin;
-  
-   RentOffersView({super.key, required this.isAdmin});
+
+  RentOffersView({super.key, required this.isAdmin});
 
   @override
   State<RentOffersView> createState() => _RentOffersViewState();
@@ -30,8 +30,9 @@ class _RentOffersViewState extends State<RentOffersView>
       return [];
     }
   }
-   Future<void> deleteDayService(ServiceModel service) async {
-        print("dddddffdfd ${widget.isAdmin}");
+
+  Future<void> deleteDayService(ServiceModel service) async {
+    print("dddddffdfd ${widget.isAdmin}");
 
     try {
       await FirebaseFirestore.instance
@@ -50,8 +51,10 @@ class _RentOffersViewState extends State<RentOffersView>
   }
 
   Future<List<ServiceModel>> fetchRentNightServices() async {
-    DocumentSnapshot snapshot =
-        await FirebaseFirestore.instance.collection('rentOffers').doc('night').get();
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('rentOffers')
+        .doc('night')
+        .get();
 
     if (snapshot.exists) {
       List<dynamic> servicesData =
@@ -61,7 +64,8 @@ class _RentOffersViewState extends State<RentOffersView>
       return [];
     }
   }
-   Future<void> deleteRentNightService(ServiceModel service) async {
+
+  Future<void> deleteRentNightService(ServiceModel service) async {
     try {
       await FirebaseFirestore.instance
           .collection('rentOffers')
@@ -177,37 +181,41 @@ class _RentOffersViewState extends State<RentOffersView>
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: InkWell(
-                              onLongPress: !widget.isAdmin ? () {} : () async {
-                                bool confirmDelete = await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Confirm Delete'),
-                                      content: const Text(
-                                          'Are you sure you want to delete this service?'),
-                                      actions: [
-                                        TextButton(
-                                          child: const Text('Cancel'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop(false);
-                                          },
-                                        ),
-                                        TextButton(
-                                          child: const Text('Delete'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop(true);
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                              onLongPress: !widget.isAdmin
+                                  ? () {}
+                                  : () async {
+                                      bool confirmDelete = await showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Confirm Delete'),
+                                            content: const Text(
+                                                'Are you sure you want to delete this service?'),
+                                            actions: [
+                                              TextButton(
+                                                child: const Text('Cancel'),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(false);
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: const Text('Delete'),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(true);
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
 
-                                if (confirmDelete == true) {
-                                  await deleteRentNightService(
-                                      service); // Pass the full ServiceModel object
-                                }
-                              },
+                                      if (confirmDelete == true) {
+                                        await deleteRentNightService(
+                                            service); // Pass the full ServiceModel object
+                                      }
+                                    },
                               onTap: () {
                                 Get.to(OrderDetails(
                                   serviceModel: service,
@@ -218,15 +226,15 @@ class _RentOffersViewState extends State<RentOffersView>
                                 // height: Get.height * 0.09,
                                 // width: Get.width * 0.4,
                                 decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      scale: 1,
-                                      alignment: Alignment.centerLeft,
-                                      image: AssetImage(
-                                        index.isOdd
-                                            ? 'images/cleaning service.png'
-                                            : 'images/man carrying son in baby sling.png',
-                                      ),
-                                    ),
+                                    // image: DecorationImage(
+                                    //   scale: 1,
+                                    //   alignment: Alignment.centerLeft,
+                                    //   image: AssetImage(
+                                    //     index.isOdd
+                                    //         ? 'images/cleaning service.png'
+                                    //         : 'images/man carrying son in baby sling.png',
+                                    //   ),
+                                    // ),
                                     boxShadow: const [
                                       BoxShadow(
                                         color: Colors.grey,
@@ -309,38 +317,41 @@ class _RentOffersViewState extends State<RentOffersView>
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: InkWell(
-                              onLongPress: !widget.isAdmin ? () {} : () async {
-                                bool confirmDelete = await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Confirm Delete'),
-                                      content: const Text(
-                                          'Are you sure you want to delete this service?'),
-                                      actions: [
-                                        TextButton(
-                                          child: const Text('Cancel'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop(false);
-                                          },
-                                        ),
-                                        TextButton(
-                                          child: const Text('Delete'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop(true);
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                              onLongPress: !widget.isAdmin
+                                  ? () {}
+                                  : () async {
+                                      bool confirmDelete = await showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Confirm Delete'),
+                                            content: const Text(
+                                                'Are you sure you want to delete this service?'),
+                                            actions: [
+                                              TextButton(
+                                                child: const Text('Cancel'),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(false);
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: const Text('Delete'),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(true);
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
 
-                                if (confirmDelete == true) {
-                                  await deleteDayService(
-                                      service); // Pass the full ServiceModel object
-                                }
-                              },
-
+                                      if (confirmDelete == true) {
+                                        await deleteDayService(
+                                            service); // Pass the full ServiceModel object
+                                      }
+                                    },
                               onTap: () {
                                 Get.to(OrderDetails(
                                   serviceModel: service,
