@@ -164,8 +164,8 @@ class _MainProfileViewState extends State<MainProfileView> {
                             ClipOval(
                               child: Container(
                                 color: Colors.white, // Optional: Background color behind the image
-                                width: 100, // Diameter of the circle
-                                height: 100, // Diameter of the circle
+                                width: 50, // Diameter of the circle
+                                height: 50, // Diameter of the circle
                                 child: Image.asset(
                                   "images/pana.png", // Replace with your image path
                                   fit: BoxFit.cover, // Ensures the image covers the circle
@@ -211,7 +211,7 @@ class _MainProfileViewState extends State<MainProfileView> {
           ),
           const Center(
             child: Text(
-              'اخر التعاقدات',
+              'اخر الخدمات',
               textDirection: TextDirection.rtl,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),

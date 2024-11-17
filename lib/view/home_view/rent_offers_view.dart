@@ -102,7 +102,7 @@ class _RentOffersViewState extends State<RentOffersView>
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
-          "خدمات التأجير",
+          "خدمات",
           textDirection: TextDirection.rtl,
           style: TextStyle(color: Colors.black),
         ),
@@ -112,47 +112,7 @@ class _RentOffersViewState extends State<RentOffersView>
         child: Column(
           children: [
             // give the tab bar a height [can change hheight to preferred height]
-            Container(
-              height: 45,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(
-                  15.0,
-                ),
-              ),
-              child: TabBar(
-                labelStyle: const TextStyle(fontSize: 20),
-                indicatorColor: buttonColor,
-                controller: tabController,
-                // give the indicator a decoration (color and border radius)
-                indicator: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(15)),
-                  color: buttonColor,
-                ),
-                dividerColor: Colors.white,
-                labelColor: Colors.white,
-                unselectedLabelColor: Colors.black,
-                tabs: const [
-                  // first tab [you can add an icon using the icon property]
-                  SizedBox(
-                    height: 45,
-                    width: double.infinity,
-                    child: Tab(
-                      text: 'مسائي',
-                    ),
-                  ),
 
-                  // second tab [you can add an icon using the icon property]
-                  SizedBox(
-                    height: 45,
-                    width: 300,
-                    child: Tab(
-                      text: 'صباحي',
-                    ),
-                  ),
-                ],
-              ),
-            ),
             const SizedBox(
               height: 20,
             ),
@@ -218,15 +178,15 @@ class _RentOffersViewState extends State<RentOffersView>
                                 // height: Get.height * 0.09,
                                 // width: Get.width * 0.4,
                                 decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      scale: 1,
-                                      alignment: Alignment.centerLeft,
-                                      image: AssetImage(
-                                        index.isOdd
-                                            ? 'images/cleaning service.png'
-                                            : 'images/man carrying son in baby sling.png',
-                                      ),
-                                    ),
+                                    // image: DecorationImage(
+                                    //   scale: 1,
+                                    //   alignment: Alignment.centerLeft,
+                                    //   // image: AssetImage(
+                                    //   //   index.isOdd
+                                    //   //       ? 'images/cleaning service.png'
+                                    //   //       : 'images/man carrying son in baby sling.png',
+                                    //   // ),
+                                    // ),
                                     boxShadow: const [
                                       BoxShadow(
                                         color: Colors.grey,
@@ -242,14 +202,14 @@ class _RentOffersViewState extends State<RentOffersView>
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Text(
-                                        service.title,
-                                        textDirection: TextDirection.rtl,
-                                        style: const TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
+                                      // Text(
+                                      //   service.title,
+                                      //   textDirection: TextDirection.rtl,
+                                      //   style: const TextStyle(
+                                      //       fontSize: 17,
+                                      //       fontWeight: FontWeight.bold,
+                                      //       color: Colors.white),
+                                      // ),
                                       const SizedBox(
                                         height: 10,
                                       ),

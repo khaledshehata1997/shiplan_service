@@ -182,31 +182,31 @@ class _ConfirmOrderViewState extends State<ConfirmOrderView> {
                 SizedBox(
                   height: Get.height * .02,
                 ),
-                _maids.isNotEmpty
-                    ? DropdownButton<MaidModel>(
-                        isExpanded: true,
-                        itemHeight: 100,
-                        hint: const Text('اختر الخادمة'),
-                        value: _selectedMaid,
-                        items: _maids.map((maid) {
-                          return DropdownMenuItem<MaidModel>(
-                            value: maid,
-                            child: ListTile(
-                              isThreeLine: true,
-                              title: Text("الاسم: ${maid.name}"),
-                              subtitle: Text("السن: ${maid.age}"),
-                              leading: Image.network(maid.imageUrl),
-                              trailing: Text("الدولة: ${maid.country}"),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (MaidModel? newValue) {
-                          setState(() {
-                            _selectedMaid = newValue;
-                          });
-                        },
-                      )
-                    : const CircularProgressIndicator(),
+                // _maids.isNotEmpty
+                //     ? DropdownButton<MaidModel>(
+                //         isExpanded: true,
+                //         itemHeight: 100,
+                //         hint: const Text('اختر الخادمة'),
+                //         value: _selectedMaid,
+                //         items: _maids.map((maid) {
+                //           return DropdownMenuItem<MaidModel>(
+                //             value: maid,
+                //             child: ListTile(
+                //               isThreeLine: true,
+                //               title: Text("الاسم: ${maid.name}"),
+                //               subtitle: Text("السن: ${maid.age}"),
+                //               leading: Image.network(maid.imageUrl),
+                //               trailing: Text("الدولة: ${maid.country}"),
+                //             ),
+                //           );
+                //         }).toList(),
+                //         onChanged: (MaidModel? newValue) {
+                //           setState(() {
+                //             _selectedMaid = newValue;
+                //           });
+                //         },
+                //       )
+                //     : const CircularProgressIndicator(),
                 SizedBox(
                   height: Get.height * .04,
                 ),
@@ -297,7 +297,10 @@ class _ConfirmOrderViewState extends State<ConfirmOrderView> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: buttonColor),
-                      onPressed: _confirmOrder,
+                      onPressed:(){
+                        Get.defaultDialog(middleText: 'تم تاكيد طلبك سيتم التواصل معك',title: 'تاكيد الطلب');
+                      },
+                      //_confirmOrder,
                       child: const Text(
                         "تأكيد الطلب",
                         style: TextStyle(

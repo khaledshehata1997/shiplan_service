@@ -334,45 +334,26 @@ class _HomeViewState extends State<HomeView> {
               ),
               CarouselSlider(
                 items: [
+
                   SizedBox(
-                    height: Get.height * .25,
-                    width: Get.width * .8,
+                    height: Get.height * .2,
+                    width: Get.width * .95,
                     child: Image.asset(
-                      'images/Frame 174.png',
+                      'images/logo22.png',
                       width: Get.width,
                       // height: Get.height*.27,
-                      scale: 1.2,
-                    ),
-                  ),
-                  SizedBox(
-                    height: Get.height * .25,
-                    width: Get.width * .8,
-                    child: Image.asset(
-                      'images/Frame 174.png',
-                      width: Get.width,
-                      // height: Get.height*.27,
-                      scale: 1.2,
-                    ),
-                  ),
-                  SizedBox(
-                    height: Get.height * .25,
-                    width: Get.width * .8,
-                    child: Image.asset(
-                      'images/Frame 174.png',
-                      width: Get.width,
-                      // height: Get.height*.27,
-                      scale: 1.2,
+                      scale: 1,
                     ),
                   ),
                 ],
                 options: CarouselOptions(
                   height: 200,
-                  aspectRatio: 20 / 10,
-                  viewportFraction: .8,
+                //  aspectRatio: .5,
+                  viewportFraction: 1,
                   initialPage: 0,
                   enableInfiniteScroll: true,
                   reverse: false,
-                  autoPlay: true,
+                  //autoPlay: ,
                   autoPlayInterval: const Duration(seconds: 8),
                   autoPlayAnimationDuration: const Duration(milliseconds: 800),
                   autoPlayCurve: Curves.fastOutSlowIn,
@@ -383,7 +364,7 @@ class _HomeViewState extends State<HomeView> {
               ),
               Container(
                   alignment: Alignment.topRight,
-                  margin: const EdgeInsets.only(top: 10, right: 15),
+                  margin: const EdgeInsets.only(top: 20, right: 15),
                   child: const Text(
                     'الخدمات',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -391,48 +372,48 @@ class _HomeViewState extends State<HomeView> {
               const SizedBox(
                 height: 60,
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: () {
-                    //   Get.to( BuyOffersView(isAdmin:isAdmin));
-                    Get.to(CounteriesScreen(
-                      isAdmin: isAdmin,
-                    ));
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    // height: Get.height * 0.09,
-                    // width: Get.width * 0.4,
-                    decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(0.0, 1.0), //(x,y)
-                            blurRadius: 3.0,
-                          ),
-                        ],
-                        color: buttonColor,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Image.asset('images/pana.png'),
-                        const Text(
-                          'خدمات الاستقدام',
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: GestureDetector(
+              //     onTap: () {
+              //       //   Get.to( BuyOffersView(isAdmin:isAdmin));
+              //       Get.to(CounteriesScreen(
+              //         isAdmin: isAdmin,
+              //       ));
+              //     },
+              //     child: Container(
+              //       padding: const EdgeInsets.all(4),
+              //       // height: Get.height * 0.09,
+              //       // width: Get.width * 0.4,
+              //       decoration: BoxDecoration(
+              //           boxShadow: const [
+              //             BoxShadow(
+              //               color: Colors.grey,
+              //               offset: Offset(0.0, 1.0), //(x,y)
+              //               blurRadius: 3.0,
+              //             ),
+              //           ],
+              //           color: buttonColor,
+              //           borderRadius: BorderRadius.circular(10)),
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //         children: [
+              //           Image.asset('images/pana.png'),
+              //           const Text(
+              //             'خدمات الاستقدام',
+              //             style: TextStyle(
+              //                 fontSize: 25,
+              //                 fontWeight: FontWeight.bold,
+              //                 color: Colors.white),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 15,
+              // ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
@@ -460,7 +441,7 @@ class _HomeViewState extends State<HomeView> {
                       children: [
                         Image.asset('images/pana1.png'),
                         const Text(
-                          'خدمات التأجير',
+                          'خدمات بالوقت',
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,

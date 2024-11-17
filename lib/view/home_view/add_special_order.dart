@@ -50,13 +50,13 @@ class _AddSpecialOrderState extends State<AddSpecialOrder> {
                     addressController, 'عنوانك', 'من فضلك ادخل العنوان'),
                 const Divider(),
                 const SizedBox(height: 20),
-                _buildTextField(midAddressController, 'جنسية الخادمة',
-                    'من فضلك ادخل التفاصيل'),
+                // _buildTextField(midAddressController, 'جنسية الخادمة',
+                //     'من فضلك ادخل التفاصيل'),
+                // _buildTextField(
+                //     midAgeController, 'سن الخادمة', 'من فضلك ادخل سن الخادمة',
+                //     isNumber: true),
                 _buildTextField(
-                    midAgeController, 'سن الخادمة', 'من فضلك ادخل سن الخادمة',
-                    isNumber: true),
-                _buildTextField(
-                    jobController, 'وظيفة الخادمة', 'من فضلك ادخل الوظيفة'),
+                    jobController, 'الوظيفه', 'من فضلك ادخل الوظيفة'),
                 const SizedBox(height: 40),
                 SizedBox(
                   width: double.infinity,
@@ -64,14 +64,9 @@ class _AddSpecialOrderState extends State<AddSpecialOrder> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: mainColor),
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        sendRequest();
-                      } else {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text('ادخل جميع البيانات'),
-                        ));
-                      }
+
+                        Get.defaultDialog(middleText: 'تم تاكيد طلبك سيتم التواصل معك',title: 'تاكيد الطلب');
+
                     },
                     child: const Text('ارسال طلب خاص',
                         style: TextStyle(color: Colors.white, fontSize: 20)),
