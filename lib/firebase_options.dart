@@ -59,11 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAMp72y9mutXlY2U7dSpIIMd-x0JVYYUDE',
-    appId: '1:639757077046:ios:ccc700bca726d82fc66697',
+    appId: '1:639757077046:ios:fdff7c6edd042fa6c66697',
     messagingSenderId: '639757077046',
     projectId: 'shiplan-dad96',
+    databaseURL: 'https://shiplan-dad96-default-rtdb.firebaseio.com',
     storageBucket: 'shiplan-dad96.appspot.com',
-    iosBundleId: 'com.kh20.shiplan',
+    iosBundleId: 'com.kh20shiplan',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
