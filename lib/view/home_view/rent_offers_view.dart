@@ -106,7 +106,7 @@ class _RentOffersViewState extends State<RentOffersView>
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
-          "خدمات التأجير",
+          "خدمات",
           textDirection: TextDirection.rtl,
           style: TextStyle(color: Colors.black),
         ),
