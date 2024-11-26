@@ -7,6 +7,7 @@ import 'package:shiplan_service/firebase_options.dart';
 import 'package:shiplan_service/view/auth_view/sign_in_view.dart';
 import 'package:shiplan_service/view/auth_view/splash_view.dart';
 import 'package:shiplan_service/view/home_view/nav_bar_view.dart';
+import 'package:shiplan_service/view/prayer_app/nav_bar_view.dart';
 import 'package:shiplan_service/view_model/auth_model/auth_service.dart';
 import 'view/drawer_screen/our_location_page.dart';
 import 'view/drawer_screen/technical_support.dart';
@@ -41,7 +42,8 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       title: 'Flutter Demo',
 debugShowCheckedModeBanner: false,
-      home: user == null ? SignIn() : const NavBarView(),
+      home: PrayerNavBarView2()
+      // user == null ? SignIn() : const NavBarView(),
     );
   }
 }
