@@ -56,7 +56,10 @@ dependencies:
   change_app_package_name: ^1.4.0
   file_picker: ^8.1.2
   flutter_svg: ^2.0.10+1
-  syncfusion_flutter_pdfviewer:
+  syncfusion_flutter_pdfviewer: ^27.2.4
+  geolocator: ^13.0.2
+  flutter_qiblah: ^3.0.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

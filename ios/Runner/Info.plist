@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Shiplan Service</string>
+	<string>Azkar</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>shiplan_service</string>
+	<string>azkar</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -48,6 +48,8 @@
 	<key>NSPhotoLibraryUsageDescription</key>
     <string>This identifier will be used to access your gallery to change personal photo</string>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>This app needs access to location when open to show the appropriate services</string>
+    <string>This app needs access to location when open to show the appropriate location</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open to show the appropriate location</string>
 </dict>
 </plist>
