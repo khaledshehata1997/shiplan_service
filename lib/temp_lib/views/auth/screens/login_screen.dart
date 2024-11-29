@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +8,6 @@ import 'package:shiplan_service/temp_lib/controllers/auth_controller.dart';
 import 'package:shiplan_service/temp_lib/controllers/dark_mode_service.dart';
 import 'package:shiplan_service/temp_lib/generated/l10n.dart';
 import 'package:shiplan_service/temp_lib/views/auth/screens/signup_screen.dart';
-import 'package:shiplan_service/temp_lib/views/auth/widgets/social_icon.dart';
 import 'package:shiplan_service/temp_lib/views/tabs%20screens/widgets/best_seller_widget.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -289,55 +286,55 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       )),
                   SizedBox(height: 20.0.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey.shade200,
-                          height: 1.5,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text(
-                          S.of(context).OrLogin,
-                          style: TextStyle(
-                            fontSize: 14.0.sp,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey.shade200,
-                          height: 1.5.h,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 40.0.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (Platform.isIOS) ...[
-                        GestureDetector(
-                          onTap: () {
-                            Provider.of<AuthService>(context, listen: false)
-                                .signInWithApple(context);
-                          },
-                          child: SocialIcon(icon: 'assets/Mask Group 3.svg'),
-                        ),
-                        SizedBox(width: 20.0.w),
-                      ],
-                      GestureDetector(
-                          onTap: () {
-                            Provider.of<AuthService>(context, listen: false)
-                                .signInWithGoogle(context);
-                          },
-                          child: const SocialIcon(
-                              icon: 'assets/Mask Group 1.svg')),
-                    ],
-                  ),
-                  SizedBox(height: 20.0.h),
+                  // Row(
+                  //   children: [
+                  //     Expanded(
+                  //       child: Divider(
+                  //         color: Colors.grey.shade200,
+                  //         height: 1.5,
+                  //       ),
+                  //     ),
+                  //     Padding(
+                  //       padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  //       child: Text(
+                  //         S.of(context).OrLogin,
+                  //         style: TextStyle(
+                  //           fontSize: 14.0.sp,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     Expanded(
+                  //       child: Divider(
+                  //         color: Colors.grey.shade200,
+                  //         height: 1.5.h,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  // SizedBox(height: 40.0.h),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     if (Platform.isIOS) ...[
+                  //       GestureDetector(
+                  //         onTap: () {
+                  //           Provider.of<AuthService>(context, listen: false)
+                  //               .signInWithApple(context);
+                  //         },
+                  //         child: SocialIcon(icon: 'assets/Mask Group 3.svg'),
+                  //       ),
+                  //       SizedBox(width: 20.0.w),
+                  //     ],
+                  //     GestureDetector(
+                  //         onTap: () {
+                  //           Provider.of<AuthService>(context, listen: false)
+                  //               .signInWithGoogle(context);
+                  //         },
+                  //         child: const SocialIcon(
+                  //             icon: 'assets/Mask Group 1.svg')),
+                  //   ],
+                  // ),
+                  // SizedBox(height: 20.0.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
