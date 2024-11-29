@@ -6,7 +6,6 @@ import 'package:shiplan_service/temp_lib/constants/colors.dart';
 import 'package:shiplan_service/temp_lib/controllers/auth_controller.dart';
 import 'package:shiplan_service/temp_lib/controllers/dark_mode_service.dart';
 import 'package:shiplan_service/temp_lib/generated/l10n.dart';
-import 'package:shiplan_service/temp_lib/views/auth/widgets/social_icon.dart';
 import 'package:shiplan_service/temp_lib/views/auth/widgets/textfield_signup.dart';
 import 'package:shiplan_service/temp_lib/views/tabs%20screens/widgets/best_seller_widget.dart';
 
@@ -251,54 +250,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   const SizedBox(
                     height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey.shade200,
-                          height: 1.5,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text(
-                          S.of(context).OrLogin,
-                          style: const TextStyle(
-                            fontSize: 14.0,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey.shade200,
-                          height: 1.5,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                          onTap: () {
-                            Provider.of<AuthService>(context, listen: false)
-                                .signInWithGoogle(context);
-                          },
-                          child: const SocialIcon(
-                              icon: 'assets/Mask Group 1.svg')),
-                      SizedBox(width: 20.0),
-                      GestureDetector(
-                        onTap: () {
-                          Provider.of<AuthService>(context, listen: false)
-                              .signInWithApple(context);
-                        },
-                        child: SocialIcon(icon: 'assets/Mask Group 3.svg'),
-                      ),
-                    ],
                   ),
                 ],
               ),
