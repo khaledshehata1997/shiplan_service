@@ -325,7 +325,7 @@ class _CartScreenState extends State<CartScreen> {
                                   children: [
                                     Text(S.of(context).itemTotal,
                                         style: const TextStyle(fontSize: 16)),
-                                    Text('${cartProvider.totalPrice}IQD',
+                                    Text('${cartProvider.totalPrice}SAR',
                                         style: const TextStyle(fontSize: 16)),
                                   ],
                                 ),
@@ -368,7 +368,7 @@ class _CartScreenState extends State<CartScreen> {
                                         Text(S.of(context).shippingCharge,
                                             style:
                                                 const TextStyle(fontSize: 16)),
-                                        Text('${shipping.shippingCharge}IQD',
+                                        Text('${shipping.shippingCharge}SAR',
                                             style:
                                                 const TextStyle(fontSize: 16)),
                                       ],
@@ -397,13 +397,13 @@ class _CartScreenState extends State<CartScreen> {
                                     ),
                                     couponSale != 0
                                         ? Text(
-                                            '${(cartProvider.totalPrice + shippingCharge) - (cartProvider.totalPrice) * (couponSale / 100)}IQD',
+                                            '${(cartProvider.totalPrice + shippingCharge) - (cartProvider.totalPrice) * (couponSale / 100)}SAR',
                                             style: const TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w700),
                                           )
                                         : Text(
-                                            '${(cartProvider.totalPrice + shippingCharge)}IQD'),
+                                            '${(cartProvider.totalPrice + shippingCharge)}SAR'),
                                   ],
                                 ),
                               ),

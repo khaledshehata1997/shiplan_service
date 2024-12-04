@@ -35,7 +35,7 @@
 //
 //   static const double amount = 200.0;
 //
-//   static const String currencyCode = "IQD";
+//   static const String currencyCode = "SAR";
 //
 //   static const String merchantCountryCode = "IQ";
 //

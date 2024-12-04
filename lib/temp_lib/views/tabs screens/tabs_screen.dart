@@ -63,7 +63,7 @@ class _TabsScreenState extends State<TabsScreen> {
                   _buildAnimatedTabItem(
                     context,
                     index: 0,
-                    image: 'assets/home.svg',
+                    image: 'assets/house.svg',
                     label: S.of(context).home,
                   ),
                   const SizedBox(
@@ -72,7 +72,7 @@ class _TabsScreenState extends State<TabsScreen> {
                   _buildAnimatedTabItem(
                     context,
                     index: 1,
-                    image: 'assets/cats.svg',
+                    image: 'assets/categories2.svg',
                     label: S.of(context).categories,
                   ),
                 ],
@@ -83,7 +83,7 @@ class _TabsScreenState extends State<TabsScreen> {
                   _buildAnimatedTabItem(
                     context,
                     index: 2,
-                    image: 'assets/notfi.svg',
+                    image: 'assets/notifications.svg',
                     label: S.of(context).notification,
                   ),
                   const SizedBox(
@@ -92,7 +92,7 @@ class _TabsScreenState extends State<TabsScreen> {
                   _buildAnimatedTabItem(
                     context,
                     index: 3,
-                    image: 'assets/profile.svg',
+                    image: 'assets/profile2.svg',
                     label: S.of(context).profile,
                   ),
                 ],

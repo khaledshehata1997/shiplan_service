@@ -456,7 +456,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           children: [
                             Text(S.of(context).itemTotal,
                                 style: const TextStyle(fontSize: 16)),
-                            Text('${widget.itemTotal} IQD',
+                            Text('${widget.itemTotal} SAR',
                                 style: const TextStyle(fontSize: 16)),
                           ],
                         ),
@@ -494,7 +494,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           children: [
                             Text(S.of(context).shippingCharge,
                                 style: const TextStyle(fontSize: 16)),
-                            Text('${widget.shippingCharge} IQD',
+                            Text('${widget.shippingCharge} SAR',
                                 style: TextStyle(fontSize: 16)),
                           ],
                         ),
@@ -516,7 +516,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   fontSize: 18, fontWeight: FontWeight.w700),
                             ),
                             Text(
-                              '${(widget.total)} IQD',
+                              '${(widget.total)} SAR',
                               style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w700),
                             ),

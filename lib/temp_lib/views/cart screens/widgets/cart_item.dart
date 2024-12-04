@@ -117,7 +117,7 @@ class _CartItemState extends State<CartItem> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    '${itemPrice}IQD',
+                    '${itemPrice}SAR',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),

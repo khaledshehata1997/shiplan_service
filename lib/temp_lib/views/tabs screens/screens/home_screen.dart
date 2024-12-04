@@ -16,10 +16,7 @@ import 'package:shiplan_service/temp_lib/views/content%20screens/brands_content_
 import 'package:shiplan_service/temp_lib/views/content%20screens/categories_content_screen.dart';
 import 'package:shiplan_service/temp_lib/views/content%20screens/view_all_brands.dart';
 import 'package:shiplan_service/temp_lib/views/content%20screens/view_all_product_screen.dart';
-import 'package:shiplan_service/temp_lib/views/tabs%20screens/widgets/beauty_services_widget.dart';
 import 'package:shiplan_service/temp_lib/views/tabs%20screens/widgets/best_seller_widget.dart';
-import 'package:shiplan_service/temp_lib/views/tabs%20screens/widgets/brands_widget.dart';
-import 'package:shiplan_service/temp_lib/views/tabs%20screens/widgets/custom_search_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.isLoggedIn});
@@ -38,7 +35,19 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomSearchBar(searchController: searchController),
+          Container(
+            width: 375.w,
+            height: 150.h,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadiusDirectional.only(
+                  bottomEnd: Radius.circular(20.r),
+                  bottomStart: Radius.circular(20.r),
+                ),
+                image: const DecorationImage(
+                  image: AssetImage("assets/home_header.avif"),
+                  fit: BoxFit.cover,
+                )),
+          ),
           SizedBox(
             height: 20.h,
           ),
@@ -64,28 +73,61 @@ class _HomeScreenState extends State<HomeScreen> {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasData) {
                 var categories = snapshot.data;
-                return SizedBox(
-                  height: 100.h,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: categories!.length,
-                    itemBuilder: (context, index) {
-                      var category = categories[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (ctx) => CategoriesContentScreen(
-                                    categoryId: categories[index]['id'],
-                                  )));
-                        },
-                        child: BeautyServicesWidget(
-                          image: category['image'],
-                          name: langController.isArabic
-                              ? category['nameAr']
-                              : category['nameEn'],
-                        ),
-                      );
-                    },
+                return GridView.count(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16.0,
+                  crossAxisSpacing: 16.0,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  childAspectRatio: 1 / 1,
+                  children: List.generate(
+                    categories!.length,
+                    (index) => InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (ctx) => CategoriesContentScreen(
+                                  categoryId: categories[index]['id'],
+                                )));
+                      },
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: defaultColor),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.10),
+                                      offset: const Offset(0, -3),
+                                      blurRadius: 10,
+                                    ),
+                                  ],
+                                  image: DecorationImage(
+                                      image: MemoryImage(base64Decode(
+                                          categories[index]['image'])),
+                                      fit: BoxFit.fill)),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            langController.isArabic
+                                ? categories[index]['nameAr']
+                                : categories[index]['nameEn'],
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 );
               } else {
@@ -182,9 +224,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ))
             ],
           ),
-          SizedBox(
-            height: 20.h,
-          ),
           FutureBuilder<List<Map<String, dynamic>>>(
               future: Provider.of<BrandController>(context, listen: false)
                   .fetchBrands(),
@@ -196,40 +235,67 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Text(S.of(context).Something_went_wrong));
                 } else if (snapshot.hasData) {
                   var brands = snapshot.data!;
-                  return SizedBox(
-                    height: 255.h,
-                    child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              // mainAxisSpacing: 5,
-                              crossAxisSpacing: 20,
-                              childAspectRatio: 1),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: brands.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (ctx) => BrandsContentScreen(
-                                  title: langController.isArabic
-                                      ? brands[index]['nameAr']
-                                      : brands[index]['name'],
-                                  brandId: brands[index]['id'],
-                                ),
+                  return GridView.count(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16.0,
+                    crossAxisSpacing: 16.0,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                    childAspectRatio: 1 / 1,
+                    children: List.generate(
+                      brands.length,
+                      (index) => InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => BrandsContentScreen(
+                                title: langController.isArabic
+                                    ? brands[index]['nameAr']
+                                    : brands[index]['name'],
+                                brandId: brands[index]['id'],
                               ),
-                            );
-                          },
-                          child: BrandsWidget(
-                            name: langController.isArabic
-                                ? brands[index]['nameAr']
-                                : brands[index]['name'],
-                            image: brands[index]['image'],
-                            isviewAll: false,
-                          ),
-                        );
-                      },
+                            ),
+                          );
+                        },
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(color: defaultColor),
+                                    borderRadius: BorderRadius.circular(20.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.10),
+                                        offset: const Offset(0, -3),
+                                        blurRadius: 10,
+                                      ),
+                                    ],
+                                    image: DecorationImage(
+                                        image: MemoryImage(base64Decode(
+                                            brands[index]['image'])),
+                                        fit: BoxFit.fill)),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              langController.isArabic
+                                  ? brands[index]['nameAr']
+                                  : brands[index]['name'],
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                     ),
                   );
                 } else {
@@ -277,38 +343,40 @@ class _HomeScreenState extends State<HomeScreen> {
                 return const Center(child: CircularProgressIndicator());
               } else {
                 var bestsellerProducts = productProvider.bestsellerProducts;
-                return Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  spacing: 20,
-                  runSpacing: 20,
-                  children: List.generate(bestsellerProducts.length, (index) {
-                    return SizedBox(
-                      width: (MediaQuery.of(context).size.width - 48.w) / 2,
-                      height: 270.h,
-                      child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => ProductDetailsScreen(
-                                      product: bestsellerProducts[index],
-                                    )));
-                          },
-                          child: BestSellerWidget(
-                            isLoggedIn: widget.isLoggedIn,
-                            name: langController.isArabic
-                                ? bestsellerProducts[index].nameAr
-                                : bestsellerProducts[index].name,
-                            image: bestsellerProducts[index].image,
-                            price: bestsellerProducts[index].price,
-                            product: bestsellerProducts[index],
-                          )),
-                    );
-                  }),
+                return SizedBox(
+                  height: 280.h,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context, int index) {
+                      return SizedBox(
+                        width: (MediaQuery.of(context).size.width - 48.w) / 2,
+                        height: 270.h,
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (ctx) => ProductDetailsScreen(
+                                        product: bestsellerProducts[index],
+                                      )));
+                            },
+                            child: BestSellerWidget(
+                              isLoggedIn: widget.isLoggedIn,
+                              name: langController.isArabic
+                                  ? bestsellerProducts[index].nameAr
+                                  : bestsellerProducts[index].name,
+                              image: bestsellerProducts[index].image,
+                              price: bestsellerProducts[index].price,
+                              product: bestsellerProducts[index],
+                            )),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(width: 20.w);
+                    },
+                    itemCount: bestsellerProducts.length,
+                  ),
                 );
               }
             },
-          ),
-          SizedBox(
-            height: 30.h,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -327,9 +395,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          SizedBox(
-            height: 30.h,
-          ),
           Consumer<ProductController>(
             builder: (context, productProvider, _) {
               productProvider.fetchProducts();
@@ -337,38 +402,40 @@ class _HomeScreenState extends State<HomeScreen> {
                 return const Center(child: CircularProgressIndicator());
               } else {
                 var products = productProvider.products;
-                return Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  spacing: 20,
-                  runSpacing: 20,
-                  children: List.generate(products.length, (index) {
-                    return SizedBox(
-                      width: (MediaQuery.of(context).size.width - 48.w) / 2,
-                      height: 270.h,
-                      child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => ProductDetailsScreen(
-                                      product: products[index],
-                                    )));
-                          },
-                          child: BestSellerWidget(
-                            isLoggedIn: widget.isLoggedIn,
-                            name: langController.isArabic
-                                ? products[index].nameAr
-                                : products[index].name,
-                            image: products[index].image,
-                            price: products[index].price,
-                            product: products[index],
-                          )),
-                    );
-                  }),
+                return SizedBox(
+                  height: 280.h,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context, int index) {
+                      return SizedBox(
+                        width: (MediaQuery.of(context).size.width - 48.w) / 2,
+                        height: 270.h,
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (ctx) => ProductDetailsScreen(
+                                        product: products[index],
+                                      )));
+                            },
+                            child: BestSellerWidget(
+                              isLoggedIn: widget.isLoggedIn,
+                              name: langController.isArabic
+                                  ? products[index].nameAr
+                                  : products[index].name,
+                              image: products[index].image,
+                              price: products[index].price,
+                              product: products[index],
+                            )),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(width: 20.w);
+                    },
+                    itemCount: products.length,
+                  ),
                 );
               }
             },
-          ),
-          SizedBox(
-            height: 40.h,
           ),
         ],
       ),

@@ -226,7 +226,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(S.of(context).itemTotal),
-                            Text('${widget.itemTotal}IQD'),
+                            Text('${widget.itemTotal}SAR'),
                           ],
                         ),
                         widget.couponSale != 0
@@ -257,7 +257,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(S.of(context).shippingCharge),
-                            Text('${widget.shippingCharge} IQD'),
+                            Text('${widget.shippingCharge} SAR'),
                           ],
                         ),
                         const Divider(),
@@ -267,7 +267,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             Text(S.of(context).total,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 18)),
-                            Text('${widget.total}IQD',
+                            Text('${widget.total}SAR',
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 18)),
                           ],

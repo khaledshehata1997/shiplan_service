@@ -286,7 +286,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${pickedPrice}IQD',
+                            '${pickedPrice}SAR',
                             style: const TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
@@ -520,7 +520,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                           ),
                           Text(
-                            '${pickedPrice}IQD',
+                            '${pickedPrice}SAR',
                             style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white),

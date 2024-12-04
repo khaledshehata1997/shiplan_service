@@ -212,7 +212,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                           ? darkMoodColor
                           : Colors.white,
                       child: Text(
-                        '${_minPrice.round()}IQD',
+                        '${_minPrice.round()}SAR',
                         style: TextStyle(
                             fontSize: 14,
                             color: themeProvider.isDarkMode
@@ -231,7 +231,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                           ? darkMoodColor
                           : Colors.white,
                       child: Text(
-                        '${_maxPrice.round()}IQD',
+                        '${_maxPrice.round()}SAR',
                         style: TextStyle(
                             fontSize: 14,
                             color: themeProvider.isDarkMode

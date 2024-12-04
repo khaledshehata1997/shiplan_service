@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shiplan_service/temp_lib/constants/colors.dart';
 import 'package:shiplan_service/temp_lib/controllers/auth_controller.dart';
@@ -43,60 +44,71 @@ class _BestSellerWidgetState extends State<BestSellerWidget> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        Container(
-          height: 155,
-          width: 157,
-          margin: const EdgeInsets.only(bottom: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Colors.grey,
-          ),
-          child: AspectRatio(
-            aspectRatio: 1, // Ensures a square aspect ratio (1:1)
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: FittedBox(
-                fit: BoxFit
-                    .cover, // Fills the container while keeping the aspect ratio
-                child: decodedImage,
+        Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.grey,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.10),
+                    offset: const Offset(0, -3),
+                    blurRadius: 10,
+                  )
+                ],
+              ),
+              child: AspectRatio(
+                aspectRatio: 1, // Ensures a square aspect ratio (1:1)
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: FittedBox(
+                    fit: BoxFit
+                        .cover, // Fills the container while keeping the aspect ratio
+                    child: decodedImage,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  width: 15,
+                ),
+                Text(
+                  widget.name,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 16),
+                ),
+              ],
+            ),
             const SizedBox(
-              width: 15,
+              height: 10,
             ),
-            Text(
-              widget.name,
-              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-            ),
+            Row(
+              children: [
+                SizedBox(width: 15.w),
+                Text(
+                  textAlign: TextAlign.start,
+                  '${widget.price}SAR',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 16),
+                ),
+              ],
+            )
           ],
         ),
-        const SizedBox(
-          height: 10,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            const SizedBox(
-              width: 0,
-            ),
-            Text(
-              '${widget.price}IQD',
-              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            SizedBox(
-              height: 45.0,
-              width: 45.0,
+        Padding(
+          padding: EdgeInsetsDirectional.only(top: 10.h, end: 10.w),
+          child: Align(
+            alignment: AlignmentDirectional.topEnd,
+            child: SizedBox(
+              height: 30.0,
+              width: 30.0,
               child: ElevatedButton(
                 onPressed: !isLoading
                     ? () async {
@@ -158,11 +170,13 @@ class _BestSellerWidgetState extends State<BestSellerWidget> {
                     : Center(
                         child: SvgPicture.asset(
                           'assets/shopping-cart.svg',
+                          width: 16.w,
+                          height: 16.h,
                         ),
                       ),
               ),
             ),
-          ],
+          ),
         ),
       ],
     );
