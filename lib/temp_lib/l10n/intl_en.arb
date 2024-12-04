@@ -150,4 +150,5 @@
     "verify_phone_and_pin":"Phone number or Pin is false",
     "transaction_failed":"Transaction failed",
     "exit" : "Exit"
+    "blogs" : "blogs"
 }

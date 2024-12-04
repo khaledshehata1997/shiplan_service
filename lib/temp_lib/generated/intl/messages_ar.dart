@@ -254,6 +254,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "you_have_to_login_first":
             MessageLookupByLibrary.simpleMessage("يجب عليك تسجيل الدخول اولا"),
         "yourOrders": MessageLookupByLibrary.simpleMessage("طلباتك"),
-        "zainCash": MessageLookupByLibrary.simpleMessage("زين كاش")
+        "zainCash": MessageLookupByLibrary.simpleMessage("زين كاش"),
+        "blogs": MessageLookupByLibrary.simpleMessage("المقالات")
       };
 }

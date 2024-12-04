@@ -91,6 +91,16 @@ class S {
     );
   }
 
+  /// `Blogs`
+  String get blogs {
+    return Intl.message(
+      'Blogs',
+      name: 'blogs',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Best Seller Products`
   String get bestSellerProducts {
     return Intl.message(

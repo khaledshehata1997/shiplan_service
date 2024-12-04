@@ -149,5 +149,6 @@
     "OTP_number_error":"OTP غير صحيح",
     "verify_phone_and_pin":"رقم الهاتف او الكود غير صحيح",
     "transaction_failed":"فشلت عملية التحويل",
-    "exit" : "خروج"
+    "exit" : "خروج",
+    "blogs" : "مقالات"
 }

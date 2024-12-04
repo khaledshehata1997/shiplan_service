@@ -27,6 +27,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     return Scaffold(
       backgroundColor: themeProvider.isDarkMode ? darkMoodColor : Colors.white,
       appBar: AppBar(
+        centerTitle: true,
         title: Text(S.of(context).categories),
         backgroundColor:
             themeProvider.isDarkMode ? darkMoodColor : Colors.white,

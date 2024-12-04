@@ -12,7 +12,6 @@ import 'package:shiplan_service/temp_lib/views/auth/screens/login_screen.dart';
 import 'package:shiplan_service/temp_lib/views/auth/widgets/verification_bottom_sheet.dart';
 import 'package:shiplan_service/temp_lib/views/tabs%20screens/tabs_screen.dart';
 import 'package:shiplan_service/temp_lib/views/tabs%20screens/widgets/best_seller_widget.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthService with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -287,65 +286,6 @@ class AuthService with ChangeNotifier {
         S.of(context).Something_went_wrong,
         Icons.error,
         Colors.red,
-        const Duration(seconds: 4),
-      );
-    }
-  }
-
-  Future<void> signInWithApple(BuildContext context) async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-    try {
-      final appleCredential = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ],
-      );
-
-      final credential = OAuthProvider("apple.com").credential(
-        idToken: appleCredential.identityToken,
-        accessToken: appleCredential.authorizationCode,
-      );
-
-      UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
-      User? user = userCredential.user;
-
-      if (user != null) {
-        await firestore.collection('tempUsers').doc(user.uid).set({
-          'email': user.email ?? 'No Email',
-          'phoneNumber': user.phoneNumber,
-          'username': user.displayName ?? 'No Username',
-          'buyer': true,
-          'password': 'appleUser',
-          'createdAt': FieldValue.serverTimestamp(),
-        });
-
-        _user = user;
-        notifyListeners();
-
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (ctx) => const TabsScreen(isLoggedIn: true),
-          ),
-        );
-      }
-    } on FirebaseAuthException catch (e) {
-      showTopSnackBar(
-        context,
-        S.of(context).Something_went_wrong,
-        Icons.error,
-        Colors.red,
-        const Duration(seconds: 4),
-      );
-    } catch (error) {
-      showTopSnackBar(
-        context,
-        S.of(context).Sign_In_Canceled,
-        Icons.info,
-        defaultColor,
         const Duration(seconds: 4),
       );
     }

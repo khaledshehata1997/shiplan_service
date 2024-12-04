@@ -6,12 +6,12 @@ import 'package:provider/provider.dart';
 import 'package:shiplan_service/temp_lib/constants/colors.dart';
 import 'package:shiplan_service/temp_lib/controllers/cart_controller.dart';
 import 'package:shiplan_service/temp_lib/controllers/dark_mode_service.dart';
-import 'package:shiplan_service/temp_lib/generated/l10n.dart';
 import 'package:shiplan_service/temp_lib/views/cart%20screens/screens/cart_screen.dart';
+import 'package:shiplan_service/temp_lib/views/tabs%20screens/screens/blogs_screen.dart';
 import 'package:shiplan_service/temp_lib/views/tabs%20screens/screens/categories_screen.dart';
 import 'package:shiplan_service/temp_lib/views/tabs%20screens/screens/home_screen.dart';
-import 'package:shiplan_service/temp_lib/views/tabs%20screens/screens/notification_screen.dart';
 import 'package:shiplan_service/temp_lib/views/tabs%20screens/screens/profile_screen.dart';
+import 'package:shiplan_service/temp_lib/views/tabs%20screens/widgets/app_bottom_navigation_bar.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key, required this.isLoggedIn});
@@ -22,9 +22,17 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  var _currentIndex = 0;
+  int _currentIndex = 0;
   final PageController _pageController = PageController();
   bool isLoading = false;
+
+  void updateIndex({
+    required int index,
+  }) {
+    _currentIndex = index;
+    _pageController.jumpToPage(index);
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -44,63 +52,15 @@ class _TabsScreenState extends State<TabsScreen> {
             children: [
               HomeScreen(isLoggedIn: widget.isLoggedIn),
               const CategoriesScreen(),
-              const NotificationScreen(),
+              const BlogsScreen(),
               const ProfileScreen(),
             ],
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-          color: themeProvider.isDarkMode ? darkMoodColor : Colors.white,
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 10.0,
-          height: 80,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildAnimatedTabItem(
-                    context,
-                    index: 0,
-                    image: 'assets/house.svg',
-                    label: S.of(context).home,
-                  ),
-                  const SizedBox(
-                    width: 17,
-                  ),
-                  _buildAnimatedTabItem(
-                    context,
-                    index: 1,
-                    image: 'assets/categories2.svg',
-                    label: S.of(context).categories,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  _buildAnimatedTabItem(
-                    context,
-                    index: 2,
-                    image: 'assets/notifications.svg',
-                    label: S.of(context).notification,
-                  ),
-                  const SizedBox(
-                    width: 17,
-                  ),
-                  _buildAnimatedTabItem(
-                    context,
-                    index: 3,
-                    image: 'assets/profile2.svg',
-                    label: S.of(context).profile,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: AppBottomNavigationBar(
+            currentIndex: _currentIndex,
+            updateIndex: (int index) => updateIndex(index: index)),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
             onPressed: isLoading
                 ? null

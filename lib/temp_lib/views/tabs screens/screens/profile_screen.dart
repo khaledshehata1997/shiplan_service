@@ -84,208 +84,206 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final authService = Provider.of<AuthService>(context, listen: false);
     final themeProvider = Provider.of<ThemeProvider>(context);
 
-    return Column(
-      children: [
-        Expanded(
-          child: ListView(
-            children: [
-              const SizedBox(height: 5),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    S.of(context).profile,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
+    return Scaffold(
+      backgroundColor: themeProvider.isDarkMode ? darkMoodColor : Colors.white,
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(S.of(context).profile),
+        backgroundColor:
+            themeProvider.isDarkMode ? darkMoodColor : Colors.white,
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              children: [
+                ListTile(
+                  leading: SvgPicture.asset(
+                    'assets/profile.svg',
+                    color:
+                        themeProvider.isDarkMode ? Colors.white : Colors.black,
+                    width: 17,
                   ),
-                ],
-              ),
-              const SizedBox(height: 50),
-              ListTile(
-                leading: SvgPicture.asset(
-                  'assets/profile.svg',
-                  color: themeProvider.isDarkMode ? Colors.white : Colors.black,
-                  width: 17,
+                  title: Text(S.of(context).personalInfo),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    if (authService.isUserLoggedIn) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => const PersonalInfoScreen()));
+                    } else {
+                      showTopSnackBar(
+                        context,
+                        S.of(context).Youhavetologinfirst,
+                        Icons.check_circle,
+                        defaultColor,
+                        const Duration(seconds: 4),
+                      );
+                    }
+                  },
                 ),
-                title: Text(S.of(context).personalInfo),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  if (authService.isUserLoggedIn) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (ctx) => const PersonalInfoScreen()));
-                  } else {
-                    showTopSnackBar(
-                      context,
-                      S.of(context).Youhavetologinfirst,
-                      Icons.check_circle,
-                      defaultColor,
-                      const Duration(seconds: 4),
+                Divider(color: Colors.grey.shade200),
+                ListTile(
+                  leading: SvgPicture.asset('assets/card.svg',
+                      color: themeProvider.isDarkMode
+                          ? Colors.white
+                          : Colors.black),
+                  title: Text(S.of(context).yourOrders),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (ctx) => const OrdersScreen()),
                     );
-                  }
-                },
-              ),
-              Divider(color: Colors.grey.shade200),
-              ListTile(
-                leading: SvgPicture.asset('assets/card.svg',
-                    color:
-                        themeProvider.isDarkMode ? Colors.white : Colors.black),
-                title: Text(S.of(context).yourOrders),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (ctx) => const OrdersScreen()),
-                  );
-                },
-              ),
-              Divider(color: Colors.grey.shade200),
-              ListTile(
-                leading: SvgPicture.asset('assets/global.svg',
-                    color:
-                        themeProvider.isDarkMode ? Colors.white : Colors.black),
-                title: Text(S.of(context).language),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (ctx) => const LangScreen()),
-                  );
-                },
-              ),
-              Divider(color: Colors.grey.shade200),
-              ListTile(
-                leading: const Icon(Icons.favorite_border),
-                title: Text(S.of(context).favorites),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (ctx) => const FavoritesScreen()),
-                  );
-                },
-              ),
-              Divider(color: Colors.grey.shade200),
-              SwitchListTile(
-                title: Row(
-                  children: [
-                    const Icon(Icons.visibility_outlined),
-                    const SizedBox(width: 10),
-                    Text(S.of(context).darkMode),
-                  ],
+                  },
                 ),
-                value: themeProvider.isDarkMode,
-                onChanged: (value) {
-                  setState(() {
-                    themeProvider.toggleTheme();
-                  });
-                },
-                activeColor: Colors.white,
-                activeTrackColor: Colors.green,
-              ),
-              Divider(color: Colors.grey.shade200),
-              // Add the Delete Account option here
-              ListTile(
-                leading: const Icon(Icons.delete),
-                title: Text(S.of(context).deleteAccount),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Delete Account'),
-                      content: const Text(
-                          'Are you sure you want to delete your account? This action cannot be undone.'),
-                      actions: [
-                        TextButton(
-                          child: const Text('Cancel'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        TextButton(
-                          child: const Text('Delete',
-                              style: TextStyle(color: Colors.red)),
-                          onPressed: () {
-                            Navigator.of(context).pop(); // Close the dialog
-                            // Call the deleteAccount function
-                            Provider.of<AuthService>(context, listen: false)
-                                .deleteAccount(context);
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-              Divider(color: Colors.grey.shade200),
-              FutureBuilder<String>(
-                future: fetchSupportNumber(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return const Center(
-                        child: Text('Error fetching support number'));
-                  } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                    final supportNumber = snapshot.data!;
-                    return ListTile(
-                      leading: Image.asset('assets/wpimage.png', width: 30),
-                      title: Text(S.of(context).Contact_us),
-                      trailing: const Icon(Icons.arrow_forward_ios),
-                      onTap: () {
-                        launchWhatsApp(supportNumber); // Launch WhatsApp
-                      },
+                Divider(color: Colors.grey.shade200),
+                ListTile(
+                  leading: SvgPicture.asset('assets/global.svg',
+                      color: themeProvider.isDarkMode
+                          ? Colors.white
+                          : Colors.black),
+                  title: Text(S.of(context).language),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (ctx) => const LangScreen()),
                     );
-                  } else {
-                    return const Center(
-                        child: Text('No support number found.'));
-                  }
-                },
-              ),
+                  },
+                ),
+                Divider(color: Colors.grey.shade200),
+                ListTile(
+                  leading: const Icon(Icons.favorite_border),
+                  title: Text(S.of(context).favorites),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (ctx) => const FavoritesScreen()),
+                    );
+                  },
+                ),
+                Divider(color: Colors.grey.shade200),
+                SwitchListTile(
+                  title: Row(
+                    children: [
+                      const Icon(Icons.visibility_outlined),
+                      const SizedBox(width: 10),
+                      Text(S.of(context).darkMode),
+                    ],
+                  ),
+                  value: themeProvider.isDarkMode,
+                  onChanged: (value) {
+                    setState(() {
+                      themeProvider.toggleTheme();
+                    });
+                  },
+                  activeColor: Colors.white,
+                  activeTrackColor: Colors.green,
+                ),
+                Divider(color: Colors.grey.shade200),
+                // Add the Delete Account option here
+                ListTile(
+                  leading: const Icon(Icons.delete),
+                  title: Text(S.of(context).deleteAccount),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Delete Account'),
+                        content: const Text(
+                            'Are you sure you want to delete your account? This action cannot be undone.'),
+                        actions: [
+                          TextButton(
+                            child: const Text('Cancel'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('Delete',
+                                style: TextStyle(color: Colors.red)),
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Close the dialog
+                              // Call the deleteAccount function
+                              Provider.of<AuthService>(context, listen: false)
+                                  .deleteAccount(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                Divider(color: Colors.grey.shade200),
+                FutureBuilder<String>(
+                  future: fetchSupportNumber(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return const Center(
+                          child: Text('Error fetching support number'));
+                    } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                      final supportNumber = snapshot.data!;
+                      return ListTile(
+                        leading: Image.asset('assets/wpimage.png', width: 30),
+                        title: Text(S.of(context).Contact_us),
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                        onTap: () {
+                          launchWhatsApp(supportNumber); // Launch WhatsApp
+                        },
+                      );
+                    } else {
+                      return const Center(
+                          child: Text('No support number found.'));
+                    }
+                  },
+                ),
 
-              Divider(color: Colors.grey.shade200),
-            ],
-          ),
-        ),
-        InkWell(
-          borderRadius: BorderRadius.circular(30),
-          onTap: () {
-            if (authService.isUserLoggedIn) {
-              authService.logout();
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                    builder: (ctx) => const TabsScreen(isLoggedIn: false)),
-              );
-            } else {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (ctx) => const LoginScreen()),
-              );
-            }
-          },
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10),
-            width: double.infinity,
-            height: 60.0,
-            decoration: BoxDecoration(
-              color: defaultColor,
-              borderRadius: BorderRadius.circular(10.0),
+                Divider(color: Colors.grey.shade200),
+              ],
             ),
-            child: Center(
-              child: Text(
-                authService.isUserLoggedIn
-                    ? S.of(context).logout
-                    : S.of(context).login,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
+          ),
+          InkWell(
+            borderRadius: BorderRadius.circular(30),
+            onTap: () {
+              if (authService.isUserLoggedIn) {
+                authService.logout();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (ctx) => const TabsScreen(isLoggedIn: false)),
+                );
+              } else {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (ctx) => const LoginScreen()),
+                );
+              }
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              width: double.infinity,
+              height: 60.0,
+              decoration: BoxDecoration(
+                color: defaultColor,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Center(
+                child: Text(
+                  authService.isUserLoggedIn
+                      ? S.of(context).logout
+                      : S.of(context).login,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        const SizedBox(height: 40),
-      ],
+          const SizedBox(height: 40),
+        ],
+      ),
     );
   }
 }
