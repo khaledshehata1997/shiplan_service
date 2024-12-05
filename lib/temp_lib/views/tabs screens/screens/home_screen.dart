@@ -1,13 +1,11 @@
 import 'dart:convert';
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shiplan_service/temp_lib/constants/colors.dart';
 import 'package:shiplan_service/temp_lib/controllers/brand_controller.dart';
 import 'package:shiplan_service/temp_lib/controllers/category_contoller.dart';
-import 'package:shiplan_service/temp_lib/controllers/discounts_controller.dart';
 import 'package:shiplan_service/temp_lib/controllers/lang_controller.dart';
 import 'package:shiplan_service/temp_lib/controllers/product_controller.dart';
 import 'package:shiplan_service/temp_lib/generated/l10n.dart';
@@ -134,66 +132,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Text(S.of(context).NobeautyServiceavailable);
               }
             },
-          ),
-          SizedBox(
-            height: 20.h,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 12.w,
-              ),
-              Expanded(
-                child: FutureBuilder<List<Map<String, dynamic>>>(
-                  future:
-                      Provider.of<DiscountsController>(context, listen: false)
-                          .fetchDiscounts(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else if (snapshot.hasData) {
-                      var discounts = snapshot.data!;
-                      return CarouselSlider.builder(
-                        itemCount: discounts.length,
-                        itemBuilder: (context, index, realIndex) {
-                          var discount = discounts[index];
-                          return Container(
-                            padding: const EdgeInsets.all(10),
-                            height: 140.h,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              image: DecorationImage(
-                                image: MemoryImage(
-                                    base64Decode(discount['image'])),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          );
-                        },
-                        options: CarouselOptions(
-                          height: 160.h,
-                          autoPlay: true,
-                          aspectRatio: 16 / 9,
-                          viewportFraction: 1,
-                          enlargeCenterPage: false,
-                        ),
-                      );
-                    } else {
-                      return const SizedBox();
-                    }
-                  },
-                ),
-              ),
-              SizedBox(
-                width: 12.w,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 20.h,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
