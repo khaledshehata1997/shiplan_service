@@ -76,6 +76,8 @@ dependencies:
   #  flutter_paytabs_bridge: ^2.6.18
   flutter_screenutil: ^5.9.3
   salomon_bottom_bar: ^3.3.2
+  expandable: ^5.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
