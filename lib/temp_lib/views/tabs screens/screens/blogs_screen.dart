@@ -24,6 +24,7 @@ class _BlogsScreenState extends State<BlogsScreen> {
         backgroundColor:
             themeProvider.isDarkMode ? darkMoodColor : Colors.white,
         appBar: AppBar(
+          leading: SizedBox(),
           centerTitle: true,
           title: Text(S.of(context).blogs),
           backgroundColor:

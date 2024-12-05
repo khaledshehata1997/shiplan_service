@@ -86,6 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: themeProvider.isDarkMode ? darkMoodColor : Colors.white,
       appBar: AppBar(
+        leading: SizedBox(),
         centerTitle: true,
         title: Text(S.of(context).profile),
         backgroundColor:

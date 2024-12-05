@@ -31,6 +31,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         title: Text(S.of(context).categories),
         backgroundColor:
             themeProvider.isDarkMode ? darkMoodColor : Colors.white,
+        leading: SizedBox(),
       ),
       body: SingleChildScrollView(
         child: Column(
