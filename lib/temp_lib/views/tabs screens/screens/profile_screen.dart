@@ -14,7 +14,6 @@ import 'package:shiplan_service/temp_lib/views/auth/screens/login_screen.dart';
 import 'package:shiplan_service/temp_lib/views/profile%20screens/screens/favorites_screen.dart';
 import 'package:shiplan_service/temp_lib/views/profile%20screens/screens/lang_screen.dart';
 import 'package:shiplan_service/temp_lib/views/profile%20screens/screens/orders_screen.dart';
-import 'package:shiplan_service/temp_lib/views/profile%20screens/screens/personal_info_screen.dart';
 import 'package:shiplan_service/temp_lib/views/tabs%20screens/tabs_screen.dart';
 import 'package:shiplan_service/temp_lib/views/tabs%20screens/widgets/best_seller_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -97,31 +96,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Expanded(
             child: ListView(
               children: [
-                ListTile(
-                  leading: SvgPicture.asset(
-                    'assets/profile.svg',
-                    color:
-                        themeProvider.isDarkMode ? Colors.white : Colors.black,
-                    width: 17,
-                  ),
-                  title: Text(S.of(context).personalInfo),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    if (authService.isUserLoggedIn) {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (ctx) => const PersonalInfoScreen()));
-                    } else {
-                      showTopSnackBar(
-                        context,
-                        S.of(context).Youhavetologinfirst,
-                        Icons.check_circle,
-                        defaultColor,
-                        const Duration(seconds: 4),
-                      );
-                    }
-                  },
-                ),
-                Divider(color: Colors.grey.shade200),
                 ListTile(
                   leading: SvgPicture.asset('assets/card.svg',
                       color: themeProvider.isDarkMode
@@ -214,33 +188,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
-                Divider(color: Colors.grey.shade200),
-                FutureBuilder<String>(
-                  future: fetchSupportNumber(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return const Center(
-                          child: Text('Error fetching support number'));
-                    } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                      final supportNumber = snapshot.data!;
-                      return ListTile(
-                        leading: Image.asset('assets/wpimage.png', width: 30),
-                        title: Text(S.of(context).Contact_us),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () {
-                          launchWhatsApp(supportNumber); // Launch WhatsApp
-                        },
-                      );
-                    } else {
-                      return const Center(
-                          child: Text('No support number found.'));
-                    }
-                  },
-                ),
-
-                Divider(color: Colors.grey.shade200),
               ],
             ),
           ),
