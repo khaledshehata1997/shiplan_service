@@ -39,220 +39,200 @@ class _SignupScreenState extends State<SignupScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       backgroundColor: themeProvider.isDarkMode ? darkMoodColor : Colors.white,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.grey.shade200,
-                              )),
-                          child: const Center(
-                            child: Icon(Icons.arrow_back),
-                          ),
-                        ),
-                      ),
-                    ],
+      appBar: AppBar(
+        backgroundColor:
+            themeProvider.isDarkMode ? darkMoodColor : Colors.white,
+        title: Text(S.of(context).signup),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  S.of(context).createNewAccount,
+                  style: const TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    S.of(context).createNewAccount,
-                    style: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  S.of(context).pleaseCreateAccount,
+                  style: const TextStyle(
+                      color: Color.fromARGB(255, 133, 131, 131)),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Text(
+                  S.of(context).userName,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextfieldSignup(
+                  controller: _userNameController,
+                  type: TextInputType.text,
+                  hintText: S.of(context).enterYouruserName,
+                  icon: Icons.person_outline,
+                  image: 'assets/user.png',
+                  inputFormatters: [],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  S.of(context).emailAddress,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextfieldSignup(
+                  controller: _emailController,
+                  type: TextInputType.emailAddress,
+                  hintText: S.of(context).enterYourEmail,
+                  icon: Icons.email_outlined,
+                  image: 'assets/sms.png',
+                  inputFormatters: [],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  S.of(context).phoneNumber,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextfieldSignup(
+                  controller: _phoneNumberController,
+                  type: TextInputType.phone,
+                  hintText: S.of(context).enterYourPhoneNumber,
+                  icon: Icons.phone_outlined,
+                  image: 'assets/call.png',
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  S.of(context).password,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextfieldSignup(
+                  obscureText: _obscureText,
+                  inputFormatters: [],
+                  type: TextInputType.visiblePassword,
+                  controller: _passController,
+                  hintText: S.of(context).enterYourPassword,
+                  icon: Icons.lock_outline,
+                  image: 'assets/lock.png',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                      color: Colors.grey,
                     ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
                   ),
-                  const SizedBox(
-                    height: 10,
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Container(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width,
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 10,
                   ),
-                  Text(
-                    S.of(context).pleaseCreateAccount,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 133, 131, 131)),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    S.of(context).userName,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextfieldSignup(
-                    controller: _userNameController,
-                    type: TextInputType.text,
-                    hintText: S.of(context).enterYouruserName,
-                    icon: Icons.person_outline,
-                    image: 'assets/user.png',
-                    inputFormatters: [],
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    S.of(context).emailAddress,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextfieldSignup(
-                    controller: _emailController,
-                    type: TextInputType.emailAddress,
-                    hintText: S.of(context).enterYourEmail,
-                    icon: Icons.email_outlined,
-                    image: 'assets/sms.png',
-                    inputFormatters: [],
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    S.of(context).phoneNumber,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextfieldSignup(
-                    controller: _phoneNumberController,
-                    type: TextInputType.phone,
-                    hintText: S.of(context).enterYourPhoneNumber,
-                    icon: Icons.phone_outlined,
-                    image: 'assets/call.png',
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    S.of(context).password,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextfieldSignup(
-                    obscureText: _obscureText,
-                    inputFormatters: [],
-                    type: TextInputType.visiblePassword,
-                    controller: _passController,
-                    hintText: S.of(context).enterYourPassword,
-                    icon: Icons.lock_outline,
-                    image: 'assets/lock.png',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureText
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_outlined,
-                        color: Colors.grey,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Container(
-                    height: 60,
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                    ),
-                    child: ElevatedButton(
-                      onPressed: !isLoading
-                          ? () async {
-                              setState(() {
-                                isLoading = true;
-                              });
+                  child: ElevatedButton(
+                    onPressed: !isLoading
+                        ? () async {
+                            setState(() {
+                              isLoading = true;
+                            });
 
-                              if (_phoneNumberController.text.length != 11) {
-                                showTopSnackBar(
-                                  context,
-                                  S.of(context).phone_number_is_not_valid,
-                                  Icons.info,
-                                  defaultColor,
-                                  const Duration(seconds: 4),
-                                );
-                                setState(() {
-                                  isLoading = false;
-                                });
-                                return;
-                              }
-                              if (checkValidation()) {
-                                final authService = Provider.of<AuthService>(
-                                    context,
-                                    listen: false);
-                                authService.signup(
-                                    _emailController.text,
-                                    _passController.text,
-                                    _phoneNumberController.text,
-                                    _userNameController.text,
-                                    context);
-                              } else {
-                                checkValidation();
-                              }
+                            if (_phoneNumberController.text.length != 11) {
+                              showTopSnackBar(
+                                context,
+                                S.of(context).phone_number_is_not_valid,
+                                Icons.info,
+                                defaultColor,
+                                const Duration(seconds: 4),
+                              );
                               setState(() {
                                 isLoading = false;
                               });
+                              return;
                             }
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: defaultColor,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30), // <-- Radius
-                        ),
+                            if (checkValidation()) {
+                              final authService = Provider.of<AuthService>(
+                                  context,
+                                  listen: false);
+                              authService.signup(
+                                  _emailController.text,
+                                  _passController.text,
+                                  _phoneNumberController.text,
+                                  _userNameController.text,
+                                  context);
+                            } else {
+                              checkValidation();
+                            }
+                            setState(() {
+                              isLoading = false;
+                            });
+                          }
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: defaultColor,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30), // <-- Radius
                       ),
-                      child: isLoading
-                          ? const CircularProgressIndicator(
-                              color: Colors.white,
-                            )
-                          : Center(
-                              child: Text(
-                                S.of(context).createAcc,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                    ),
+                    child: isLoading
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : Center(
+                            child: Text(
+                              S.of(context).createAcc,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                    ),
+                          ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
             ),
           ),
         ),
