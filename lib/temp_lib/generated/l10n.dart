@@ -101,6 +101,16 @@ class S {
     );
   }
 
+  /// `Short Videos`
+  String get shortVideos {
+    return Intl.message(
+      'shortVideos',
+      name: 'shortVideos',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Best Seller Products`
   String get bestSellerProducts {
     return Intl.message(

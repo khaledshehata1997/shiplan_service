@@ -150,5 +150,6 @@
     "verify_phone_and_pin":"رقم الهاتف او الكود غير صحيح",
     "transaction_failed":"فشلت عملية التحويل",
     "exit" : "خروج",
-    "blogs" : "مقالات"
+    "blogs" : "مقالات",
+    "shortVideos" : "فيديوهات قصيرة"
 }

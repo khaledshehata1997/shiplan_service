@@ -252,6 +252,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("You have to login first"),
         "yourOrders": MessageLookupByLibrary.simpleMessage("Your Orders"),
         "zainCash": MessageLookupByLibrary.simpleMessage("Zain Cash"),
-        "blogs": MessageLookupByLibrary.simpleMessage("Blogs")
+        "blogs": MessageLookupByLibrary.simpleMessage("Blogs"),
+        "shortVideos": MessageLookupByLibrary.simpleMessage("Short Videos")
       };
 }

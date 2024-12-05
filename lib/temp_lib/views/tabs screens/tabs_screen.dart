@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shiplan_service/temp_lib/constants/colors.dart';
@@ -11,6 +12,7 @@ import 'package:shiplan_service/temp_lib/views/tabs%20screens/screens/blogs_scre
 import 'package:shiplan_service/temp_lib/views/tabs%20screens/screens/categories_screen.dart';
 import 'package:shiplan_service/temp_lib/views/tabs%20screens/screens/home_screen.dart';
 import 'package:shiplan_service/temp_lib/views/tabs%20screens/screens/profile_screen.dart';
+import 'package:shiplan_service/temp_lib/views/tabs%20screens/screens/short_videos_screen.dart';
 import 'package:shiplan_service/temp_lib/views/tabs%20screens/widgets/app_bottom_navigation_bar.dart';
 
 class TabsScreen extends StatefulWidget {
@@ -61,34 +63,48 @@ class _TabsScreenState extends State<TabsScreen> {
             currentIndex: _currentIndex,
             updateIndex: (int index) => updateIndex(index: index)),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: FloatingActionButton(
-            onPressed: isLoading
-                ? null
-                : () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    final cartProvider =
-                        Provider.of<CartController>(context, listen: false);
-                    if (cartProvider.cartItem != null) {
-                      cartProvider.cartItem = null;
-                    }
-                    await cartProvider.addToCart(context);
-                    setState(() {
-                      isLoading = false;
-                    });
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (ctx) => const CartScreen()));
-                  },
-            shape: const CircleBorder(),
-            backgroundColor: defaultColor,
-            child: isLoading
-                ? Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                    ),
-                  )
-                : SvgPicture.asset('assets/shopping-cart.svg')),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (ctx) => const ShortVideosScreen()));
+                },
+                shape: const CircleBorder(),
+                backgroundColor: defaultColor,
+                child: const Icon(Icons.video_collection, color: Colors.white)),
+            SizedBox(height: 10.h),
+            FloatingActionButton(
+                onPressed: isLoading
+                    ? null
+                    : () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        final cartProvider =
+                            Provider.of<CartController>(context, listen: false);
+                        if (cartProvider.cartItem != null) {
+                          cartProvider.cartItem = null;
+                        }
+                        await cartProvider.addToCart(context);
+                        setState(() {
+                          isLoading = false;
+                        });
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (ctx) => const CartScreen()));
+                      },
+                shape: const CircleBorder(),
+                backgroundColor: defaultColor,
+                child: isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Icon(Icons.shopping_cart, color: Colors.white)),
+          ],
+        ),
       ),
     );
   }

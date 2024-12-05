@@ -77,6 +77,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   salomon_bottom_bar: ^3.3.2
   expandable: ^5.0.1
+  youtube_player_flutter: ^9.1.1
 
 dev_dependencies:
   flutter_test:
