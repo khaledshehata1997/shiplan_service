@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:shiplan_service/temp_admin_lib/views/splash_screen.dart';
 import 'package:shiplan_service/temp_lib/constants/colors.dart';
 import 'package:shiplan_service/temp_lib/controllers/auth_controller.dart';
 import 'package:shiplan_service/temp_lib/controllers/dark_mode_service.dart';
@@ -39,8 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: themeProvider.isDarkMode ? darkMoodColor : Colors.white,
       appBar: AppBar(
-        backgroundColor:
-            themeProvider.isDarkMode ? darkMoodColor : Colors.white,
+        backgroundColor: themeProvider.isDarkMode ? darkMoodColor : Colors.white,
         title: Text(S.of(context).login),
         centerTitle: true,
       ),
@@ -55,8 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Text(
                   S.of(context).emailOrPhone,
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
                 ),
                 SizedBox(
                   height: 10.h,
@@ -81,8 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 15.0.h, horizontal: 20.0.w),
+                      contentPadding: EdgeInsets.symmetric(vertical: 15.0.h, horizontal: 20.0.w),
                       hintText: S.of(context).enterEmailOrPhoneNumber,
                       hintStyle: const TextStyle(color: Colors.grey),
                       prefixIcon: SizedBox(
@@ -112,8 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Text(
                   S.of(context).password,
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
                 ),
                 SizedBox(
                   height: 10.h,
@@ -139,8 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 15.0.h, horizontal: 20.0.w),
+                    contentPadding: EdgeInsets.symmetric(vertical: 15.0.h, horizontal: 20.0.w),
                     hintText: S.of(context).enterYourPassword,
                     hintStyle: const TextStyle(color: Colors.grey),
                     prefixIcon: Image.asset('assets/lock.png'),
@@ -162,9 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureText
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_outlined,
+                        _obscureText ? Icons.visibility_outlined : Icons.visibility_off_outlined,
                         color: Colors.grey,
                       ),
                       onPressed: () {
@@ -190,29 +184,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(30.r),
                     onTap: () async {
                       if (checkValidation()) {
-                        final authService =
-                            Provider.of<AuthService>(context, listen: false);
+                        final authService = Provider.of<AuthService>(context, listen: false);
                         setState(() {
                           isLoading = true;
                         });
                         final input = _emailController.text.trim();
-                        final bool isEmail =
-                            RegExp(r'^[\w\.-]+@[\w\.-]+\.\w+$').hasMatch(input);
-                        final bool isPhoneNumber =
-                            RegExp(r'^\+?[0-9]{7,15}$').hasMatch(input);
+                        final bool isEmail = RegExp(r'^[\w\.-]+@[\w\.-]+\.\w+$').hasMatch(input);
+                        final bool isPhoneNumber = RegExp(r'^\+?[0-9]{7,15}$').hasMatch(input);
 
                         if (isEmail) {
-                          await authService.login(
-                              input, _passController.text, context);
+                          await authService.login(input, _passController.text, context);
                         } else if (isPhoneNumber) {
                           await authService.loginWithPhoneNumber(
                               context, input, _passController.text);
                         } else {
                           showTopSnackBar(
                             context,
-                            S
-                                .of(context)
-                                .please_enter_a_valid_email_or_phone_number,
+                            S.of(context).please_enter_a_valid_email_or_phone_number,
                             Icons.info,
                             defaultColor,
                             const Duration(seconds: 4),
@@ -238,8 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       child: Center(
                         child: isLoading
-                            ? const CircularProgressIndicator(
-                                color: Colors.white)
+                            ? const CircularProgressIndicator(color: Colors.white)
                             : Text(
                                 S.of(context).login,
                                 style: TextStyle(
@@ -300,18 +287,39 @@ class _LoginScreenState extends State<LoginScreen> {
                 //   ],
                 // ),
                 // SizedBox(height: 20.0.h),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(S.of(context).dontHaveAnAccount),
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (ctx) => const SignupScreen()));
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (ctx) => const SignupScreen()));
                       },
                       child: Text(
                         S.of(context).signup,
                         style: const TextStyle(
+                          color: defaultColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20.0.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("You Are Admin ?"),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (ctx) => const SplashScreen()));
+                      },
+                      child: const Text(
+                        "Login As Admin",
+                        style: TextStyle(
                           color: defaultColor,
                           fontWeight: FontWeight.bold,
                         ),

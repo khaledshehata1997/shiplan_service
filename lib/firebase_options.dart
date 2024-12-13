@@ -51,20 +51,21 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBQMnQ8hmthIY5W8mgeJhxkC0_Gt_aUg34',
-    appId: '1:639757077046:android:948a90173ba55e0bc66697',
+    appId: '1:639757077046:android:cbe030700cf0324dc66697',
     messagingSenderId: '639757077046',
     projectId: 'shiplan-dad96',
+    databaseURL: 'https://shiplan-dad96-default-rtdb.firebaseio.com',
     storageBucket: 'shiplan-dad96.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAMp72y9mutXlY2U7dSpIIMd-x0JVYYUDE',
-    appId: '1:639757077046:ios:088a2216bd81bdbfc66697',
+    appId: '1:639757077046:ios:ca9661b34ca130bbc66697',
     messagingSenderId: '639757077046',
     projectId: 'shiplan-dad96',
     databaseURL: 'https://shiplan-dad96-default-rtdb.firebaseio.com',
     storageBucket: 'shiplan-dad96.appspot.com',
-    iosBundleId: 'com.kh20azkar',
+    iosBundleId: 'com.shiblann.adminn',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(

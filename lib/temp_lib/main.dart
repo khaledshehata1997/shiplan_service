@@ -3,6 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:shiplan_service/temp_admin_lib/controller/add_brand_controller.dart';
+import 'package:shiplan_service/temp_admin_lib/controller/add_category_controller.dart';
+import 'package:shiplan_service/temp_admin_lib/controller/add_coupon_controller.dart';
+import 'package:shiplan_service/temp_admin_lib/controller/add_product_controller.dart';
+import 'package:shiplan_service/temp_admin_lib/controller/add_support_num_controller.dart';
+import 'package:shiplan_service/temp_admin_lib/controller/advertisments_controller.dart';
+import 'package:shiplan_service/temp_admin_lib/controller/auth_controller.dart';
+import 'package:shiplan_service/temp_admin_lib/controller/dashboard_controller.dart';
+import 'package:shiplan_service/temp_admin_lib/controller/image_picker_controller.dart';
+import 'package:shiplan_service/temp_admin_lib/controller/notification_controller.dart';
+import 'package:shiplan_service/temp_admin_lib/controller/orders_controller.dart';
+import 'package:shiplan_service/temp_admin_lib/controller/shipping_charge_controller.dart';
+import 'package:shiplan_service/temp_admin_lib/views/actions%20screens/add_advertisment_screen.dart';
 import 'package:shiplan_service/temp_lib/controllers/auth_controller.dart';
 import 'package:shiplan_service/temp_lib/controllers/brand_controller.dart';
 import 'package:shiplan_service/temp_lib/controllers/cart_controller.dart';
@@ -50,7 +63,45 @@ class TempApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => OrdersController()),
         ChangeNotifierProvider(create: (_) => LangController()),
         ChangeNotifierProvider(create: (_) => CouponController()),
-        // ChangeNotifierProvider(create: (_) => PaytabsServices()),
+        ChangeNotifierProvider(
+          create: (_) => ImagePickerController(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AddCategoryController(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AuthServiceAdmin(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AddBrandController(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AddProductController(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AdvertismentsController(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => OrdersControllerAdmin(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => DashboardController(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AddCouponController(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => NotificationController(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ShippingChargeControllerAdmin(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AddSupportNumController(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AdImageController(),
+        ),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),

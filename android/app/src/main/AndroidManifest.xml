@@ -28,7 +28,7 @@
     </intent>
   </queries>
     <application
-        android:label="خدماتك"
+        android:label="الشبلان"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
