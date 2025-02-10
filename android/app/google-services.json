@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:639757077046:android:948a90173ba55e0bc66697",
         "android_client_info": {
-          "package_name": "com.example.shiplan_service"
+          "package_name": "com.khdmat1k"
         }
       },
       "oauth_client": [],
@@ -29,64 +29,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:639757077046:android:8953c59841410cc7c66697",
         "android_client_info": {
-          "package_name": "com.kh20.shiplan"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBQMnQ8hmthIY5W8mgeJhxkC0_Gt_aUg34"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:639757077046:android:c8279485d3f07fe9c66697",
-        "android_client_info": {
-          "package_name": "com.shiblan.admin"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBQMnQ8hmthIY5W8mgeJhxkC0_Gt_aUg34"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:639757077046:android:cbe030700cf0324dc66697",
-        "android_client_info": {
-          "package_name": "com.shiblann.adminn"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBQMnQ8hmthIY5W8mgeJhxkC0_Gt_aUg34"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:639757077046:android:5841545734e946f2c66697",
-        "android_client_info": {
-          "package_name": "com.shiplanadmin"
+          "package_name": "com.khdmat1k"
         }
       },
       "oauth_client": [],
