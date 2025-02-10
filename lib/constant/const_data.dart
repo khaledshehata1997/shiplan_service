@@ -1,3 +1,3 @@
 class ConstData {
- static const String phoneNumberWhatsapp = '+966535341155';
+ static const String phoneNumberWhatsapp = '+966555019823';
 }
